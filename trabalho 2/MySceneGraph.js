@@ -8,8 +8,9 @@ var LIGHTS_INDEX = 3;
 var TEXTURES_INDEX = 4;
 var MATERIALS_INDEX = 5;
 var TRANSFORMATIONS_INDEX = 6;
-var PRIMITIVES_INDEX = 7;
-var COMPONENTS_INDEX = 8;
+var ANIMATIONS_INDEX = 7;
+var PRIMITIVES_INDEX = 8;
+var COMPONENTS_INDEX = 9;
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -168,6 +169,18 @@ class MySceneGraph {
 
             //Parse transformations block
             if ((error = this.parseTransformations(nodes[index])) != null)
+                return error;
+        }
+
+        // <animations>
+        if ((index = nodeNames.indexOf("animations")) == -1)
+            return "tag <animations> missing";
+        else {
+            if (index != ANIMATIONS_INDEX)
+                this.onXMLMinorError("tag <animations> out of order");
+
+            //Parse animations block
+            if ((error = this.parseAnimations(nodes[index])) != null)
                 return error;
         }
 
@@ -790,6 +803,17 @@ class MySceneGraph {
     }
 
     /**
+     * Parses the <animations> block.
+     * @param {animations block element} animationsNode 
+     */
+    parseAnimations(animationsNode) {
+        var children = animationsNode.children;
+        
+        this.log("Parsed animations");
+        return null;
+    }
+
+    /**
      * Parses the <primitives> block.
      * @param {primitives block element} primitivesNode
      */
@@ -820,11 +844,8 @@ class MySceneGraph {
             grandChildren = children[i].children;
 
             // Validate the primitive type
-            if (grandChildren.length != 1 ||
-                (grandChildren[0].nodeName != 'rectangle' && grandChildren[0].nodeName != 'triangle' &&
-                    grandChildren[0].nodeName != 'cylinder' && grandChildren[0].nodeName != 'sphere' &&
-                    grandChildren[0].nodeName != 'torus' && grandChildren[0].nodeName != 'spiral')) {
-                return "There must be exactly 1 primitive type (rectangle, triangle, cylinder, sphere or torus)"
+            if (grandChildren.length != 1 || this.validPrimitive(grandChildren[0].nodeName)) {
+                return "There must be exactly 1 primitive type (rectangle, triangle, cylinder, sphere, torus, plane, patch, vehicle, cylinder2, terrain, water)"
             }
 
             // Specifications for the current primitive.
@@ -980,6 +1001,38 @@ class MySceneGraph {
                 var torus = new MyTorus(this.scene, primitiveId, inner, outer, slices, loops);
 
                 this.primitives[primitiveId] = torus;
+            }
+            else if (primitiveType == 'plane') {
+                // Num of U parts
+                var npartsU = this.reader.getFloat(grandChildren[0], 'npartsU');
+                if (!(npartsU != null && !isNaN(npartsU)))
+                    return "unable to parse npartsU of the primitive for ID = " + primitiveId;
+
+                // Num of V parts
+                var npartsV = this.reader.getFloat(grandChildren[0], 'npartsV');
+                if (!(npartsV != null && !isNaN(npartsV)))
+                    return "unable to parse npartsV of the primitive for ID = " + primitiveId;
+
+                var plane = new Plane(this.scene, npartsU, npartsV);
+
+                this.primitives[primitiveId] = plane;
+            }
+            else if (primitiveType == 'patch') {
+
+            }
+            else if (primitiveType == 'vehicle') {
+                var vehicle = new MyVehicle(this.scene);
+
+                this.primitives[primitiveId] = vehicle;
+            }
+            else if (primitiveType == 'cylinder2') {
+
+            }
+            else if (primitiveType == 'terrain') {
+
+            }
+            else if (primitiveType == 'water') {
+
             }
         }
 
@@ -1324,6 +1377,18 @@ class MySceneGraph {
         color.push(a);
 
         return color;
+    }
+
+    /**
+     * Check if is a valid primitive
+     * @param {primitive name} name 
+     */
+    validPrimitive(name) {
+        var primitives = 
+            ['rectangle', 'triangle', 'cylinder', 'sphere', 'torus', 'plane', 'patch'
+            ,'vehicle', 'cylinder2', 'terrain', 'water'];
+
+        return (primitives.indexOf(name) == null);
     }
 
     /*
