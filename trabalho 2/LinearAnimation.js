@@ -15,6 +15,8 @@
         var point1 = points[0];
         this.matrix = mat4.create();
 
+
+        console.log("points : " + this.points);
         for(var i = 1 ; i < points.length ; i++){
             this.equations.push(this.getEq(point1,points[i]));
         }
@@ -25,7 +27,7 @@
 
     getEq(point1, point2){
         var m = (point2[2]-point1[2])/(point2[0]-point1[0]);
-        var b = point2[2]/(m*point2[0]);
+        var b = point2[2]-(m*point2[0]);
 
         if(isNaN(b))
         b=0;
@@ -36,22 +38,22 @@
     }
 
     getTransf(){
-        this.x+=this.deltatime;
 
-        console.log("Ceq " + this.currEq + " point " + this.points[this.currEq+1]);
+        //console.log("Ceq " + this.currEq + " point " + this.points[this.currEq+1]);
         if(this.x>=this.points[this.currEq+1][0]){
             this.x=0;
             if(this.currEq<this.equations.length-1)
             this.currEq++;
         }
 
-        console.log("Ceq 2 " + this.currEq + " point " + this.points[this.currEq+1]);
+        //console.log("Ceq 2 " + this.currEq + " point " + this.points[this.currEq+1]);
         mat4.translate(this.matrix,this.matrix, vec3.fromValues(this.x,0,this.equations[this.currEq][0]*this.x+this.equations[this.currEq][1]));
 
         return this.matrix;
     }
 
     update(time){
+        this.x+=this.deltatime;   // esta a acumular as transformaçoes. esta um movimento acelarado
         this.deltatime=time;
     }
 

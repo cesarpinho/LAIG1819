@@ -6,7 +6,7 @@ var DEGREE_TO_RAD = Math.PI / 180;
 class XMLscene extends CGFscene {
     /**
      * @constructor
-     * @param {MyInterface} myinterface 
+     * @param {MyInterface} myinterface
      */
     constructor(myinterface) {
         super();
@@ -82,7 +82,7 @@ class XMLscene extends CGFscene {
                     this.lights[i].enable();
                 else
                     this.lights[i].disable();
-                
+
                 this.lights[i].update();
 
                 i++;
@@ -90,27 +90,27 @@ class XMLscene extends CGFscene {
         }
     }
 
-    /** Handler called when the graph is finally loaded. 
+    /** Handler called when the graph is finally loaded.
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
     onGraphLoaded() {
         // Inicialize default view
         this.View = this.graph.views.pop();
         this.camera = this.graph.views[this.View];
-        
+
         this.axis = new CGFaxis(this, this.graph.referenceLength);
 
         this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
-        
+
         this.setGlobalAmbientLight(this.graph.ambient[0], this.graph.ambient[1], this.graph.ambient[2], this.graph.ambient[3]);
 
         this.initLights();
 
         // Adds lights group.
         this.interface.addLightsGroup(this.graph.lights);
-        
+
         this.interface.addViewsGroup(this.graph.views);
-        
+
         this.sceneInited = true;
     }
 
@@ -139,9 +139,29 @@ class XMLscene extends CGFscene {
 
     update(currTime)
 	{
+  		if(this.oldTime==null){
+  			this.oldTime=currTime;
+  		}
+      	this.delta=currTime-this.oldTime;
+      	this.time = this.delta/1000;
+      	this.oldTime=currTime;
+
+     this.updateAnimations();
+
 		// Verify the keys pressed
 		this.checkKeys(currTime);
 	};
+
+  /**
+   * Updates all animations
+   */
+   updateAnimations(){
+       for (var key in this.graph.animations) {
+           if (this.graph.animations.hasOwnProperty(key)) {
+              this.graph.animations[key].update(this.time);
+           }
+       }
+   }
 
     /**
      * Displays the scene.
@@ -170,7 +190,7 @@ class XMLscene extends CGFscene {
             for (var key in this.lightValues) {
                 if (this.lightValues.hasOwnProperty(key)) {
                     if (this.lightValues[key]) {
-                        
+
                         this.lights[i].setVisible(true);
                         this.lights[i].enable();
                     }

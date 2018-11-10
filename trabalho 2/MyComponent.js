@@ -8,6 +8,7 @@ class MyComponent {
                 this.id = id;
                 this.transfMatrix = transfMatrix;
                 this.animationsref = animationsref;
+                this.currAnimationID = animationsref[0];
                 this.materialsref = materialsref;
                 this.materialN = 0;
                 this.textureref = textureref;
@@ -16,4 +17,6 @@ class MyComponent {
                 this.childPrimitives = childPrimitivesrefs;
                 this.childComponents = childComponentsref;
         };
+
+        //TODO inc animation
 };

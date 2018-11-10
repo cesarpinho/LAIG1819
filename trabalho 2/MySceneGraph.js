@@ -1585,6 +1585,7 @@ class MySceneGraph {
 
             var mat = component.materialsref[component.materialN];
             var tex = component.textureref;
+            var anim = component.currAnimation;
             var s = component.length_s;
             var t = component.length_t;
 
@@ -1593,6 +1594,8 @@ class MySceneGraph {
 
             if (tex == 'inherit') {
                 tex = texture;
+
+                //animations inherit?
 
                 if (s == null)
                     s = ls;
@@ -1605,6 +1608,10 @@ class MySceneGraph {
 
             mat4.multiply(transformation,
                 tgMatrix, this.transformations[component.transfMatrix]);
+                //console.log(this.animations[component.currAnimationID].getTransf());
+            mat4.multiply(transformation,transformation,this.animations[component.currAnimationID].getTransf()); //é o "apply"
+
+            //anim.apply();   n faz sentido aqui
 
             var child = component.childComponents;
             for (var i = 0; i < child.length; i++) {
@@ -1648,6 +1655,8 @@ class MySceneGraph {
             }
         }
     }
+
+
 
     /**
      * Display the primitive element
