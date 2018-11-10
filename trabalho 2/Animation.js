@@ -1,8 +1,7 @@
 
-class Animation extends CGFobject
+class Animation
 {
     constructor(scene) {
-        super(scene);
 
         this.scene = scene;
     }

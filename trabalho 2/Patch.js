@@ -1,10 +1,10 @@
-class Pach {
+class Patch {
 
     constructor(scene, npartsU, npartsV, controlPoints) {
         this.scene = scene;
         this.npartsU = npartsU;
         this.npartsV = npartsV;
-        
+
         this.points = controlPoints;
 
         var nurbsSurface = new CGFnurbsSurface(1, 1, this.points);
