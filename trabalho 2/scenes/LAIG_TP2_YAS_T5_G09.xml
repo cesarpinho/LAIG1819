@@ -128,7 +128,7 @@
  </transformations>
 
   <animations>
-    
+
     <linear id="test_animation" span="3">
         <controlpoint xx="0" yy="0" zz="0"/>
         <controlpoint xx="2" yy="0" zz="0"/>
@@ -221,9 +221,9 @@
         <transformation></transformation>
 
         <!--Bloco opcional-->
-        <!-- <animations>
-            <animationref id="" />
-        </animations> -->
+        <animations>
+            <animationref id="test_animation" />
+        </animations>
         <materials>
             <material id="inherit" />
         </materials>

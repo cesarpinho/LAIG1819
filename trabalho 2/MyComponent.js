@@ -3,10 +3,11 @@
  * @constructor
  */
 class MyComponent {
-        constructor(id, transfMatrix, materialsref, textureref, length_s, length_t, childPrimitivesrefs, childComponentsref) {
+        constructor(id, transfMatrix, animationsref, materialsref, textureref, length_s, length_t, childPrimitivesrefs, childComponentsref) {
 
                 this.id = id;
                 this.transfMatrix = transfMatrix;
+                this.animationsref = animationsref;
                 this.materialsref = materialsref;
                 this.materialN = 0;
                 this.textureref = textureref;

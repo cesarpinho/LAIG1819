@@ -1168,6 +1168,7 @@ class MySceneGraph {
             }
 
             var transformationIndex = nodeNames.indexOf("transformation");
+            var animationsIndex = nodeNames.indexOf("animations");
             var materialsIndex = nodeNames.indexOf("materials");
             var textureIndex = nodeNames.indexOf("texture");
             var childrenIndex = nodeNames.indexOf("children");
@@ -1254,6 +1255,25 @@ class MySceneGraph {
             }
             else return "transformation tag undefined for ID = " + componentID;
 
+            // Animation
+            if (animationsIndex != -1) {
+                grandgrandChildren = grandChildren[animationsIndex].children;
+
+                var animationsID = [];
+
+                for (var z = 0; z < grandgrandChildren.length; z++) {
+
+                    if (grandgrandChildren[z].nodeName != 'animationref')
+                        return "unknown tag <" + grandgrandChildren[z].nodeName + "> - Expected <animationref> tag";
+
+                    // Get id of the animation.
+                    var animationID = this.reader.getString(grandgrandChildren[z], 'id');
+                    if (animationID == null)
+                        return "no ID defined for animationref";
+
+                    animationsID.push(animationID);
+                }
+            }
 
             // Materials
             var materialsID = [];
@@ -1346,7 +1366,7 @@ class MySceneGraph {
             }
             else return "children tag undefined for ID = " + componentID;
 
-            this.components[componentID] = new MyComponent(componentID, matrixID, materialsID,
+            this.components[componentID] = new MyComponent(componentID, matrixID, animationsID, materialsID,
                 textureID, length_s, length_t, childPrimitive, childComponent);
         }
 
