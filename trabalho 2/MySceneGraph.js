@@ -35,7 +35,7 @@ class MySceneGraph {
         this.axisCoords['y'] = [0, 1, 0];
         this.axisCoords['z'] = [0, 0, 1];
 
-        // File reading 
+        // File reading
         this.reader = new CGFXMLreader();
 
         /*
@@ -211,7 +211,7 @@ class MySceneGraph {
     }
 
     /**
-     * Parses the <scene> block. 
+     * Parses the <scene> block.
      * @param {scene block element} sceneNode
      */
     parseScene(sceneNode) {
@@ -223,7 +223,7 @@ class MySceneGraph {
 
         this.idRoot = root;
 
-        // Get axis length        
+        // Get axis length
         var axis_length = this.reader.getFloat(sceneNode, 'axis_length');
         if (axis_length == null)
             this.onXMLMinorError("no AXIS_LENGTH defined for scene; assuming 'lenght = 1'");
@@ -278,14 +278,14 @@ class MySceneGraph {
             var far = this.reader.getFloat(children[i], 'far');
             if (far == null)
                 return "no FAR defined for view with ID = " + viewId;
-            
+
             grandChildren = children[i].children;
             // Specifications for the current view.
 
             nodeNames = [];
             for (var j = 0; j < grandChildren.length; j++)
                 nodeNames.push(grandChildren[j].nodeName);
-            
+
             // Gets indices of each element.
             var fromIndex = nodeNames.indexOf("from");
             var toIndex = nodeNames.indexOf("to");
@@ -312,7 +312,7 @@ class MySceneGraph {
                     var fov = this.reader.getFloat(children[i], 'angle');
                     if (fov == null)
                         return "no ANGLE defined for view with ID = " + viewId;
-                    
+
                     fov = fov * DEGREE_TO_RAD;
 
                     var view = new CGFcamera(fov, near, far, position, direction);
@@ -323,7 +323,7 @@ class MySceneGraph {
                     var left = this.reader.getFloat(children[i], 'left');
                     if (left == null)
                         return "no LEFT bound defined for view with ID = " + viewId;
-                    
+
                     // Get right bound of the current view.
                     var right = this.reader.getFloat(children[i], 'right');
                     if (right == null)
@@ -337,8 +337,8 @@ class MySceneGraph {
                     // Get left bound of the current view.
                     var top = this.reader.getFloat(children[i], 'top');
                     if (top == null)
-                        return "no TOP bound defined for view with ID = " + viewId;                   
-                    
+                        return "no TOP bound defined for view with ID = " + viewId;
+
                     var up = [0,1,0];
                     var view = new CGFcameraOrtho(left, right, bottom, top, near, far, position, direction, up);
                     break;
@@ -348,7 +348,7 @@ class MySceneGraph {
 
         if (this.views[defaultView] == null)
             return "DEFAULT view don't exist";
-        
+
         this.views.push(defaultView);
 
         this.log("Parsed views");
@@ -466,7 +466,7 @@ class MySceneGraph {
                         targetlight = aux;
                 }
                 else
-                    return "light target undefined for ID = " + lightId;   
+                    return "light target undefined for ID = " + lightId;
             }
 
             // Retrieves the light location.
@@ -523,20 +523,20 @@ class MySceneGraph {
             }
             else
                 return "specular component undefined for ID = " + lightId;
-            
+
             // Store Light global information.
             var global = [];
             global.push(enableLight);
 
             switch ( children[i].nodeName ) {
                 case "omni":
-                    global.push("omni");                    
+                    global.push("omni");
                     global.push(locationlight);
                     global.push(ambientIllumination);
                     global.push(diffuseIllumination);
                     global.push(specularIllumination);
                     break;
-                case "spot":                   
+                case "spot":
                     global.push("spot");
                     global.push(angle);
                     global.push(exponent);
@@ -563,7 +563,7 @@ class MySceneGraph {
     }
 
     /**
-     * Parses the <textures> block. 
+     * Parses the <textures> block.
      * @param {textures block element} texturesNode
      */
     parseTextures(texturesNode) {
@@ -768,7 +768,7 @@ class MySceneGraph {
                             this.onXMLMinorError("Invalid y coordinate of the scale transformation for ID = " + transformationID + "; assuming 'y = 1'");
                         if (coordinates[2] == 0)
                             this.onXMLMinorError("Invalid z coordinate of the scale transformation for ID = " + transformationID + "; assuming 'z = 1'");
-            
+
                         transfMatrix = mat4.scale(transfMatrix, transfMatrix, coordinates);
                         break;
                     case 'rotate':
@@ -804,11 +804,101 @@ class MySceneGraph {
 
     /**
      * Parses the <animations> block.
-     * @param {animations block element} animationsNode 
+     * @param {animations block element} animationsNode
      */
     parseAnimations(animationsNode) {
         var children = animationsNode.children;
-        
+
+        this.animations = [];
+
+        var grandChildren = [];
+
+        var animation;
+
+        // Any number of animations.
+        for (var i = 0; i < children.length; i++) {
+
+            if (children[i].nodeName != "linear" && children[i].nodeName != "circular") {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+            // Get id of the current animation.
+            var animationID = this.reader.getString(children[i], 'id');
+            if (animationID == null)
+                return "no ID defined for animation";
+
+            // Checks for repeated IDs.
+            if (this.animations[animationID] != null)
+                return "ID must be unique for each animation (conflict: ID = " + animationID + ")";
+
+            // Get span of the current animation.
+            var span = this.reader.getFloat(children[i], 'span');
+            if (!(span != null && !isNaN(span)))
+                return "unable to parse 'span' field for ID = " + animationID;
+
+            var controlpoints = [];
+            switch (children[i].nodeName) {
+
+              case 'linear':
+
+                grandChildren = children[i].children;
+
+                // At least 2 control points.
+                if(grandChildren.length < 2)
+                    return "There must be at least 2 control points for animation: " + animationID;
+
+                for (var j = 0; j < grandChildren.length; j++) {
+
+                      if (grandChildren[j].nodeName != "controlpoint") {
+                          this.onXMLError("unknown tag <" + grandChildren[j].nodeName + ">");
+                      }
+
+                      var coordinates = this.parseAnimationCoordinates(grandChildren[j], "linear animation", animationID);
+                      if (!Array.isArray(coordinates))
+                          return coordinates;
+
+                      controlpoints.push(coordinates);
+               }
+
+               animation = new LinearAnimation(this.scene, controlpoints, span, animationID);
+
+               this.animations[animationID] = animation;
+
+                break;
+
+              case 'circular':
+
+                // Get center of the current circular animation.
+                var centercoordinates;
+                var center = this.reader.getString(children[i], 'center');
+                if (center == null)
+                    return "no center defined for animation";
+                centercoordinates = center.split(' ',3);
+
+                // Get radius of the current circular animation.
+                var radius = this.reader.getFloat(children[i], 'radius');
+                if (!(radius != null && !isNaN(radius)))
+                    return "unable to parse 'radius' field for ID = " + animationID;
+
+                // Get startang of the current circular animation.
+                var startang = this.reader.getFloat(children[i], 'startang');
+                if (!(startang != null && !isNaN(startang)))
+                    return "unable to parse 'startang' field for ID = " + animationID;
+
+                // Get rotang of the current circular animation.
+                var rotang = this.reader.getFloat(children[i], 'rotang');
+                if (!(rotang != null && !isNaN(rotang)))
+                    return "unable to parse 'rotang' field for ID = " + animationID;
+
+                animation = new CircularAnimation(this.scene, centercoordinates, radius, startang, rotang, span, animationID);
+
+                this.animations[animationID] = animation;
+
+                break;
+            }
+        }
+
         this.log("Parsed animations");
         return null;
     }
@@ -873,12 +963,12 @@ class MySceneGraph {
                 if (!(y2 != null && !isNaN(y2) && y2 > y1))
                     return "unable to parse y2 of the primitive coordinates for ID = " + primitiveId;
 
-                var rect = new MyRectangle(this.scene, primitiveId, x1, x2, y1, y2);
+                var rect =  new MyRectangle(this.scene, primitiveId, x1, x2, y1, y2);
 
                 this.primitives[primitiveId] = rect;
             }
             else if (primitiveType == 'triangle') {
-                // x1                                                    
+                // x1
                 var x1 = this.reader.getFloat(grandChildren[0], 'x1');
                 if (!(x1 != null && !isNaN(x1)))
                     return "unable to parse x1 of the primitive coordinates for ID = " + primitiveId;
@@ -1125,7 +1215,7 @@ class MySceneGraph {
                                 var coordinates = this.parseCoordinates(grandgrandChildren[j], "scale transformation", componentID);
                                 if (!Array.isArray(coordinates))
                                     return coordinates;
-                                
+
                                 if (coordinates[0] == 0)
                                     this.onXMLMinorError("Invalid x coordinate of the scale transformation for ID = " + componentID + "; assuming 'x = 1'");
                                 if (coordinates[1] == 0)
@@ -1276,6 +1366,37 @@ class MySceneGraph {
     }
 
     /**
+     * Parse the coordinates from an animation node with ID = id
+     * @param {block element} node
+     * @param {message to be displayed in case of error} messageError
+     * @param {node id} id
+     */
+    parseAnimationCoordinates(node, messageError, id) {
+        var position = [];
+
+        // x
+        var x = this.reader.getFloat(node, 'xx');
+        if (!(x != null && !isNaN(x)))
+            return "unable to parse x-coordinate of the " + messageError + " for ID = " + id;
+
+        // y
+        var y = this.reader.getFloat(node, 'yy');
+        if (!(y != null && !isNaN(y)))
+            return "unable to parse y-coordinate of the " + messageError + " for ID = " + id;
+
+        // z
+        var z = this.reader.getFloat(node, 'zz');
+        if (!(z != null && !isNaN(z)))
+            return "unable to parse z-coordinate of the " + messageError + " for ID = " + id;
+
+        position.push(x);
+        position.push(y);
+        position.push(z);
+
+        return position;
+    }
+
+    /**
      * Parse the coordinates from a node with ID = id
      * @param {block element} node
      * @param {message to be displayed in case of error} messageError
@@ -1381,10 +1502,10 @@ class MySceneGraph {
 
     /**
      * Check if is a valid primitive
-     * @param {primitive name} name 
+     * @param {primitive name} name
      */
     validPrimitive(name) {
-        var primitives = 
+        var primitives =
             ['rectangle', 'triangle', 'cylinder', 'sphere', 'torus', 'plane', 'patch'
             ,'vehicle', 'cylinder2', 'terrain', 'water'];
 
@@ -1427,13 +1548,13 @@ class MySceneGraph {
 
     /**
      * Process each node of the graph
-     * @param {node id} id 
-     * @param {transformation matrix} tgMatrix 
-     * @param {material id} material 
-     * @param {texture id} texture 
-     * @param {length s} ls 
-     * @param {length t} lt 
-     * @param {boolean to indicate if is primitive} isPrimitive 
+     * @param {node id} id
+     * @param {transformation matrix} tgMatrix
+     * @param {material id} material
+     * @param {texture id} texture
+     * @param {length s} ls
+     * @param {length t} lt
+     * @param {boolean to indicate if is primitive} isPrimitive
      */
     processNode(id, tgMatrix, material, texture, ls, lt, isPrimitive) {
         if (this.primitives[id] != null && isPrimitive) {
@@ -1502,7 +1623,7 @@ class MySceneGraph {
             if (this.components.hasOwnProperty(key)) {
                 if(this.components[key].materialsref[this.components[key].materialN + 1] != null)
                     this.components[key].materialN++;
-                else 
+                else
                     this.components[key].materialN = 0;
             }
         }
@@ -1510,10 +1631,10 @@ class MySceneGraph {
 
     /**
      * Display the primitive element
-     * @param {primitive id} id 
-     * @param {transformation matrix} tgMatrix 
-     * @param {material id} material 
-     * @param {texture id} texture 
+     * @param {primitive id} id
+     * @param {transformation matrix} tgMatrix
+     * @param {material id} material
+     * @param {texture id} texture
      */
     drawPrimitive(id, tgMatrix, material, texture) {
         this.scene.pushMatrix();

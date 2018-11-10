@@ -4,12 +4,10 @@
 
  class LinearAnimation extends Animation
  {
-    constructor(scene, points, time) {
-        super(scene);
+    constructor(scene, points, time, id) {
+        super(scene, id, time);
 
-        this.scene = scene;
         this.points = points;
-        this.time = time;
         this.equations = [];
         this.currEq=0;
         this.x=0;

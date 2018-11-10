@@ -31,7 +31,7 @@
 
     <spot id="Spot Light" enabled="0" angle="0.0" exponent="0.0">
         <location x="10.2" y="11.9" z="10" w="1.0" />
-        <target x="5.0" y="0.0" z="5.0" />        
+        <target x="5.0" y="0.0" z="5.0" />
         <ambient r="0" g="0" b="0" a="1.0" />
         <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
         <specular r="1.0" g="1.0" b="1.0" a="1.0" />
@@ -44,7 +44,7 @@
       <specular r="1.0" g="1.0" b="1.0" a="1.0" />
     </omni>
  </lights>
- 
+
  <textures>
     <texture id="ground" file="scenes/images/ground.jpg" />
     <texture id="mosaic_wall" file="scenes/images/mosaic-wall.jpg" />
@@ -53,7 +53,7 @@
     <texture id="apple" file="scenes/images/apple.jpg" />
     <texture id="cmtv" file="scenes/images/tv.jpg"/>
  </textures>
- 
+
  <materials>
     <material id="white" shininess = "30" >
       <emission r="0" g="0" b="0" a="1.0" />
@@ -61,7 +61,7 @@
       <diffuse r="1" g="1" b="1" a="1.0" />
       <specular r="1" g="1" b="1" a="1.0" />
     </material>
-    
+
     <material id="red" shininess = "10" >
       <emission r="0" g="0" b="0" a="1.0" />
       <ambient r="0" g="0" b="0" a="1.0" />
@@ -109,35 +109,40 @@
     <transformation id="floor_tr">
         <scale x="20" y="1" z="20" />
         <rotate axis="x" angle="-90" />
-        <rotate axis="z" angle="-90" />       
+        <rotate axis="z" angle="-90" />
     </transformation>
     <transformation id="left_wall_tr">
         <scale x="1" y="15" z="20" />
-        <translate x="0" y="0" z="1" /> 
-        <rotate axis="y" angle="90" />       
+        <translate x="0" y="0" z="1" />
+        <rotate axis="y" angle="90" />
     </transformation>
     <transformation id="right_wall_tr">
-        <scale x="20" y="15" z="1" />      
+        <scale x="20" y="15" z="1" />
     </transformation>
     <transformation id="wall_tr">
         <rotate axis="y" angle="-90" />
     </transformation>
     <transformation id="cupboard_body_tr">
-        <scale x="20" y="5" z="4" />      
+        <scale x="20" y="5" z="4" />
     </transformation>
  </transformations>
 
   <animations>
- <!--   <linear id="" span="">
-        Devem existir pelo menos 2 pontos de controlo
-        <controlpoint xx="" yy="" zz="">
-        <controlpoint xx="" yy="" zz="">
-
-
+    
+    <linear id="test_animation" span="3">
+        <controlpoint xx="0" yy="0" zz="0"/>
+        <controlpoint xx="2" yy="0" zz="0"/>
     </linear>
 
-    <circular id="" span="" center="0 0 0" radius="" startang="" rotang="" /> -->
- </animations> 
+    <linear id="test_linearanim" span="4">
+        <controlpoint xx="1" yy="0" zz="0"/>
+        <controlpoint xx="3" yy="0" zz="3"/>
+        <controlpoint xx="3" yy="0" zz="0"/>
+    </linear>
+
+    <circular id="test_circularanim" span="4" center="1 0 1" radius="4" startang="0" rotang="90"/>
+
+ </animations>
 
  <primitives>
     <primitive id="unit_square">
@@ -178,9 +183,9 @@
 
 
     <!--   PRIMITIVAS NURBS    -->
-    
+
     <primitive id="plane">
-        <plane npartsU="5" npartsV="4" /> 
+        <plane npartsU="5" npartsV="4" />
     </primitive>
 
    <!-- <primitive id="patch">
@@ -190,23 +195,23 @@
             <controlpoint xx="" yy="" zz="">
 
 
-        </patch> 
+        </patch>
     </primitive>
 
     <primitive id="vehicle">
-        <vehicle/> 
+        <vehicle/>
     </primitive>
 
     <primitive id="cylinder2">
-        <cylinder2  base="" top="" height="" slices="" stacks="" /> 
+        <cylinder2  base="" top="" height="" slices="" stacks="" />
     </primitive>
 
     <primitive id="terrain">
-        <terrain  idtexture="ss" idheightmap="ss" parts="" heightscale="" /> 
+        <terrain  idtexture="ss" idheightmap="ss" parts="" heightscale="" />
     </primitive>
 
     <primitive id="water">
-        <water  idtexture="ss" idwavemap="ss" parts="" heightscale="" texscale="" /> 
+        <water  idtexture="ss" idwavemap="ss" parts="" heightscale="" texscale="" />
     </primitive>
  -->
  </primitives>
