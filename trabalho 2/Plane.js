@@ -5,15 +5,15 @@ class Plane extends CGFobject {
         this.scene = scene;
         this.npartsU = npartsU;
         this.npartsV = npartsV;
-        
+
         this.createPoints();
 
         var nurbsSurface = new CGFnurbsSurface(1, 1, this.points);
         this.plane = new CGFnurbsObject(scene, npartsU, npartsV, nurbsSurface);
     }
 
-    createPoints() { 
-        this.points = 
+    createPoints() {
+        this.points =
             [	// U = 0
                 [ // V = 0..1;
                     [-0.5, 0.0, 0.5, 1],
@@ -23,7 +23,7 @@ class Plane extends CGFobject {
                 // U = 1
                 [ // V = 0..1
                     [0.5, 0.0,  0.5, 1],
-                    [0.5, 0.0,  -0.5, 1]							 
+                    [0.5, 0.0,  -0.5, 1]
                 ]
             ];
     }
