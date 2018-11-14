@@ -35,7 +35,7 @@ class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
 
-        this.setUpdatePeriod(100);
+        this.setUpdatePeriod(500);
     }
 
     /**
@@ -118,23 +118,24 @@ class XMLscene extends CGFscene {
      * Keys handler called on display function
      */
     checkKeys()	{
-		var text = "Keys pressed: ";
-		var keysPressed = false;
+  		var text = "Keys pressed: ";
+  		var keysPressed = false;
 
-		if (this.gui.isKeyPressed("KeyM")){
-            this.graph.incMaterialsN();
-			text += " M ";
-			keysPressed=true;
-		}
+  		if (this.gui.isKeyPressed("KeyM")){
+              this.graph.incMaterialsN();
+  			text += " M ";
+  			keysPressed=true;
+  		}
 
-		if (this.gui.isKeyPressed("KeyO")){
-            this.graph.tvon = !this.graph.tvon;
-			text += " O ";
-			keysPressed=true;
-		}
+  		if (this.gui.isKeyPressed("KeyO")){
+              this.graph.tvon = !this.graph.tvon;
+  			text += " O ";
+  			keysPressed=true;
+  		}
 
-		if (keysPressed)
-		    console.log(text);
+  		if (keysPressed)
+  		    console.log(text);
+
     }
 
     update(currTime)
@@ -143,13 +144,13 @@ class XMLscene extends CGFscene {
   			this.oldTime=currTime;
   		}
       	this.delta=currTime-this.oldTime;
-      	this.time = this.delta/1000;
+      	this.time = this.delta/1000;             // this.time in seconds
       	this.oldTime=currTime;
 
      this.updateAnimations();
 
 		// Verify the keys pressed
-		this.checkKeys(currTime);
+		this.checkKeys();
 	};
 
   /**

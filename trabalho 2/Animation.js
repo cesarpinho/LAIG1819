@@ -5,14 +5,13 @@
 
 class Animation
 {
-    constructor(scene, id, time) {
+    constructor(scene, id, span) {
         this.scene = scene;
         this.id = id;
-        this.time = time;
+        this.span = span;
     };
 
     update(time){
-
     };
 
     apply(){
