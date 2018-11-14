@@ -1119,7 +1119,35 @@ class MySceneGraph {
 
             }
             else if (primitiveType == 'terrain') {
+                var textureID = this.reader.getString(grandChildren[0], 'idtexture');
+                if (textureID == null)
+                    return "undefined idtexture of the primitive for ID = " + primitiveId;
 
+                // Check if the texture ID is valid
+                if (this.textures[textureID] == null)
+                    return "no texture with ID: " + textureID;
+
+                var heigthMapID = this.reader.getString(grandChildren[0], 'idheightmap');
+                if (heigthMapID == null)
+                    return "undefined idheightmap of the primitive for ID = " + primitiveId;
+
+                // Check if the texture ID is valid
+                if (this.textures[heigthMapID] == null)
+                    return "no texture with ID: " + heigthMapID;
+
+                // Num of parts
+                var parts = this.reader.getFloat(grandChildren[0], 'parts');
+                if (!(parts != null && !isNaN(parts)))
+                    return "unable to parse parts of the primitive for ID = " + primitiveId;
+
+                // Heigth scale
+                var heightScale = this.reader.getFloat(grandChildren[0], 'heightscale');
+                if (!(heightScale != null && !isNaN(heightScale)))
+                    return "unable to parse heightScale of the primitive for ID = " + primitiveId;
+                
+                var terrain = new Terrain(this.scene, textureID, heigthMapID, parts, heightScale);
+
+                this.primitives[primitiveId] = terrain;
             }
             else if (primitiveType == 'water') {
 
@@ -1639,6 +1667,9 @@ class MySceneGraph {
     drawPrimitive(id, tgMatrix, material, texture) {
         this.scene.pushMatrix();
         this.scene.multMatrix(tgMatrix);
+
+        if(this.primitives[id] instanceof Terrain)
+            texture = this.primitives[id].idTexture;
 
         var mat = this.materials[material];
         switch(texture){
