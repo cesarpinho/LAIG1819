@@ -3,7 +3,11 @@
 
  <views default="Default" >
     <perspective id="Default" near="0.1" far="500" angle="45">
+<<<<<<< HEAD
  		<from x="30" y="30" z="30" />
+=======
+ 		<from x="20" y="10" z="20" />
+>>>>>>> master
  		<to x="0" y="-2" z="0" />
     </perspective>
     <perspective id="Table" near="0.1" far="600" angle="40">
@@ -52,6 +56,8 @@
     <texture id="cupboards_stone" file="scenes/images/cupboards_stone.jpg" />
     <texture id="apple" file="scenes/images/apple.jpg" />
     <texture id="cmtv" file="scenes/images/tv.jpg"/>
+    <texture id="terrain" file="scenes/images/terrain.jpg"/>
+    <texture id="terrainMap" file="scenes/images/heightmap.jpg"/>
  </textures>
 
  <materials>
@@ -106,24 +112,8 @@
  </materials>
 
  <transformations>
-    <transformation id="floor_tr">
-        <scale x="20" y="1" z="20" />
-        <rotate axis="x" angle="-90" />
-        <rotate axis="z" angle="-90" />
-    </transformation>
-    <transformation id="left_wall_tr">
-        <scale x="1" y="15" z="20" />
-        <translate x="0" y="0" z="1" />
-        <rotate axis="y" angle="90" />
-    </transformation>
-    <transformation id="right_wall_tr">
-        <scale x="20" y="15" z="1" />
-    </transformation>
-    <transformation id="wall_tr">
-        <rotate axis="y" angle="-90" />
-    </transformation>
-    <transformation id="cupboard_body_tr">
-        <scale x="20" y="5" z="4" />
+    <transformation id="terrain">
+        <scale x="25" y="1" z="25" />
     </transformation>
  </transformations>
 
@@ -204,12 +194,12 @@
 
     <primitive id="cylinder2">
         <cylinder2  base="" top="" height="" slices="" stacks="" />
-    </primitive>
+    </primitive> -->
 
     <primitive id="terrain">
-        <terrain  idtexture="ss" idheightmap="ss" parts="" heightscale="" />
+        <terrain  idtexture="terrain" idheightmap="terrainMap" parts="40" heightscale="5" />
     </primitive>
-
+<!--
     <primitive id="water">
         <water  idtexture="ss" idwavemap="ss" parts="" heightscale="" texscale="" />
     </primitive>
@@ -218,7 +208,9 @@
 
  <components>
     <component id="kitchen">
-        <transformation></transformation>
+        <transformation>
+            <transformationref id="terrain" />
+        </transformation>
 
         <!--Bloco opcional-->
         <animations>
@@ -229,7 +221,7 @@
         </materials>
         <texture id="none" />
         <children>
-            <primitiveref id="plane" />
+            <primitiveref id="terrain" />
         </children>
     </component>
  </components>
