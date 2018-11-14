@@ -1144,7 +1144,7 @@ class MySceneGraph {
                 var heightScale = this.reader.getFloat(grandChildren[0], 'heightscale');
                 if (!(heightScale != null && !isNaN(heightScale)))
                     return "unable to parse heightScale of the primitive for ID = " + primitiveId;
-                
+
                 var terrain = new Terrain(this.scene, textureID, heigthMapID, parts, heightScale);
 
                 this.primitives[primitiveId] = terrain;
@@ -1605,6 +1605,7 @@ class MySceneGraph {
      * @param {boolean to indicate if is primitive} isPrimitive
      */
     processNode(id, tgMatrix, material, texture, ls, lt, isPrimitive) {
+      this.scene.checkUpdate();
         if (this.primitives[id] != null && isPrimitive) {
             this.drawPrimitive(id, tgMatrix, material, texture);
         }
@@ -1637,7 +1638,7 @@ class MySceneGraph {
             mat4.multiply(transformation,
                 tgMatrix, this.transformations[component.transfMatrix]);
                 //console.log(this.animations[component.currAnimationID].getTransf());
-            mat4.multiply(transformation,transformation,this.animations[component.currAnimationID].getTransf()); //é o "apply"
+            mat4.multiply(transformation,transformation,this.animations[component.currAnimationID].getMatrix()); //é o "apply"
 
             //anim.apply();   n faz sentido aqui
 

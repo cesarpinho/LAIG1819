@@ -8,23 +8,27 @@
         super(scene, id, span);
 
         this.points = points;
+        this.end=false;
+        this.changed=false;
         this.distances = [];
         this.times = [];
         this.percentages = [];
         this.vectors = [];
-        this.dxyz = [];
+        this.progresses = [];
+        this.dxyz = [0,0,0];
         this.totalDistance = 0;
-        this.deltatime=0;
+        this.deltatime = 0;
+        this.olddeltatime = 0;
+        this.missedtime = 0;
+        this.missedtime2 = 0;
         this.matrix = mat4.create();
         //var point1 = points[0];
         //this.matrix = mat4.create();
-        console.log("Points" + this.points);
 
         this.calculateDistances();
         this.calculateVelocity();
         this.calculateTimes();
         this.calculateVectors();
-
 
     }
 
@@ -34,8 +38,6 @@
           this.distances.push(dist);
           this.totalDistance += dist;
       }
-      console.log("Distances: " + this.distances);
-      console.log("Total Distance: " + this.totalDistance);
     }
 
     calculateVectors(){
@@ -43,12 +45,11 @@
           var vect = [this.points[i+1][0]-this.points[i][0],this.points[i+1][1]-this.points[i][1],this.points[i+1][2]-this.points[i][2]];
           this.vectors.push(vect);
       }
-      console.log("Vectors: " + this.vectors);
+      this.currentVector = 0;
     }
 
     calculateVelocity(){
       this.velocity = this.totalDistance / this.span;
-      console.log("Velocity: " + this.velocity);
     }
 
     calculatePercentages(){
@@ -56,35 +57,64 @@
           var perc = this.deltatime / this.times[i];
           this.percentages[i] = perc;
       }
-      console.log("Percentages: " + this.percentages);
     }
 
     calculateTimes(){
-      for(var i = 0 ; i < this.distances.length ; i++){
+      var i=0;
+      for(0 ; i < this.distances.length ; i++){
           var time = this.distances[i] / this.velocity;
           this.times.push(time);
       }
-      console.log("Times: " + this.times);
+      console.log(this.times);
+      this.progresses = Array.from(Array(i), () => 0);
     }
 
     calculatedxyz(){
-      for(var i = 0 ; i < this.distances.length ; i++){
+
+      if(this.changed)
+      this.dxyz = [this.vectors[this.currentVector][0] * this.missedtime2 / this.times[this.currentVector]+ ((this.currentVector > 0) ? this.vectors[this.currentVector-1][0] * this.missedtime / this.times[this.currentVector] : 0),
+                   this.vectors[this.currentVector][1] * this.missedtime2 / this.times[this.currentVector] + ((this.currentVector > 0) ? this.vectors[this.currentVector-1][1] * this.missedtime / this.times[this.currentVector] : 0),
+                   this.vectors[this.currentVector][2] * this.missedtime2 / this.times[this.currentVector] + ((this.currentVector > 0) ? this.vectors[this.currentVector-1][2] * this.missedtime / this.times[this.currentVector] : 0)];
+      else
+      this.dxyz = [this.vectors[this.currentVector][0] * this.percentages[this.currentVector],
+                   this.vectors[this.currentVector][1] * this.percentages[this.currentVector],
+                   this.vectors[this.currentVector][2] * this.percentages[this.currentVector]
+    ];
+      this.changed=false;
+      this.missedtime2 = 0;
+      this.missedtime = 0;
+      /*for(var i = 0 ; i < this.distances.length ; i++){
       console.log("vectors: " + this.vectors[i]);
         this.dxyz[i] =  this.vectors[i].slice();
         console.log("dxyz: " + this.dxyz);
         this.dxyz[i][0] = this.vectors[i][0] * this.percentages[i];
         this.dxyz[i][1] = this.vectors[i][1] * this.percentages[i];
         this.dxyz[i][2] = this.vectors[i][2] * this.percentages[i];
+      }*/
+    }
+
+    updateMatrix(){
+
+      var M = mat4.create();
+
+          mat4.translate(M,M, vec3.fromValues(this.dxyz[0],this.dxyz[1],this.dxyz[2]));
+          mat4.multiply(this.matrix,this.matrix,M);
+    }
+
+    checkVector(){
+      if(this.progresses[this.currentVector] >= this.times[this.currentVector]){
+        this.changed=true;
+        console.log("in");
+        this.missedtime =  this.times[this.currentVector] - this.olddeltatime;
+        this.currentVector+=1;
+        this.missedtime2 = ((this.currentVector > 0) ? this.progresses[this.currentVector-1] - this.times[this.currentVector-1] : 0);    //o tempo que andou mais no vetor anterior
+
+        this.progresses[this.currentVector] += this.missedtime2;
+        console.log(this.progresses[this.currentVector-1] - this.times[this.currentVector-1]);
       }
-      console.log("dxyz: " + this.dxyz);
     }
 
     getMatrix(){
-      var M = mat4.create();
-      console.log("test: " + this.dxyz[0]);
-      mat4.translate(M,M, vec3.fromValues(this.dxyz[0][0],this.dxyz[0][1],this.dxyz[0][2]));
-      mat4.multiply(this.matrix,this.matrix,M);
-      console.log("matrix: " + M);
       return this.matrix;
     }
 
@@ -117,10 +147,35 @@
     }
 */
     update(time){
+
+      console.log(time + "   " + this.currentVector);
       this.deltatime=time;
-      console.log("test");
+      this.progresses[this.currentVector]+=time;
+      console.log("progresses: " + this.progresses);
+      this.checkVector();
+
+      console.log("missedtime: " + this.missedtime);
+
+      //    CHECK END
+      if(this.currentVector >= this.points.length - 1){
+        console.log("ended");
+          this.end = true;
+        }
+
       this.calculatePercentages();
+
+      if(!this.end)
       this.calculatedxyz();
+      console.log("dxyz: " + this.dxyz);
+
+      if(!this.end)
+      this.updateMatrix();
+
+      this.olddeltatime = this.deltatime;
     }
 
+
  }
+
+ function noop() {
+ };
