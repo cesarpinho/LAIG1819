@@ -1,240 +1,252 @@
 <yas>
- <scene root="kitchen" axis_length="5.0" />
+    <scene root="kitchen" axis_length="5.0" />
 
- <views default="Default" >
-    <perspective id="Default" near="0.1" far="500" angle="45">
- 		<from x="30" y="30" z="30" />
- 		<to x="0" y="-2" z="0" />
-    </perspective>
-    <perspective id="Table" near="0.1" far="600" angle="40">
- 		<from x="25" y="10" z="12" />
- 		<to x="9" y="2" z="11" />
-    </perspective>
-    <ortho id="Ortho" near="0.4" far="200" left="-15" right="15" top="12" bottom="-6" >
-        <from x="30" y="5" z="25" />
- 		<to x="0" y="5" z="3" />
-    </ortho>
- </views>
+    <views default="Default" >
+        <perspective id="Default" near="0.1" far="500" angle="45">
+            <from x="30" y="30" z="30" />
+            <to x="0" y="-2" z="0" />
+        </perspective>
+        <perspective id="Table" near="0.1" far="600" angle="40">
+            <from x="25" y="10" z="12" />
+            <to x="9" y="2" z="11" />
+        </perspective>
+        <ortho id="Ortho" near="0.4" far="200" left="-15" right="15" top="12" bottom="-6" >
+            <from x="30" y="5" z="25" />
+            <to x="0" y="5" z="3" />
+        </ortho>
+    </views>
 
- <ambient>
- 	<ambient r="0.2" g="0.2" b="0.2" a="1.0" />
-	<background r="0.7" g="0.9" b="0.96" a="1.0" />
- </ambient>
+    <ambient>
+        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+        <background r="0.7" g="0.9" b="0.96" a="1.0" />
+    </ambient>
 
- <lights>
-    <omni id="Candeeiro" enabled="1" >
-      <location x="9.8" y="11.9" z="10" w="1.0" />
-      <ambient r="0" g="0" b="0" a="1.0" />
-      <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-      <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-    </omni>
-
-    <spot id="Spot Light" enabled="0" angle="0.0" exponent="0.0">
-        <location x="10.2" y="11.9" z="10" w="1.0" />
-        <target x="5.0" y="0.0" z="5.0" />
+    <lights>
+        <omni id="Candeeiro" enabled="1" >
+        <location x="9.8" y="11.9" z="10" w="1.0" />
         <ambient r="0" g="0" b="0" a="1.0" />
         <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
         <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-    </spot>
+        </omni>
 
-    <omni id="Ambiente" enabled="1" >
-      <location x="13.0" y="20.0" z="13.0" w="1.0" />
-      <ambient r="0" g="0" b="0" a="1.0" />
-      <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-      <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-    </omni>
- </lights>
+        <spot id="Spot Light" enabled="0" angle="0.0" exponent="0.0">
+            <location x="10.2" y="11.9" z="10" w="1.0" />
+            <target x="5.0" y="0.0" z="5.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </spot>
 
- <textures>
-    <texture id="ground" file="scenes/images/ground.jpg" />
-    <texture id="mosaic_wall" file="scenes/images/mosaic-wall.jpg" />
-    <texture id="mosaic_wall_2" file="scenes/images/mosaic-wall_2.jpg" />
-    <texture id="cupboards_stone" file="scenes/images/cupboards_stone.jpg" />
-    <texture id="apple" file="scenes/images/apple.jpg" />
-    <texture id="cmtv" file="scenes/images/tv.jpg"/>
- </textures>
+        <omni id="Ambiente" enabled="1" >
+        <location x="13.0" y="20.0" z="13.0" w="1.0" />
+        <ambient r="0" g="0" b="0" a="1.0" />
+        <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+        <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </omni>
+    </lights>
 
- <materials>
-    <material id="white" shininess = "30" >
-      <emission r="0" g="0" b="0" a="1.0" />
-      <ambient r="0" g="0" b="0" a="1.0" />
-      <diffuse r="1" g="1" b="1" a="1.0" />
-      <specular r="1" g="1" b="1" a="1.0" />
-    </material>
+    <textures>
+        <texture id="ground" file="scenes/images/ground.jpg" />
+        <texture id="mosaic_wall" file="scenes/images/mosaic-wall.jpg" />
+        <texture id="mosaic_wall_2" file="scenes/images/mosaic-wall_2.jpg" />
+        <texture id="cupboards_stone" file="scenes/images/cupboards_stone.jpg" />
+        <texture id="apple" file="scenes/images/apple.jpg" />
+        <texture id="cmtv" file="scenes/images/tv.jpg"/>
+        <texture id="terrain" file="scenes/images/terrain.jpg"/>
+        <texture id="terrainMap" file="scenes/images/heightmap.jpg"/>
+    </textures>
 
-    <material id="red" shininess = "10" >
-      <emission r="0" g="0" b="0" a="1.0" />
-      <ambient r="0" g="0" b="0" a="1.0" />
-      <diffuse r="0.6" g="0" b="0" a="1.0" />
-      <specular r="0.6" g="0" b="0" a="1.0" />
-    </material>
+    <materials>
+        <material id="white" shininess = "30" >
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="1" g="1" b="1" a="1.0" />
+            <specular r="1" g="1" b="1" a="1.0" />
+        </material>
 
-    <material id="grey" shininess = "50" >
-      <emission r="0" g="0" b="0" a="1.0" />
-      <ambient r="0" g="0" b="0" a="1.0" />
-      <diffuse r="0.3" g="0.3" b="0.3" a="1.0" />
-      <specular r="0.3" g="0.3" b="0.3" a="1.0" />
-    </material>
+        <material id="red" shininess = "10" >
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="0.6" g="0" b="0" a="1.0" />
+            <specular r="0.6" g="0" b="0" a="1.0" />
+        </material>
 
-    <material id="beige" shininess = "20" >
-      <emission r="0" g="0" b="0" a="1.0" />
-      <ambient r="0" g="0" b="0" a="1.0" />
-      <diffuse r="1" g="0.95" b="0.85" a="1.0" />
-      <specular r="1" g="0.95" b="0.85" a="1.0" />
-    </material>
+        <material id="grey" shininess = "50" >
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="0.3" g="0.3" b="0.3" a="1.0" />
+            <specular r="0.3" g="0.3" b="0.3" a="1.0" />
+        </material>
 
-    <material id="green" shininess = "80" >
-      <emission r="0" g="0" b="0" a="1.0" />
-      <ambient r="0" g="0" b="0" a="1.0" />
-      <diffuse r="0.8" g="0.9" b="0.8" a="1.0" />
-      <specular r="0.8" g="0.9" b="0.8" a="1.0" />
-    </material>
+        <material id="beige" shininess = "20" >
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="1" g="0.95" b="0.85" a="1.0" />
+            <specular r="1" g="0.95" b="0.85" a="1.0" />
+        </material>
 
-    <material id="black" shininess = "50" >
-      <emission r="0" g="0" b="0" a="1.0" />
-      <ambient r="0" g="0" b="0" a="1.0" />
-      <diffuse r="0.1" g="0.1" b="0.1" a="1.0" />
-      <specular r="0.1" g="0.1" b="0.1" a="1.0" />
-    </material>
+        <material id="green" shininess = "80" >
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="0.8" g="0.9" b="0.8" a="1.0" />
+            <specular r="0.8" g="0.9" b="0.8" a="1.0" />
+        </material>
 
-    <material id="black_glass" shininess = "500" >
-      <emission r="0" g="0" b="0" a="1.0" />
-      <ambient r="0" g="0" b="0" a="1.0" />
-      <diffuse r="0" g="0" b="0" a="1.0" />
-      <specular r="1" g="1" b="1" a="1.0" />
-    </material>
- </materials>
+        <material id="black" shininess = "50" >
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="0.1" g="0.1" b="0.1" a="1.0" />
+            <specular r="0.1" g="0.1" b="0.1" a="1.0" />
+        </material>
 
- <transformations>
-    <transformation id="floor_tr">
-        <scale x="20" y="1" z="20" />
-        <rotate axis="x" angle="-90" />
-        <rotate axis="z" angle="-90" />
-    </transformation>
-    <transformation id="left_wall_tr">
-        <scale x="1" y="15" z="20" />
-        <translate x="0" y="0" z="1" />
-        <rotate axis="y" angle="90" />
-    </transformation>
-    <transformation id="right_wall_tr">
-        <scale x="20" y="15" z="1" />
-    </transformation>
-    <transformation id="wall_tr">
-        <rotate axis="y" angle="-90" />
-    </transformation>
-    <transformation id="cupboard_body_tr">
-        <scale x="20" y="5" z="4" />
-    </transformation>
- </transformations>
+        <material id="black_glass" shininess = "500" >
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="0" g="0" b="0" a="1.0" />
+            <specular r="1" g="1" b="1" a="1.0" />
+        </material>
+    </materials>
 
-  <animations>
+    <transformations>
+        <transformation id="floor_tr">
+            <scale x="20" y="1" z="20" />
+            <rotate axis="x" angle="-90" />
+            <rotate axis="z" angle="-90" />
+        </transformation>
+        <transformation id="left_wall_tr">
+            <scale x="1" y="15" z="20" />
+            <translate x="0" y="0" z="1" />
+            <rotate axis="y" angle="90" />
+        </transformation>
+        <transformation id="right_wall_tr">
+            <scale x="20" y="15" z="1" />
+        </transformation>
+        <transformation id="wall_tr">
+            <rotate axis="y" angle="-90" />
+        </transformation>
+        <transformation id="cupboard_body_tr">
+            <scale x="20" y="5" z="4" />
+        </transformation>
+        <transformation id="terrain">
+            <scale x="25" y="1" z="25" />
+        </transformation>
+    </transformations>
 
-    <linear id="test_animation" span="4">
-        <controlpoint xx="0" yy="0" zz="0"/>
-        <controlpoint xx="5" yy="0" zz="0"/>
-        <controlpoint xx="5" yy="0" zz="5"/>
-        <controlpoint xx="0" yy="5" zz="0"/>
-        <controlpoint xx="0" yy="0" zz="0"/>
-    </linear>
-<!--
-    <linear id="test_linearanim" span="4">
-        <controlpoint xx="1" yy="0" zz="0"/>
-        <controlpoint xx="3" yy="0" zz="3"/>
-        <controlpoint xx="3" yy="0" zz="0"/>
-    </linear>
+    <animations>
 
-    <circular id="test_circularanim" span="4" center="1 0 1" radius="4" startang="0" rotang="90"/>
--->
- </animations>
+        <linear id="test_animation" span="4">
+            <controlpoint xx="0" yy="0" zz="0"/>
+            <controlpoint xx="5" yy="0" zz="0"/>
+            <controlpoint xx="5" yy="0" zz="5"/>
+            <controlpoint xx="0" yy="5" zz="0"/>
+            <controlpoint xx="0" yy="0" zz="0"/>
+        </linear>
+        <!--
+        <linear id="test_linearanim" span="4">
+            <controlpoint xx="1" yy="0" zz="0"/>
+            <controlpoint xx="3" yy="0" zz="3"/>
+            <controlpoint xx="3" yy="0" zz="0"/>
+        </linear>
 
- <primitives>
-    <primitive id="unit_square">
-        <rectangle x1="0" y1="0" x2="1" y2="1" />
-    </primitive>
+        <circular id="test_circularanim" span="4" center="1 0 1" radius="4" startang="0" rotang="90"/>
+        -->
+    </animations>
 
-    <primitive id="triangle_left">
-        <triangle  x1="0" y1="15" z1="0"
-                   x2="0" y2="0" z2="15"
-                   x3="0" y3="0" z3="0" />
-    </primitive>
+    <primitives>
+        <primitive id="unit_square">
+            <rectangle x1="0" y1="0" x2="1" y2="1" />
+        </primitive>
 
-    <primitive id="triangle_right">
-        <triangle  x1="0" y1="15" z1="0"
-                   x2="0" y2="0" z2="0"
-                   x3="15" y3="0" z3="0" />
-    </primitive>
+        <primitive id="triangle_left">
+            <triangle  x1="0" y1="15" z1="0"
+                    x2="0" y2="0" z2="15"
+                    x3="0" y3="0" z3="0" />
+        </primitive>
 
-    <primitive id="cylinder">
-        <cylinder  base="1" top="1" height="1" slices="20" stacks="10" />
-    </primitive>
+        <primitive id="triangle_right">
+            <triangle  x1="0" y1="15" z1="0"
+                    x2="0" y2="0" z2="0"
+                    x3="15" y3="0" z3="0" />
+        </primitive>
 
-    <primitive id="prism_quad">
-        <cylinder  base="0.7" top="0.7" height="1" slices="4" stacks="10" />
-    </primitive>
+        <primitive id="cylinder">
+            <cylinder  base="1" top="1" height="1" slices="20" stacks="10" />
+        </primitive>
 
-    <primitive id="cut_cone">
-        <cylinder  base="2" top="1" height="1" slices="25" stacks="10" />
-    </primitive>
+        <primitive id="prism_quad">
+            <cylinder  base="0.7" top="0.7" height="1" slices="4" stacks="10" />
+        </primitive>
 
-    <primitive id="sphere">
-        <sphere  radius="0.5" slices="20" stacks="20" />
-    </primitive>
+        <primitive id="cut_cone">
+            <cylinder  base="2" top="1" height="1" slices="25" stacks="10" />
+        </primitive>
 
-    <primitive id="torus">
-        <torus  inner= "0.2" outer="2" slices="25" loops="40" />
-    </primitive>
+        <primitive id="sphere">
+            <sphere  radius="0.5" slices="20" stacks="20" />
+        </primitive>
 
+        <primitive id="torus">
+            <torus  inner= "0.2" outer="2" slices="25" loops="40" />
+        </primitive>
 
-    <!--   PRIMITIVAS NURBS    -->
+        <!--   PRIMITIVAS NURBS    -->
+        <primitive id="plane">
+            <plane npartsU="5" npartsV="4" />
+        </primitive>
 
-    <primitive id="plane">
-        <plane npartsU="5" npartsV="4" />
-    </primitive>
+        <primitive id="patch">
+            <patch npointsU="3" npointsV="4" npartsU="20" npartsV="30">
+                <controlpoint xx="-2.0" yy="-2.0" zz="1.0"/>
+                <controlpoint xx="-2.0" yy="-1.0" zz="-2.0"/>
+                <controlpoint xx="-2.0" yy="1.0" zz="5.0"/>
+                <controlpoint xx="-2.0" yy="2.0" zz="-1.0"/>
+                <controlpoint xx="0.0" yy="-2.0" zz="0.0"/>
+                <controlpoint xx="0.0" yy="-1.0" zz="-1.0"/>
+                <controlpoint xx="0.0" yy="1.0" zz="1.5"/>
+                <controlpoint xx="0.0" yy="2.0" zz="0.0"/>
+                <controlpoint xx="2.0" yy="-2.0" zz="-1.0"/>
+                <controlpoint xx="2.0" yy="-1.0" zz="2.0"/>
+                <controlpoint xx="2.0" yy="1.0" zz="-5.0"/>
+                <controlpoint xx="2.0" yy="2.0" zz="1.0"/>
+            </patch>
+        </primitive>
 
-   <!-- <primitive id="patch">
-        <patch npointsU="" npointsV="" npartsU="" npartsV="">
-        Devem existir npointsU * npointsV pontos de controlo
-            <controlpoint xx="" yy="" zz="">
-            <controlpoint xx="" yy="" zz="">
+       <!--  <primitive id="vehicle">
+            <vehicle/>
+        </primitive>-->
 
+        <primitive id="cylinder2">
+            <cylinder2  base="1" top="1" height="1" slices="20" stacks="5" />
+        </primitive> 
 
-        </patch>
-    </primitive>
+        <primitive id="terrain">
+            <terrain  idtexture="terrain" idheightmap="terrainMap" parts="50" heightscale="5" />
+        </primitive>
 
-    <primitive id="vehicle">
-        <vehicle/>
-    </primitive>
+       <!--  <primitive id="water">
+            <water  idtexture="ss" idwavemap="ss" parts="" heightscale="" texscale="" />
+        </primitive> -->
+    </primitives>
 
-    <primitive id="cylinder2">
-        <cylinder2  base="" top="" height="" slices="" stacks="" />
-    </primitive>
+    <components>
 
-    <primitive id="terrain">
-        <terrain  idtexture="ss" idheightmap="ss" parts="" heightscale="" />
-    </primitive>
+        <component id="kitchen">
+            <transformation>
+                <!-- <transformationref id="terrain" /> -->
+            </transformation>
 
-    <primitive id="water">
-        <water  idtexture="ss" idwavemap="ss" parts="" heightscale="" texscale="" />
-    </primitive>
- -->
- </primitives>
+            <!--Bloco opcional-->
+            <animations>
+                <!-- <animationref id="test_animation" /> -->
+            </animations>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="cylinder2" />
+            </children>
+        </component>
+    </components>
 
- <components>
-
-    <component id="kitchen">
-        <transformation></transformation>
-
-        <!--Bloco opcional-->
-        <animations>
-            <animationref id="test_animation" />
-        </animations>
-        <materials>
-            <material id="inherit" />
-        </materials>
-        <texture id="none" />
-        <children>
-            <primitiveref id="plane" />
-        </children>
-    </component>
- </components>
 </yas>

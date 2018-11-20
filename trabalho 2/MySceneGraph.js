@@ -1017,7 +1017,7 @@ class MySceneGraph {
 
                 this.primitives[primitiveId] = triangle;
             }
-            else if (primitiveType == 'cylinder') {
+            else if (primitiveType == 'cylinder' || primitiveType == 'cylinder2') {
                 // Base
                 var base = this.reader.getFloat(grandChildren[0], 'base');
                 if (!(base != null && !isNaN(base)))
@@ -1043,7 +1043,13 @@ class MySceneGraph {
                 if (!(stacks != null && !isNaN(stacks)))
                     return "unable to parse stacks number of the primitive for ID = " + primitiveId;
 
-                var cylinder = new MyCylinder(this.scene, primitiveId, base, top, height, slices, stacks);
+                var cylinder;
+                
+                if (primitiveType == 'cylinder')
+                    cylinder = new MyCylinder(this.scene, primitiveId, base, top, height, slices, stacks);
+                
+                if (primitiveType == 'cylinder2')
+                    cylinder = new Cylinder2(this.scene, primitiveId, base, top, height, slices, stacks);
 
                 this.primitives[primitiveId] = cylinder;
             }
@@ -1108,15 +1114,48 @@ class MySceneGraph {
                 this.primitives[primitiveId] = plane;
             }
             else if (primitiveType == 'patch') {
+                // Num of U points
+                var npointsU = this.reader.getFloat(grandChildren[0], 'npointsU');
+                if (!(npointsU != null && !isNaN(npointsU)))
+                    return "unable to parse npointsU of the primitive for ID = " + primitiveId;
 
+                // Num of V points
+                var npointsV = this.reader.getFloat(grandChildren[0], 'npointsV');
+                if (!(npointsV != null && !isNaN(npointsV)))
+                    return "unable to parse npointsV of the primitive for ID = " + primitiveId;
+
+                // Num of U parts
+                var npartsU = this.reader.getFloat(grandChildren[0], 'npartsU');
+                if (!(npartsU != null && !isNaN(npartsU)))
+                    return "unable to parse npartsU of the primitive for ID = " + primitiveId;
+
+                // Num of V parts
+                var npartsV = this.reader.getFloat(grandChildren[0], 'npartsV');
+                if (!(npartsV != null && !isNaN(npartsV)))
+                    return "unable to parse npartsV of the primitive for ID = " + primitiveId;
+
+                var grandgrandChildren = grandChildren[0].children;
+                var numCtrlPoints = npointsU * npointsV;
+                var controlPoints = [];
+
+                for(var j = 0; j < numCtrlPoints; j++) {
+                    if (grandgrandChildren[j].nodeName != 'controlpoint') {
+                        return "only have " + j + " control points of the primitive with ID = " 
+                                + primitiveId + " (expected " + numCtrlPoints + ")";
+                    }
+
+                    var point = this.parseAnimationCoordinates(grandgrandChildren[j], "controlpoint", primitiveId);
+
+                    controlPoints.push(point);
+                }
+                var patch = new Patch(this.scene, npointsU, npointsV, npartsU, npartsV, controlPoints);
+
+                this.primitives[primitiveId] = patch;
             }
             else if (primitiveType == 'vehicle') {
                 var vehicle = new MyVehicle(this.scene);
 
                 this.primitives[primitiveId] = vehicle;
-            }
-            else if (primitiveType == 'cylinder2') {
-
             }
             else if (primitiveType == 'terrain') {
                 var textureID = this.reader.getString(grandChildren[0], 'idtexture');
@@ -1638,7 +1677,7 @@ class MySceneGraph {
             mat4.multiply(transformation,
                 tgMatrix, this.transformations[component.transfMatrix]);
                 //console.log(this.animations[component.currAnimationID].getTransf());
-            mat4.multiply(transformation,transformation,this.animations[component.currAnimationID].getMatrix()); //é o "apply"
+            //mat4.multiply(transformation,transformation,this.animations[component.currAnimationID].getMatrix()); //é o "apply"
 
             //anim.apply();   n faz sentido aqui
 
@@ -1684,8 +1723,6 @@ class MySceneGraph {
             }
         }
     }
-
-
 
     /**
      * Display the primitive element
