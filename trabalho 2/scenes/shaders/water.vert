@@ -10,7 +10,6 @@ varying vec2 vTextureCoord;
 uniform sampler2D uSampler2;
 
 uniform float time;
-uniform float texScale;
 uniform float heightScale;
 
 void main() {
@@ -19,7 +18,7 @@ void main() {
 
 	vTextureCoord = aTextureCoord + desl;
 
-    offset = aVertexNormal * heightScale * (texture2D(uSampler2, vTextureCoord).r);
+    offset = aVertexNormal * heightScale * (texture2D(uSampler2, vTextureCoord).r - 0.3);
 
 	gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition+offset, 1.0);
 }

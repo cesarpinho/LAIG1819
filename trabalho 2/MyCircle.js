@@ -1,6 +1,5 @@
 /**
- * MyCircle
- * @constructor
+ * MyCircle Class
  */
 
 

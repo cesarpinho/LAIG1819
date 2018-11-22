@@ -11,7 +11,7 @@ class Water {
         this.plane = new Plane(scene, parts, parts);
 
         this.shader = new CGFshader(this.scene.gl, "scenes/shaders/water.vert", "scenes/shaders/water.frag");
-        this.shader.setUniformsValues({uSampler2: 1, heightScale: this.heightScale/* , texScale: this.texScale */});
+        this.shader.setUniformsValues({uSampler2: 1, heightScale: this.heightScale, texScale: this.texScale});
     }
 
     display() {
