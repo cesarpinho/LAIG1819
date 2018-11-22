@@ -1355,11 +1355,10 @@ class MySceneGraph {
             }
             else return "transformation tag undefined for ID = " + componentID;
 
+                var animationsID = [];
             // Animation
             if (animationsIndex != -1) {
                 grandgrandChildren = grandChildren[animationsIndex].children;
-
-                var animationsID = [];
 
                 for (var z = 0; z < grandgrandChildren.length; z++) {
 
@@ -1373,7 +1372,7 @@ class MySceneGraph {
 
                     animationsID.push(animationID);
                 }
-            }
+            } else animationsID = null;
 
             // Materials
             var materialsID = [];
@@ -1710,7 +1709,8 @@ class MySceneGraph {
             mat4.multiply(transformation,
                 tgMatrix, this.transformations[component.transfMatrix]);
                 //console.log(this.animations[component.currAnimationID].getTransf());
-            //mat4.multiply(transformation,transformation,this.animations[component.currAnimationID].getMatrix()); //é o "apply"
+            if(component.animationsref!=null)
+            mat4.multiply(transformation,transformation,this.animations[component.currAnimationID].getMatrix()); //é o "apply"
 
             //anim.apply();   n faz sentido aqui
 

@@ -10,20 +10,23 @@
         this.points = points;
         this.end=false;
         this.changed=false;
+        this.firstit = true;  // para que faça a rotação inicial
         this.distances = [];
         this.times = [];
         this.percentages = [];
         this.vectors = [];
         this.progresses = [];
+        this.angles = [];
         this.dxyz = [0,0,0];
         this.totalDistance = 0;
         this.deltatime = 0;
         this.olddeltatime = 0;
         this.missedtime = 0;
         this.missedtime2 = 0;
-        this.matrix = mat4.create();
-        //var point1 = points[0];
-        //this.matrix = mat4.create();
+        this.matrixT = mat4.create();
+        this.matrixR = mat4.create();
+
+        this.angle = 0;   // eixo ZZ
 
         this.calculateDistances();
         this.calculateVelocity();
@@ -71,106 +74,87 @@
 
     calculatedxyz(){
 
-      if(this.changed)
-      this.dxyz = [this.vectors[this.currentVector][0] * this.missedtime2 / this.times[this.currentVector]+ ((this.currentVector > 0) ? this.vectors[this.currentVector-1][0] * this.missedtime / this.times[this.currentVector] : 0),
-                   this.vectors[this.currentVector][1] * this.missedtime2 / this.times[this.currentVector] + ((this.currentVector > 0) ? this.vectors[this.currentVector-1][1] * this.missedtime / this.times[this.currentVector] : 0),
-                   this.vectors[this.currentVector][2] * this.missedtime2 / this.times[this.currentVector] + ((this.currentVector > 0) ? this.vectors[this.currentVector-1][2] * this.missedtime / this.times[this.currentVector] : 0)];
+      if(this.currentVector>= this.points.length-1){
+        this.dxyz = [this.vectors[this.currentVector-1][0] * this.missedtime / this.times[this.currentVector-1],
+                     this.vectors[this.currentVector-1][1] * this.missedtime / this.times[this.currentVector-1],
+                     this.vectors[this.currentVector-1][2] * this.missedtime / this.times[this.currentVector-1]];
+
+      }else
+      if(this.changed){
+      this.dxyz = [this.vectors[this.currentVector][0] * this.missedtime2 / this.times[this.currentVector]+ ((this.currentVector > 0) ? this.vectors[this.currentVector-1][0] * this.missedtime / this.times[this.currentVector-1] : 0),
+                   this.vectors[this.currentVector][1] * this.missedtime2 / this.times[this.currentVector] + ((this.currentVector > 0) ? this.vectors[this.currentVector-1][1] * this.missedtime / this.times[this.currentVector-1] : 0),
+                   this.vectors[this.currentVector][2] * this.missedtime2 / this.times[this.currentVector] + ((this.currentVector > 0) ? this.vectors[this.currentVector-1][2] * this.missedtime / this.times[this.currentVector-1] : 0)];
+      }
       else
       this.dxyz = [this.vectors[this.currentVector][0] * this.percentages[this.currentVector],
                    this.vectors[this.currentVector][1] * this.percentages[this.currentVector],
                    this.vectors[this.currentVector][2] * this.percentages[this.currentVector]
     ];
-      this.changed=false;
       this.missedtime2 = 0;
       this.missedtime = 0;
-      /*for(var i = 0 ; i < this.distances.length ; i++){
-      console.log("vectors: " + this.vectors[i]);
-        this.dxyz[i] =  this.vectors[i].slice();
-        console.log("dxyz: " + this.dxyz);
-        this.dxyz[i][0] = this.vectors[i][0] * this.percentages[i];
-        this.dxyz[i][1] = this.vectors[i][1] * this.percentages[i];
-        this.dxyz[i][2] = this.vectors[i][2] * this.percentages[i];
-      }*/
+    }
+
+    updateAngle(){
+      if(this.vectors[this.currentVector]!=null){
+      this.angle = Math.atan(this.vectors[this.currentVector][0]/this.vectors[this.currentVector][2]);
+      if(this.vectors[this.currentVector][2] < 0) // quando o angulo é maior que 90ª ou menor que -90ª
+        this.angle = this.angle + Math.PI;
+      }
     }
 
     updateMatrix(){
 
       var M = mat4.create();
 
-          mat4.translate(M,M, vec3.fromValues(this.dxyz[0],this.dxyz[1],this.dxyz[2]));
-          mat4.multiply(this.matrix,this.matrix,M);
+      if(this.changed || this.firstit){
+      mat4.rotate(this.matrixR,mat4.create(),this.angle,vec3.fromValues(0,1,0) );
+    }
+      this.firstit=false;
+
+      mat4.translate(M,M, vec3.fromValues(this.dxyz[0],this.dxyz[1],this.dxyz[2]));
+      mat4.multiply(this.matrixT,this.matrixT,M);
     }
 
     checkVector(){
       if(this.progresses[this.currentVector] >= this.times[this.currentVector]){
         this.changed=true;
-        console.log("in");
-        this.missedtime =  this.times[this.currentVector] - this.olddeltatime;
+        this.missedtime =  this.times[this.currentVector] - (this.progresses[this.currentVector] -this.deltatime);  //o tempo que faltou "andar" no vetor anterior
         this.currentVector+=1;
-        this.missedtime2 = ((this.currentVector > 0) ? this.progresses[this.currentVector-1] - this.times[this.currentVector-1] : 0);    //o tempo que andou mais no vetor anterior
+        this.missedtime2 = ((this.currentVector > 0) ? this.progresses[this.currentVector-1] - this.times[this.currentVector-1] : 0);    //o tempo que "andou" a mais no vetor anterior
 
         this.progresses[this.currentVector] += this.missedtime2;
-        console.log(this.progresses[this.currentVector-1] - this.times[this.currentVector-1]);
       }
     }
 
     getMatrix(){
-      return this.matrix;
+
+      var M = mat4.create();
+      mat4.multiply(M,this.matrixT,this.matrixR);
+      return M;
     }
 
-/*
-    getEq(point1, point2){
-        var m = (point2[2]-point1[2])/(point2[0]-point1[0]);
-        var b = point2[2]-(m*point2[0]);
-
-        if(isNaN(b))
-        b=0;
-
-        console.log("m : " + m + " b : " + b);
-
-        return [m,b];
-    }
-
-    getTransf(){
-
-        //console.log("Ceq " + this.currEq + " point " + this.points[this.currEq+1]);
-        if(this.x>=this.points[this.currEq+1][0]){
-            this.x=0;
-            if(this.currEq<this.equations.length-1)
-            this.currEq++;
-        }
-
-        //console.log("Ceq 2 " + this.currEq + " point " + this.points[this.currEq+1]);
-        mat4.translate(this.matrix,this.matrix, vec3.fromValues(this.x,0,this.equations[this.currEq][0]*this.x+this.equations[this.currEq][1]));
-
-        return this.matrix;
-    }
-*/
     update(time){
 
-      console.log(time + "   " + this.currentVector);
       this.deltatime=time;
       this.progresses[this.currentVector]+=time;
-      console.log("progresses: " + this.progresses);
       this.checkVector();
 
-      console.log("missedtime: " + this.missedtime);
+      if(!this.end)
+      this.updateAngle();
+
 
       //    CHECK END
-      if(this.currentVector >= this.points.length - 1){
-        console.log("ended");
-          this.end = true;
-        }
 
       this.calculatePercentages();
-
-      if(!this.end)
       this.calculatedxyz();
-      console.log("dxyz: " + this.dxyz);
 
       if(!this.end)
       this.updateMatrix();
+      this.changed=false;
 
+      if(this.currentVector >= this.points.length-1){
+          this.end = true;
+        }
       this.olddeltatime = this.deltatime;
     }
 
