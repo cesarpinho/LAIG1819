@@ -54,6 +54,7 @@
         <texture id="cmtv" file="scenes/images/tv.jpg"/>
         <texture id="terrain" file="scenes/images/terrain.jpg"/>
         <texture id="terrainMap" file="scenes/images/heightmap.jpg"/>
+        <texture id="waterMap" file="scenes/images/waterHeightMap.jpg"/>
     </textures>
 
     <materials>
@@ -216,23 +217,23 @@
         </primitive>-->
 
         <primitive id="cylinder2">
-            <cylinder2  base="1" top="1" height="1" slices="20" stacks="5" />
+            <cylinder2  base="2" top="1" height="3" slices="20" stacks="5" />
         </primitive> 
 
         <primitive id="terrain">
             <terrain  idtexture="terrain" idheightmap="terrainMap" parts="50" heightscale="5" />
         </primitive>
 
-       <!--  <primitive id="water">
-            <water  idtexture="ss" idwavemap="ss" parts="" heightscale="" texscale="" />
-        </primitive> -->
+        <primitive id="water">
+            <water  idtexture="waterMap" idwavemap="waterMap" parts="50" heightscale="2" texscale="1" />
+        </primitive>
     </primitives>
 
     <components>
 
         <component id="kitchen">
             <transformation>
-                <!-- <transformationref id="terrain" /> -->
+                <transformationref id="terrain" />
             </transformation>
 
             <!--Bloco opcional-->
@@ -244,7 +245,7 @@
             </materials>
             <texture id="none" />
             <children>
-                <primitiveref id="cylinder2" />
+                <primitiveref id="water" />
             </children>
         </component>
     </components>

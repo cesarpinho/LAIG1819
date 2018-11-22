@@ -9,8 +9,7 @@ class Terrain {
         this.plane = new Plane(scene, parts, parts);
 
         this.shader = new CGFshader(this.scene.gl, "scenes/shaders/terrain.vert", "scenes/shaders/terrain.frag");
-        this.shader.setUniformsValues({uSampler2: 1});
-        this.shader.setUniformsValues({heightScale: this.heightScale});
+        this.shader.setUniformsValues({uSampler2: 1, heightScale: this.heightScale});
     }
 
     display() {
@@ -23,6 +22,5 @@ class Terrain {
         this.scene.popMatrix();
 
         this.scene.setActiveShader(this.scene.defaultShader);
-    
     }
 }

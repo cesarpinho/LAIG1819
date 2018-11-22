@@ -1189,7 +1189,40 @@ class MySceneGraph {
                 this.primitives[primitiveId] = terrain;
             }
             else if (primitiveType == 'water') {
+                var textureID = this.reader.getString(grandChildren[0], 'idtexture');
+                if (textureID == null)
+                    return "undefined idtexture of the primitive for ID = " + primitiveId;
 
+                // Check if the texture ID is valid
+                if (this.textures[textureID] == null)
+                    return "no texture with ID: " + textureID;
+
+                var waveMapID = this.reader.getString(grandChildren[0], 'idwavemap');
+                if (waveMapID == null)
+                    return "undefined idwavemap of the primitive for ID = " + primitiveId;
+
+                // Check if the texture ID is valid
+                if (this.textures[waveMapID] == null)
+                    return "no texture with ID: " + waveMapID;
+
+                // Num of parts
+                var parts = this.reader.getFloat(grandChildren[0], 'parts');
+                if (!(parts != null && !isNaN(parts)))
+                    return "unable to parse parts of the primitive for ID = " + primitiveId;
+
+                // Heigth scale
+                var heightScale = this.reader.getFloat(grandChildren[0], 'heightscale');
+                if (!(heightScale != null && !isNaN(heightScale)))
+                    return "unable to parse heightScale of the primitive for ID = " + primitiveId;
+
+                // Texture scale
+                var texScale = this.reader.getFloat(grandChildren[0], 'texscale');
+                if (!(texScale != null && !isNaN(texScale)))
+                    return "unable to parse heightScale of the primitive for ID = " + primitiveId;
+
+                var water = new Water(this.scene, textureID, waveMapID, parts, heightScale, texScale);
+
+                this.primitives[primitiveId] = water;
             }
         }
 
@@ -1735,7 +1768,7 @@ class MySceneGraph {
         this.scene.pushMatrix();
         this.scene.multMatrix(tgMatrix);
 
-        if(this.primitives[id] instanceof Terrain)
+        if(this.primitives[id] instanceof Terrain || this.primitives[id] instanceof Water)
             texture = this.primitives[id].idTexture;
 
         var mat = this.materials[material];
