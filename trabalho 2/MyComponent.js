@@ -8,6 +8,7 @@ class MyComponent {
                 this.id = id;
                 this.transfMatrix = transfMatrix;
                 this.animationsref = animationsref;
+                if(this.animationsref != null)
                 this.currAnimationID = animationsref[0];
                 this.materialsref = materialsref;
                 this.materialN = 0;

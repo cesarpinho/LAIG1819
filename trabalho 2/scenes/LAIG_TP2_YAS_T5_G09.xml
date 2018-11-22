@@ -133,7 +133,23 @@
         </transformation>
     </transformations>
 
-    <animations>
+    <linear id="test_animation" span="5">
+        <controlpoint xx="0" yy="0" zz="0"/>
+        <controlpoint xx="5" yy="0" zz="0"/>
+        <controlpoint xx="5" yy="0" zz="5"/>
+        <controlpoint xx="0" yy="0" zz="5"/>
+        <controlpoint xx="0" yy="0" zz="0"/>
+        <controlpoint xx="5" yy="0" zz="5"/>
+        <controlpoint xx="10" yy="10" zz="10"/>
+        <controlpoint xx="-10" yy="-2" zz="-3"/>
+        <controlpoint xx="0" yy="0" zz="0"/>
+    </linear>
+<!--
+    <linear id="test_linearanim" span="4">
+        <controlpoint xx="1" yy="0" zz="0"/>
+        <controlpoint xx="3" yy="0" zz="3"/>
+        <controlpoint xx="3" yy="0" zz="0"/>
+    </linear>
 
         <linear id="test_animation" span="4">
             <controlpoint xx="0" yy="0" zz="0"/>
@@ -250,4 +266,102 @@
         </component>
     </components>
 
+ <components>
+
+   <component id="planecomp4">
+       <transformation>
+         <translate x="0" y ="5" z="0"/>
+       </transformation>
+
+
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="none" />
+       <children>
+           <primitiveref id="plane" />
+       </children>
+
+   </component>   <component id="planecomp3">
+          <transformation>
+            <translate x="5" y ="0" z="5"/>
+          </transformation>
+
+
+          <materials>
+              <material id="inherit" />
+          </materials>
+          <texture id="none" />
+          <children>
+              <primitiveref id="plane" />
+          </children>
+      </component>
+
+   <component id="planecomp2">
+       <transformation>
+         <translate x="5" y ="0" z="0"/>
+       </transformation>
+
+
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="none" />
+       <children>
+           <primitiveref id="plane" />
+       </children>
+   </component>
+
+    <component id="planecomp">
+        <transformation>
+          <translate x="0" y ="0" z="0"/>
+        </transformation>
+
+        <!--Bloco opcional-->
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="none" />
+        <children>
+            <primitiveref id="plane" />
+        </children>
+    </component>
+
+    <component id="cutcone">
+        <transformation>
+        </transformation>
+
+        <!--Bloco opcional-->
+        <animations>
+            <animationref id="test_animation" />
+        </animations>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="none" />
+        <children>
+            <primitiveref id="cut_cone" />
+        </children>
+    </component>
+
+
+    <component id="kitchen">
+        <transformation></transformation>
+
+        <!--Bloco opcional-->
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="none" />
+        <children>
+            <componentref id="planecomp4" />
+            <componentref id="planecomp3" />
+            <componentref id="planecomp2" />
+            <componentref id="planecomp" />
+            <componentref id="cutcone" />
+        </children>
+    </component>
+
+
+ </components>
 </yas>
