@@ -1044,10 +1044,10 @@ class MySceneGraph {
                     return "unable to parse stacks number of the primitive for ID = " + primitiveId;
 
                 var cylinder;
-                
+
                 if (primitiveType == 'cylinder')
                     cylinder = new MyCylinder(this.scene, primitiveId, base, top, height, slices, stacks);
-                
+
                 if (primitiveType == 'cylinder2')
                     cylinder = new Cylinder2(this.scene, primitiveId, base, top, height, slices, stacks);
 
@@ -1140,7 +1140,7 @@ class MySceneGraph {
 
                 for(var j = 0; j < numCtrlPoints; j++) {
                     if (grandgrandChildren[j].nodeName != 'controlpoint') {
-                        return "only have " + j + " control points of the primitive with ID = " 
+                        return "only have " + j + " control points of the primitive with ID = "
                                 + primitiveId + " (expected " + numCtrlPoints + ")";
                     }
 
@@ -1709,9 +1709,9 @@ class MySceneGraph {
             mat4.multiply(transformation,
                 tgMatrix, this.transformations[component.transfMatrix]);
                 //console.log(this.animations[component.currAnimationID].getTransf());
+
             if(component.animationsref!=null)
             mat4.multiply(transformation,transformation,this.animations[component.currAnimationID].getMatrix()); //é o "apply"
-
             //anim.apply();   n faz sentido aqui
 
             var child = component.childComponents;

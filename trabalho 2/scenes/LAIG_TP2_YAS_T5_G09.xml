@@ -138,34 +138,11 @@
     </transformations>
 
     <animations>
-        <linear id="test_animation" span="5">
-            <controlpoint xx="0" yy="0" zz="0"/>
-            <controlpoint xx="5" yy="0" zz="0"/>
-            <controlpoint xx="5" yy="0" zz="5"/>
-            <controlpoint xx="0" yy="0" zz="5"/>
-            <controlpoint xx="0" yy="0" zz="0"/>
-            <controlpoint xx="5" yy="0" zz="5"/>
-            <controlpoint xx="10" yy="10" zz="10"/>
-            <controlpoint xx="-10" yy="-2" zz="-3"/>
-            <controlpoint xx="0" yy="0" zz="0"/>
-        </linear>
-
-        <linear id="test_linearanim" span="4">
-            <controlpoint xx="1" yy="0" zz="0"/>
-            <controlpoint xx="3" yy="0" zz="3"/>
-            <controlpoint xx="3" yy="0" zz="0"/>
-        </linear>
-
-        <linear id="test_animation" span="4">
-            <controlpoint xx="0" yy="0" zz="0"/>
-            <controlpoint xx="5" yy="0" zz="0"/>
-            <controlpoint xx="5" yy="0" zz="5"/>
-            <controlpoint xx="0" yy="5" zz="0"/>
-            <controlpoint xx="0" yy="0" zz="0"/>
-        </linear>
-        <!--
-        <circular id="test_circularanim" span="4" center="1 0 1" radius="4" startang="0" rotang="90"/>
-        -->
+      <linear id="test_animation" span="2">
+          <controlpoint xx="0" yy="0" zz="0"/>
+          <controlpoint xx="5" yy="0" zz="0"/>
+      </linear>
+      <circular id="test_circ_anim" span="5" center="5 0 0" radius="5" startang="0" rotang="90"/>
     </animations>
 
     <primitives>
@@ -220,8 +197,8 @@
         </primitive>-->
 
         <primitive id="cylinder2">
-            <cylinder2  base="1" top="1" height="4" slices="100" stacks="200" />
-        </primitive> 
+            <cylinder2  base="2" top="1" height="3" slices="20" stacks="5" />
+        </primitive>
 
         <primitive id="terrain">
             <terrain  idtexture="terrain" idheightmap="terrainMap" parts="50" heightscale="5" />
@@ -232,70 +209,11 @@
         </primitive>
     </primitives>
 
-    <components>
-        <component id="water">
-            <transformation>
-                <transformationref id="water" />
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="none" />
-            <children>
-                <primitiveref id="water" />
-            </children>
-        </component>
-        <component id="terrain">
-            <transformation>
-                <transformationref id="terrain" />
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="none" />
-            <children>
-                <primitiveref id="terrain" />
-            </children>
-        </component>
-
-        <component id="planecomp4">
-            <transformation>
-                <translate x="0" y ="5" z="0"/>
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="none" />
-            <children>
-                <primitiveref id="plane" />
-            </children>
-        </component>
-
-        <component id="planecomp3">
-            <transformation>
-                <translate x="5" y ="0" z="5"/>
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="none" />
-            <children>
-                <primitiveref id="plane" />
-            </children>
-        </component>
-
-        <component id="planecomp2">
-            <transformation>
-                <translate x="5" y ="0" z="0"/>
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="none" />
-            <children>
-                <primitiveref id="plane" />
-            </children>
-        </component>
+<components>
+   <component id="planecomp4">
+       <transformation>
+         <translate x="0" y ="5" z="0"/>
+       </transformation>
 
         <component id="planecomp">
             <transformation>
@@ -311,9 +229,11 @@
             </children>
         </component>
 
-        <component id="cutcone">
-            <transformation>
-            </transformation>
+   </component>
+    <component id="planecomp3">
+          <transformation>
+            <translate x="5" y ="0" z="5"/>
+          </transformation>
 
             <animations>
                 <animationref id="test_animation" />
@@ -327,21 +247,80 @@
             </children>
         </component>
 
-        <component id="scenario">
-            <transformation> </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="none" />
-            <children>
-                <componentref id="planecomp4" />
-                <componentref id="planecomp3" />
-                <componentref id="planecomp2" />
-                <componentref id="planecomp" />
-                <componentref id="cutcone" />
-                <componentref id="water" />
-                <componentref id="terrain" />
-            </children>
-        </component>
-    </components>
+          <materials>
+              <material id="inherit" />
+          </materials>
+          <texture id="none" />
+          <children>
+              <primitiveref id="plane" />
+          </children>
+      </component>
+
+   <component id="planecomp2">
+       <transformation>
+         <translate x="5" y ="0" z="0"/>
+       </transformation>
+
+
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="none" />
+       <children>
+           <primitiveref id="plane" />
+       </children>
+   </component>
+
+    <component id="planecomp">
+        <transformation>
+        </transformation>
+
+        <!--Bloco opcional-->
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="none" />
+        <children>
+            <primitiveref id="plane" />
+        </children>
+    </component>
+
+    <component id="cutcone">
+        <transformation>
+          <translate x="0" y ="0" z="0"/>
+        </transformation>
+
+        <!--Bloco opcional-->
+        <animations>
+            <animationref id="test_circ_anim" />
+        </animations>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="none" />
+        <children>
+            <primitiveref id="cut_cone" />
+        </children>
+    </component>
+
+
+    <component id="kitchen">
+        <transformation></transformation>
+
+        <!--Bloco opcional-->
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="none" />
+        <children>
+            <componentref id="planecomp4" />
+            <componentref id="planecomp3" />
+            <componentref id="planecomp2" />
+            <componentref id="planecomp" />
+            <componentref id="cutcone" />
+        </children>
+    </component>
+
+
+ </components>
 </yas>
