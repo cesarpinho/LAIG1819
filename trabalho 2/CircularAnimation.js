@@ -8,11 +8,14 @@ class CircularAnimation extends Animation
         super(scene, id, time);
 
         this.time=time;
+        this.progress=0;
+        this.ended=false;
         this.center = center;
         this.radius = radius;
-        this.angle = init_angle;
+        this.angle = init_angle*Math.PI/180;
+        console.log(init_angle);
         console.log("this.angle: " +this.angle);
-        this.rotate_angle = rotate_angle;
+        this.rotate_angle = rotate_angle*Math.PI/180;
         this.velocity=this.rotate_angle/this.time;
         this.pos = vec3.fromValues(this.radius * Math.cos(this.angle),0,this.radius * Math.sin(this.angle));
         this.matrixR = mat4.create();
@@ -20,9 +23,8 @@ class CircularAnimation extends Animation
    }
 
    updateAngle(){
-     this.angle += this.time*this.detlatime/this.rotate_angle;
-     console.log(this.time + " " + this.deltatime + " " + this.rotate_angle);
-     console.log(this.angle);
+     console.log("this.angle2: " +this.angle);
+     this.angle = this.time*this.deltatime/this.rotate_angle;
    }
 
    calculatePosition(){
@@ -45,14 +47,25 @@ class CircularAnimation extends Animation
      return M;
    }
 
+   checkFinal(){
+     if(this.progress > this.time){
+       console.log("ended");
+     this.ended=true;
+   }
+   }
+
    update(time){
 
      this.deltatime=time;
-
+     console.log("time::::" + time);
+     this.progress+=time;
+     console.log(this.progress);
+     this.checkFinal();
      this.updateAngle();
      this.calculatePosition();
 
      ///this.calculatePercentages();
+     if(!this.ended)
      this.updateMatrix();
      this.olddeltatime = this.deltatime;
    }
