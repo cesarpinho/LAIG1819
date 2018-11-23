@@ -8,8 +8,10 @@ class MyComponent {
                 this.id = id;
                 this.transfMatrix = transfMatrix;
                 this.animationsref = animationsref;
-                if(this.animationsref != null)
-                this.currAnimationID = animationsref[0];
+                this.currAnimI= 0;
+                if(this.animationsref != null){
+                this.currAnimationID = animationsref[this.currAnimI];
+              }
                 this.materialsref = materialsref;
                 this.materialN = 0;
                 this.textureref = textureref;
@@ -19,5 +21,10 @@ class MyComponent {
                 this.childComponents = childComponentsref;
         };
 
-        //TODO inc animation
+        incAnimation(){
+          this.currAnimI++;
+          this.currAnimationID = this.animationsref[this.currAnimI];
+          console.log("id inside component: " + this.currAnimationID);
+          console.log(this.animationsref);
+        }
 };

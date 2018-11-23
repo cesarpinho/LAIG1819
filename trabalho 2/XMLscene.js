@@ -148,9 +148,11 @@ class XMLscene extends CGFscene {
       	this.oldTime=currTime;
 
      this.updateAnimations();
+     this.graph.checkAnimationsend();
 
 		// Verify the keys pressed
 		this.checkKeys();
+
 	};
 
   /**
@@ -159,6 +161,7 @@ class XMLscene extends CGFscene {
    updateAnimations(){
        for (var key in this.graph.animations) {
            if (this.graph.animations.hasOwnProperty(key)) {
+             if(this.graph.animations[key].started)
               this.graph.animations[key].update(this.time);
            }
        }

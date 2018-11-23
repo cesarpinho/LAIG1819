@@ -26,6 +26,8 @@
         this.matrixT = mat4.create();
         this.matrixR = mat4.create();
 
+        mat4.translate(this.matrixT,this.matrixT, vec3.fromValues(this.points[0][0],this.points[0][1],this.points[0][2]));
+
         this.angle = 0;   // eixo ZZ
 
         this.calculateDistances();
@@ -154,6 +156,7 @@
 
       if(this.currentVector >= this.points.length-1){
           this.end = true;
+          this.ended = true;
         }
       this.olddeltatime = this.deltatime;
     }

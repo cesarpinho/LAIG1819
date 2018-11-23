@@ -134,14 +134,16 @@
     </transformations>
 
     <animations>
-      <linear id="test_animation" span="5">
-          <controlpoint xx="0" yy="0" zz="0"/>
-          <controlpoint xx="5" yy="0" zz="0"/>
-          <controlpoint xx="5" yy="0" zz="5"/>
+      <linear id="test_animation1" span="1">
           <controlpoint xx="0" yy="0" zz="5"/>
-          <controlpoint xx="0" yy="0" zz="0"/>
+          <controlpoint xx="5" yy="0" zz="0"/>
       </linear>
-        <circular id="test_circ_anim" span="5" center="5 0 0" radius="5" startang="0" rotang="90"/>
+        <linear id="test_animation2" span="1">
+            <controlpoint xx="0" yy="0" zz="15"/>
+            <controlpoint xx="0" yy="0" zz="0"/>
+        </linear>
+          <circular id="test_circ_anim" span="1" center="5 0 5" radius="5" startang="90" rotang="-90"/>
+        <circular id="test_circ_anim2" span="2" center="0 0 5" radius="10" startang="0" rotang="-90"/>
     </animations>
 
     <primitives>
@@ -288,7 +290,10 @@
 
         <!--Bloco opcional-->
         <animations>
+            <animationref id="test_animation1" />
             <animationref id="test_circ_anim" />
+            <animationref id="test_circ_anim2" />
+            <animationref id="test_animation2" />
         </animations>
         <materials>
             <material id="inherit" />
