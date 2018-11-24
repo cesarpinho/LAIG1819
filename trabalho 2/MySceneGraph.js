@@ -815,6 +815,7 @@ class MySceneGraph {
 
         var animation;
 
+        this.animations["default_animation"] = new Animation(this.scene,"default_animation",0);
         // Any number of animations.
         for (var i = 0; i < children.length; i++) {
 
@@ -1356,6 +1357,7 @@ class MySceneGraph {
             else return "transformation tag undefined for ID = " + componentID;
 
                 var animationsID = [];
+                animationsID.push("default_animation");
             // Animation
             if (animationsIndex != -1) {
                 grandgrandChildren = grandChildren[animationsIndex].children;
@@ -1371,8 +1373,8 @@ class MySceneGraph {
                         return "no ID defined for animationref";
 
                     animationsID.push(animationID);
-                }
-            } else animationsID = null;
+                  }
+            }
 
             // Materials
             var materialsID = [];
@@ -1711,9 +1713,6 @@ class MySceneGraph {
                 //console.log(this.animations[component.currAnimationID].getTransf());
 
             if(component.animationsref!=null){
-              console.log("comp id: " +component.id);
-              console.log("id : " + component.currAnimationID);
-              console.log(this.animations[component.currAnimationID]);
               mat4.multiply(transformation,transformation,this.animations[component.currAnimationID].getMatrix()); //é o "apply"
           }
             //anim.apply();   n faz sentido aqui
@@ -1759,12 +1758,7 @@ class MySceneGraph {
                   this.animations[this.components[key].currAnimationID].started=true;
 
                 if(this.animations[this.components[key].currAnimationID].ended){
-                    console.log("\nANIMATION: "+ " has ended:\n");
-                    console.log(this.animations[this.components[key].currAnimationID]);
-                    console.log('\n');
-                    console.log('\n\n\nbefore');
                     this.components[key].incAnimation();
-                    console.log('\n\n\nafter');
                   }
                 }
             }
