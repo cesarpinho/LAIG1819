@@ -16,7 +16,7 @@ void main() {
 	
 	vTextureCoord = aTextureCoord;
 
-    offset = aVertexNormal * heightScale * (texture2D(uSampler2, vTextureCoord).b - 0.2);
+    offset = aVertexNormal * heightScale * (texture2D(uSampler2, vTextureCoord).b);
 
 
 	gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition+offset, 1.0);
