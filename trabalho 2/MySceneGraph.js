@@ -1676,7 +1676,7 @@ class MySceneGraph {
      * @param {boolean to indicate if is primitive} isPrimitive
      */
     processNode(id, tgMatrix, material, texture, ls, lt, isPrimitive) {
-      this.scene.checkUpdate();
+        //this.scene.checkUpdate();
         if (this.primitives[id] != null && isPrimitive) {
             this.drawPrimitive(id, tgMatrix, material, texture);
         }
