@@ -27,7 +27,6 @@
         this.matrixR = mat4.create();
 
         mat4.translate(this.matrixT,this.matrixT, vec3.fromValues(this.points[0][0],this.points[0][1],this.points[0][2]));
-
         this.angle = 0;   // eixo ZZ
 
         this.calculateDistances();
@@ -35,6 +34,9 @@
         this.calculateTimes();
         this.calculateVectors();
 
+        this.updateAngle();
+        console.log("angle: " +this.angle);
+        mat4.rotate(this.matrixR,mat4.create(),this.angle,vec3.fromValues(0,1,0) );
     }
 
     calculateDistances(){

@@ -8,10 +8,10 @@ class MyComponent {
                 this.id = id;
                 this.transfMatrix = transfMatrix;
                 this.animationsref = animationsref;
-                this.currAnimI= 0;
-                if(this.animationsref != null){
+                this.currAnimI= 1;
+                if(this.animationsref.length > 1)                         /// se houver alguma animaçao pralem da default
                 this.currAnimationID = animationsref[this.currAnimI];
-              }
+                else this.currAnimationID = "default_animation";
                 this.materialsref = materialsref;
                 this.materialN = 0;
                 this.textureref = textureref;
@@ -22,9 +22,8 @@ class MyComponent {
         };
 
         incAnimation(){
+        if(this.currAnimI != this.animationsref.length-1)
           this.currAnimI++;
           this.currAnimationID = this.animationsref[this.currAnimI];
-          console.log("id inside component: " + this.currAnimationID);
-          console.log(this.animationsref);
         }
 };
