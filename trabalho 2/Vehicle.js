@@ -1,5 +1,8 @@
 class Vehicle extends CGFobject {
-
+    /**
+     * @constructor Vehicle class
+     * @param {*} scene 
+     */
     constructor(scene) {
         super(scene);
 
@@ -64,6 +67,9 @@ class Vehicle extends CGFobject {
         this.grey_material.setDiffuse(0.3,0.3,0.3,1);   
     }
 
+    /**
+     * Vehicle display function
+     */
     display() {
         this.surfaceRight.display();
         this.surfaceLeft.display();

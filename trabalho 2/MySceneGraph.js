@@ -1153,7 +1153,7 @@ class MySceneGraph {
                 this.primitives[primitiveId] = patch;
             }
             else if (primitiveType == 'vehicle') {
-                var vehicle = new MyVehicle(this.scene);
+                var vehicle = new Vehicle(this.scene);
 
                 this.primitives[primitiveId] = vehicle;
             }

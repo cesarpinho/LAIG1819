@@ -1,5 +1,11 @@
 class Plane extends CGFobject {
 
+    /**
+     * @constructor Plane class
+     * @param {*} scene 
+     * @param {number} npartsU 
+     * @param {number} npartsV 
+     */
     constructor(scene, npartsU, npartsV) {
         super(scene);
         this.scene = scene;
@@ -12,6 +18,9 @@ class Plane extends CGFobject {
         this.plane = new CGFnurbsObject(scene, npartsU, npartsV, nurbsSurface);
     }
 
+    /**
+     * Define the plane control points
+     */
     createPoints() {
         this.points =
             [	// U = 0

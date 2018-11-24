@@ -1,8 +1,17 @@
 class Patch extends CGFobject {
 
+    /**
+     * @constructor Patch class
+     * @param {any} scene 
+     * @param {number} npointsU 
+     * @param {number} npointsV 
+     * @param {number} npartsU 
+     * @param {number} npartsV 
+     * @param {number[]} controlPoints 
+     */
     constructor(scene, npointsU, npointsV, npartsU, npartsV, controlPoints) {
         super(scene);
-        
+
         this.scene = scene;
         this.degreeU = npointsU - 1;
         this.degreeV = npointsV - 1;
@@ -15,6 +24,10 @@ class Patch extends CGFobject {
         this.surface = new CGFnurbsObject(scene, npartsU, npartsV, nurbsSurface);
     }
 
+    /**
+     * Organize the control points array
+     * @param {number[]} controlPoints 
+     */
     createPoints(controlPoints) {
         this.points = [];
         var count = 0;
@@ -32,6 +45,9 @@ class Patch extends CGFobject {
         }
     }
 
+    /**
+     * Display the surface
+     */
     display() {
         this.surface.display();
     }

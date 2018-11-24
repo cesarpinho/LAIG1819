@@ -1,6 +1,3 @@
-/**
- * Cylinder2 Class
- */
 class Cylinder2 extends CGFobject {
     /**
      * Cylinder2 constuctor
