@@ -1,7 +1,7 @@
 <yas>
     <scene root="scenario" axis_length="5.0" />
 
-    <views default="Ortho" >
+    <views default="Default" >
         <perspective id="Default" near="0.1" far="500" angle="45">
             <from x="60" y="60" z="60" />
             <to x="0" y="-2" z="0" />
@@ -81,20 +81,6 @@
             <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="0.1" g="0.1" b="1" a="1.0" />
             <specular r="0" g="0" b="1" a="1.0" />
-        </material>
-
-        <material id="black" shininess = "50" >
-            <emission r="0" g="0" b="0" a="1.0" />
-            <ambient r="0" g="0" b="0" a="1.0" />
-            <diffuse r="0.1" g="0.1" b="0.1" a="1.0" />
-            <specular r="0.1" g="0.1" b="0.1" a="1.0" />
-        </material>
-
-        <material id="black_glass" shininess = "500" >
-            <emission r="0" g="0" b="0" a="1.0" />
-            <ambient r="0" g="0" b="0" a="1.0" />
-            <diffuse r="0" g="0" b="0" a="1.0" />
-            <specular r="1" g="1" b="1" a="1.0" />
         </material>
     </materials>
 
@@ -246,7 +232,6 @@
                 <animationref id="vehicle_linear_6" />
                 <animationref id="rote_5" />
                 <animationref id="vehicle_linear_7" />
-
             </animations>
             <materials>
                 <material id="blue" />
