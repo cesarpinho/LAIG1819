@@ -37,7 +37,7 @@ class XMLscene extends CGFscene {
 
         this.angle = 0;
 
-        this.setUpdatePeriod(700);
+        this.setUpdatePeriod(30);
     }
 
     /**
@@ -229,7 +229,6 @@ class XMLscene extends CGFscene {
       	this.oldTime = currTime;
 
         this.updateAnimations(time);
-        this.graph.checkAnimationsend();
 
         // Verify the keys pressed
         this.checkKeys();
@@ -250,10 +249,12 @@ class XMLscene extends CGFscene {
    * Updates all animations
    */
    updateAnimations(time){
+   this.graph.checkAnimationsend();
        for (var key in this.graph.animations) {
            if (this.graph.animations.hasOwnProperty(key)) {
-             if(this.graph.animations[key].started)
+             if(this.graph.animations[key].started){
               this.graph.animations[key].update(time);
+            }
            }
        }
    }

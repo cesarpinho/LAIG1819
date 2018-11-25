@@ -1721,7 +1721,8 @@ class MySceneGraph {
               if(component.id == "vehicle"){
               console.log("\n");
               console.log(component.id);
-                console.log(component.currAnimationID);
+              console.log(component.currAnimationID);
+              console.log(this.animations[component.currAnimationID].getMatrix());
               }
               mat4.multiply(transformation,transformation,this.animations[component.currAnimationID].getMatrix()); //é o "apply"
             }
@@ -1764,12 +1765,13 @@ class MySceneGraph {
             if (this.components.hasOwnProperty(key)) {
               if(this.components[key].currAnimationID!=null){
 
-                if(!this.animations[this.components[key].currAnimationID].started)
-                  this.animations[this.components[key].currAnimationID].started=true;
-
                 if(this.animations[this.components[key].currAnimationID].ended){
                     this.components[key].incAnimation();
                   }
+
+                if(!this.animations[this.components[key].currAnimationID].started)
+                  this.animations[this.components[key].currAnimationID].started=true;
+
                 }
             }
         }

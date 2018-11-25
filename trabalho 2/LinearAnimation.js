@@ -100,7 +100,8 @@
 
     updateAngle(){
       if(this.vectors[this.currentVector]!=null){
-      this.angle = Math.atan(this.vectors[this.currentVector][0]/this.vectors[this.currentVector][2]);
+        if( !isNaN( Math.atan(this.vectors[this.currentVector][0]/this.vectors[this.currentVector][2]) ) )
+        this.angle = Math.atan(this.vectors[this.currentVector][0]/this.vectors[this.currentVector][2]);
       if(this.vectors[this.currentVector][2] < 0) // quando o angulo é maior que 90ª ou menor que -90ª
         this.angle = this.angle + Math.PI;
       }
@@ -117,6 +118,9 @@
 
       mat4.translate(M,M, vec3.fromValues(this.dxyz[0],this.dxyz[1],this.dxyz[2]));
       mat4.multiply(this.matrixT,this.matrixT,M);
+
+      console.log("matrix updated : " + this.matrixT);
+      console.log("matrixR updated : " + this.matrixR);
     }
 
     checkVector(){
@@ -131,7 +135,6 @@
     }
 
     getMatrix(){
-
       var M = mat4.create();
       mat4.multiply(M,this.matrixT,this.matrixR);
       return M;

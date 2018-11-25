@@ -33,11 +33,14 @@ class CircularAnimation extends Animation
    }
 
    calculatePosition(){
+     console.log("before position : " + this.pos);
+       console.log("\nradius : " + this.radius + "\nangle : " + this.angle + "\n");
      this.pos = vec3.fromValues(this.radius * Math.cos(this.angle),0,-this.radius * Math.sin(this.angle));
+     console.log("calculated position : " + this.pos);
    }
 
    updateMatrix(){
-     console.log("inside update");
+     console.log("inside update. ended: " + this.ended);
      if(!this.ended || this.flag){
        if(this.ended)
            this.flag =false;
@@ -63,7 +66,7 @@ class CircularAnimation extends Animation
        this.flag=true;
        this.ended=true;
        var temp = this.time-(this.progress-this.deltatime);   ///quanto faltou andar
-       this.angle = this.rotate_angle*temp/this.time;
+       this.angle += this.rotate_angle*temp/this.time;
      }
    }
 
