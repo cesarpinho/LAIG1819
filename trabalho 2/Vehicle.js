@@ -75,6 +75,8 @@ class Vehicle extends CGFobject {
      * Vehicle display function
      */
     display() {
+        this.scene.translate(0,0,6);
+        this.scene.rotate(180*DEGREE_TO_RAD,0,1,0);
         this.surfaceRight.display();
         this.surfaceLeft.display();
 
