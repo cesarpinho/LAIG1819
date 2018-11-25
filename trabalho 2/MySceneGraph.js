@@ -1155,7 +1155,7 @@ class MySceneGraph {
             }
             else if (primitiveType == 'vehicle') {
                 var vehicle = new Vehicle(this.scene);
-                
+
                 if (this.scene.vehicleId == null)
                     this.scene.vehicleId = [];
 
@@ -1718,8 +1718,13 @@ class MySceneGraph {
                 //console.log(this.animations[component.currAnimationID].getTransf());
 
             if(component.animationsref!=null){
+              if(component.id == "vehicle"){
+              console.log("\n");
+              console.log(component.id);
+                console.log(component.currAnimationID);
+              }
               mat4.multiply(transformation,transformation,this.animations[component.currAnimationID].getMatrix()); //é o "apply"
-          }
+            }
             //anim.apply();   n faz sentido aqui
 
             var child = component.childComponents;

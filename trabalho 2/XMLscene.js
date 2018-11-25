@@ -37,7 +37,7 @@ class XMLscene extends CGFscene {
 
         this.angle = 0;
 
-        this.setUpdatePeriod(20);
+        this.setUpdatePeriod(700);
     }
 
     /**
@@ -113,11 +113,11 @@ class XMLscene extends CGFscene {
 
         this.interface.addViewsGroup(this.graph.views);
 
-        this.sceneInited = true;
-
         this.initKeys();
 
         this.distance = this.distance2points([this.camera.position[0], 0, this.camera.position[2]], [this.camera.target[0], 0, this.camera.target[2]]);
+
+        this.sceneInited = true;
 
     }
 
@@ -128,6 +128,8 @@ class XMLscene extends CGFscene {
 	{
 
     //      reset keys
+    if(!this.sceneInited)
+      return;
 
     for(var i = 0 ; i < this.keysPressed.length ; i++){
         this.keysPressed[i] = 0;
@@ -376,7 +378,7 @@ class XMLscene extends CGFscene {
 
 
     cameraPan(d){
-        var speed = 1;
+        var speed = 0.5;
         this.camera.pan(vec3.fromValues(d*speed,0,0));
     }
 

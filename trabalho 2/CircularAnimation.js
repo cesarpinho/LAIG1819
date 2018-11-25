@@ -37,6 +37,7 @@ class CircularAnimation extends Animation
    }
 
    updateMatrix(){
+     console.log("inside update");
      if(!this.ended || this.flag){
        if(this.ended)
            this.flag =false;
@@ -45,6 +46,7 @@ class CircularAnimation extends Animation
        this.matrixR = mat4.create();
        mat4.translate(this.matrixT,this.matrixT, this.pos); ///translate para a circunferencia
        mat4.rotate(this.matrixR,this.matrixR,this.angle,vec3.fromValues(0,1,0) );
+       console.log("updated : "+ this.pos);
      }
    }
 
@@ -66,6 +68,7 @@ class CircularAnimation extends Animation
    }
 
    update(time){
+     console.log("updated");
 
      this.deltatime=time;
      this.progress+=time;
