@@ -1683,7 +1683,6 @@ class MySceneGraph {
      * @param {boolean to indicate if is primitive} isPrimitive
      */
     processNode(id, tgMatrix, material, texture, ls, lt, isPrimitive) {
-        //this.scene.checkUpdate();
         if (this.primitives[id] != null && isPrimitive) {
             this.drawPrimitive(id, tgMatrix, material, texture);
         }
@@ -1702,8 +1701,6 @@ class MySceneGraph {
             if (tex == 'inherit') {
                 tex = texture;
 
-                //animations inherit?
-
                 if (s == null)
                     s = ls;
 
@@ -1715,18 +1712,10 @@ class MySceneGraph {
 
             mat4.multiply(transformation,
                 tgMatrix, this.transformations[component.transfMatrix]);
-                //console.log(this.animations[component.currAnimationID].getTransf());
 
             if(component.animationsref!=null){
-              if(component.id == "vehicle"){
-              console.log("\n");
-              console.log(component.id);
-              console.log(component.currAnimationID);
-              console.log(this.animations[component.currAnimationID].getMatrix());
-              }
               mat4.multiply(transformation,transformation,this.animations[component.currAnimationID].getMatrix()); //é o "apply"
             }
-            //anim.apply();   n faz sentido aqui
 
             var child = component.childComponents;
             for (var i = 0; i < child.length; i++) {

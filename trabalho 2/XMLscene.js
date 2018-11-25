@@ -195,7 +195,6 @@ class XMLscene extends CGFscene {
         }
 
     if (this.gui.isKeyPressed("KeyC")){
-        console.log("d");
         this.keysPressed[6] = 1
         this.movecamera = !this.movecamera;
       	text+=" C ";
@@ -225,7 +224,7 @@ class XMLscene extends CGFscene {
         }
 
       	var delta = currTime-this.oldTime;
-      	var time = delta/1000;             // this.time in seconds
+      	var time = delta/1000;             // time in seconds
       	this.oldTime = currTime;
 
         this.updateAnimations(time);
@@ -237,12 +236,8 @@ class XMLscene extends CGFscene {
             if(this.movecamera)
             this.updateCamera();
 
-        if(this.vehicleId != null) {
+        if(this.vehicleId != null)
             this.vehicleId[0].update(time);
-            /* for(var i=0; i < this.vehicleId.length ; i++) {
-
-            } */
-        }
 	};
 
   /**
@@ -368,13 +363,6 @@ class XMLscene extends CGFscene {
           this.cameraPan(1);
         if(this.keysPressed[11])
           this.cameraPan(-1);
-        /*
-        this.camera.rotate(vec3.fromValues(1,0,0),-0.01);
-        if(this.keysPressed[5])
-        this.camera.rotate(vec3.fromValues(1,0,0),0.01);
-        */
-
-
     }
 
 

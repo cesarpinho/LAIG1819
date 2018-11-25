@@ -35,7 +35,6 @@
         this.calculateVectors();
 
         this.updateAngle();
-        console.log("angle: " +this.angle);
         mat4.rotate(this.matrixR,mat4.create(),this.angle,vec3.fromValues(0,1,0) );
     }
 
@@ -72,7 +71,6 @@
           var time = this.distances[i] / this.velocity;
           this.times.push(time);
       }
-      console.log(this.times);
       this.progresses = Array.from(Array(i), () => 0);
     }
 
@@ -118,9 +116,6 @@
 
       mat4.translate(M,M, vec3.fromValues(this.dxyz[0],this.dxyz[1],this.dxyz[2]));
       mat4.multiply(this.matrixT,this.matrixT,M);
-
-      console.log("matrix updated : " + this.matrixT);
-      console.log("matrixR updated : " + this.matrixR);
     }
 
     checkVector(){
@@ -149,9 +144,7 @@
       if(!this.end)
       this.updateAngle();
 
-
       //    CHECK END
-
       this.calculatePercentages();
       this.calculatedxyz();
 
@@ -165,9 +158,4 @@
         }
       this.olddeltatime = this.deltatime;
     }
-
-
- }
-
- function noop() {
- };
+}

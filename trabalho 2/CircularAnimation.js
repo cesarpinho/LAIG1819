@@ -12,13 +12,12 @@ class CircularAnimation extends Animation
         this.flag=false;
         this.center = center;
         this.radius = radius;
-        this.angle = init_angle*Math.PI/180;
+        this.angle = init_angle*DEGREE_TO_RAD;
 
-        this.rotate_angle = rotate_angle*Math.PI/180;
+        this.rotate_angle = rotate_angle*DEGREE_TO_RAD;
         this.pos = vec3.fromValues(this.radius * Math.cos(this.angle),0,-this.radius * Math.sin(this.angle));    /// posiçao em relaçao ao centro
 
         this.startMatrix();
-
    }
 
    startMatrix(){
@@ -33,14 +32,10 @@ class CircularAnimation extends Animation
    }
 
    calculatePosition(){
-     console.log("before position : " + this.pos);
-       console.log("\nradius : " + this.radius + "\nangle : " + this.angle + "\n");
      this.pos = vec3.fromValues(this.radius * Math.cos(this.angle),0,-this.radius * Math.sin(this.angle));
-     console.log("calculated position : " + this.pos);
    }
 
    updateMatrix(){
-     console.log("inside update. ended: " + this.ended);
      if(!this.ended || this.flag){
        if(this.ended)
            this.flag =false;
@@ -52,7 +47,6 @@ class CircularAnimation extends Animation
        mat4.rotate(this.matrixR,this.matrixR,this.angle+Math.PI,vec3.fromValues(0,1,0) );
        else
        mat4.rotate(this.matrixR,this.matrixR,this.angle,vec3.fromValues(0,1,0) );
-       console.log("updated : "+ this.pos);
      }
    }
 
@@ -74,8 +68,6 @@ class CircularAnimation extends Animation
    }
 
    update(time){
-     console.log("updated");
-
      this.deltatime=time;
      this.progress+=time;
      this.checkFinal();
