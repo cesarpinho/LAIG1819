@@ -15,7 +15,7 @@
             <to x="0" y="5" z="3" />
         </ortho>
     </views>
-    
+
     <ambient>
         <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
         <background r="0.7" g="0.9" b="0.96" a="1.0" />
@@ -133,9 +133,9 @@
     <animations>
         <linear id="unstick" span="5">
           <controlpoint xx="0" yy="0" zz="0"/>
-          <controlpoint xx="-8" yy="20" zz="-5"/>
+          <controlpoint xx="0" yy="20" zz="7"/>
         </linear>
-        <circular id="rote" span="5" center="-20 0 15" radius="20" startang="45" rotang="315"/>
+        <circular id="rote" span="10" center="-25 20 7" radius="25" startang="0" rotang="-315"/>
         <circular id="test_circ_anim2" span="2" center="0 0 5" radius="10" startang="0" rotang="-90"/>
         <linear id="test_animation2" span="1">
             <controlpoint xx="0" yy="0" zz="15"/>
