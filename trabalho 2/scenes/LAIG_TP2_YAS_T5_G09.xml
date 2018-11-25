@@ -155,14 +155,14 @@
             <controlpoint xx="20" yy="10" zz="-15"/>
         </linear>
         <circular id="rote_4" span="3" center="10 10 -15" radius="10" startang="0" rotang="-90"/>
-        <circular id="rote_5" span="3" center="15 10 -15" radius="5" startang="0" rotang="-90"/>
         <linear id="vehicle_linear_6" span="2">
             <controlpoint xx="10" yy="10" zz="-5"/>
             <controlpoint xx="4" yy="10" zz="-5"/>
         </linear>
+        <circular id="rote_5" span="3" center="4 10 -3" radius="2" startang="90" rotang="60"/>
         <linear id="vehicle_linear_7" span="6">
-            <controlpoint xx="4" yy="10" zz="-5"/>
-            <controlpoint xx="2" yy="0" zz="-2"/>
+            <controlpoint xx="2" yy="10" zz="-4"/>
+            <controlpoint xx="1" yy="0" zz="-1"/>
         </linear>
     </animations>
 
@@ -254,18 +254,20 @@
             <transformation>
                 <translate x="0" y="8" z="-2" />
             </transformation>
-            <animations><!--
+            <animations>
                 <animationref id="unstick" />
                 <animationref id="rote" />
                 <animationref id="vehicle_linear_2" />
                 <animationref id="rote_2" />
                 <animationref id="vehicle_linear_3" />
                 <animationref id="rote_3" />
-                <animationref id="vehicle_linear_4" />-->
+                <animationref id="vehicle_linear_4" />
                 <animationref id="vehicle_linear_5" />
                 <animationref id="rote_4" />
                 <animationref id="vehicle_linear_6" />
+                <animationref id="rote_5" />
                 <animationref id="vehicle_linear_7" />
+
             </animations>
             <materials>
                 <material id="blue" />
