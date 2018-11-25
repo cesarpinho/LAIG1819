@@ -135,11 +135,11 @@
           <controlpoint xx="0" yy="0" zz="0"/>
           <controlpoint xx="0" yy="20" zz="7"/>
         </linear>
-        <circular id="rote" span="10" center="-25 20 7" radius="25" startang="0" rotang="-315"/>
-        <circular id="test_circ_anim2" span="2" center="0 0 5" radius="10" startang="0" rotang="-90"/>
-        <linear id="test_animation2" span="1">
-            <controlpoint xx="0" yy="0" zz="15"/>
-            <controlpoint xx="0" yy="0" zz="0"/>
+        <circular id="rote" span="3" center="-15 20 7" radius="15" startang="0" rotang="-90"/>
+        <circular id="anim" span="4" center="0 0 5" radius="10" startang="0" rotang="-90"/>
+        <linear id="anim_1" span="4">
+            <controlpoint xx="-15" yy="20" zz="22"/>
+            <controlpoint xx="-50" yy="20" zz="22"/>
         </linear>
     </animations>
 
@@ -235,6 +235,7 @@
             <animations>
                 <animationref id="unstick" />
                 <animationref id="rote" />
+                <animationref id="anim_1" />
             </animations>
             <materials>
                 <material id="blue" />
