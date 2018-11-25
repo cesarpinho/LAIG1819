@@ -48,6 +48,9 @@ class CircularAnimation extends Animation
        this.matrixT = mat4.create();
        this.matrixR = mat4.create();
        mat4.translate(this.matrixT,this.matrixT, this.pos); ///translate para a circunferencia
+       if(this.rotate_angle>0)
+       mat4.rotate(this.matrixR,this.matrixR,this.angle+Math.PI,vec3.fromValues(0,1,0) );
+       else
        mat4.rotate(this.matrixR,this.matrixR,this.angle,vec3.fromValues(0,1,0) );
        console.log("updated : "+ this.pos);
      }
