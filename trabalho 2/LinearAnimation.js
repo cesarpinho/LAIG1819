@@ -1,9 +1,16 @@
-/**
- *
- */
+
 
  class LinearAnimation extends Animation
  {
+
+   /**
+    * @constructor LinearAnimation class
+    * @param {any} scene
+    * @param {number[]} points
+    * @param {number} span
+    * @param {number} id
+    */
+
     constructor(scene, points, span, id) {
         super(scene, id, span);
 
@@ -16,7 +23,6 @@
         this.percentages = [];
         this.vectors = [];
         this.progresses = [];
-        this.angles = [];
         this.dxyz = [0,0,0];
         this.totalDistance = 0;
         this.deltatime = 0;
@@ -35,10 +41,12 @@
         this.calculateVectors();
 
         this.updateAngle();
-        console.log("angle: " +this.angle);
         mat4.rotate(this.matrixR,mat4.create(),this.angle,vec3.fromValues(0,1,0) );
     }
 
+    /**
+     * Calculate distance of each segment
+     */
     calculateDistances(){
       for(var i = 0 ; i < this.points.length - 1 ; i++){
           var dist = Math.sqrt( Math.pow(this.points[i+1][0]-this.points[i][0],2) + Math.pow(this.points[i+1][1]-this.points[i][1],2) + Math.pow(this.points[i+1][2]-this.points[i][2],2) );
@@ -47,6 +55,9 @@
       }
     }
 
+    /**
+     * Calculate vectors of each segment
+     */
     calculateVectors(){
       for(var i = 0 ; i < this.points.length - 1 ; i++){
           var vect = [this.points[i+1][0]-this.points[i][0],this.points[i+1][1]-this.points[i][1],this.points[i+1][2]-this.points[i][2]];
@@ -55,10 +66,16 @@
       this.currentVector = 0;
     }
 
+    /**
+     * Calculate velocity of the animation
+     */
     calculateVelocity(){
       this.velocity = this.totalDistance / this.span;
     }
 
+    /**
+     * Calculate percentage of time in this iteration
+     */
     calculatePercentages(){
       for(var i = 0 ; i < this.distances.length ; i++){
           var perc = this.deltatime / this.times[i];
@@ -66,16 +83,21 @@
       }
     }
 
+    /**
+     * Calculate the time of each segment
+     */
     calculateTimes(){
       var i=0;
       for(0 ; i < this.distances.length ; i++){
           var time = this.distances[i] / this.velocity;
           this.times.push(time);
       }
-      console.log(this.times);
       this.progresses = Array.from(Array(i), () => 0);
     }
 
+    /**
+     * Calculate the vector to translate in this iteration
+     */
     calculatedxyz(){
 
       if(this.currentVector>= this.points.length-1){
@@ -98,6 +120,9 @@
       this.missedtime = 0;
     }
 
+    /**
+     * Update the angle to rotate
+     */
     updateAngle(){
       if(this.vectors[this.currentVector]!=null){
         if( !isNaN( Math.atan(this.vectors[this.currentVector][0]/this.vectors[this.currentVector][2]) ) )
@@ -107,6 +132,9 @@
       }
     }
 
+    /**
+     * Update transformation matrixT and matrixR
+     */
     updateMatrix(){
 
       var M = mat4.create();
@@ -118,11 +146,12 @@
 
       mat4.translate(M,M, vec3.fromValues(this.dxyz[0],this.dxyz[1],this.dxyz[2]));
       mat4.multiply(this.matrixT,this.matrixT,M);
-
-      console.log("matrix updated : " + this.matrixT);
-      console.log("matrixR updated : " + this.matrixR);
     }
 
+
+    /**
+     * Check if the current segment has ended
+     */
     checkVector(){
       if(this.progresses[this.currentVector] >= this.times[this.currentVector]){
         this.changed=true;
@@ -134,12 +163,18 @@
       }
     }
 
+    /**
+     * Returns the transformation matrix
+     */
     getMatrix(){
       var M = mat4.create();
       mat4.multiply(M,this.matrixT,this.matrixR);
       return M;
     }
 
+    /**
+     * Update animation
+     */
     update(time){
 
       this.deltatime=time;
@@ -168,6 +203,3 @@
 
 
  }
-
- function noop() {
- };

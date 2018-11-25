@@ -4,6 +4,17 @@
 
 class CircularAnimation extends Animation
 {
+
+  /**
+   * @constructor CircularAnimation class
+   * @param {any} scene
+   * @param {number} center
+   * @param {number} radius
+   * @param {number} init_angle
+   * @param {number} rotate_angle
+   * @param {number} time
+   * @param {number} id
+   */
    constructor(scene, center, radius, init_angle, rotate_angle, time, id) {
         super(scene, id, time);
 
@@ -21,6 +32,9 @@ class CircularAnimation extends Animation
 
    }
 
+   /**
+    * Calculate the matrix for the first iteration
+    */
    startMatrix(){
        this.matrixR = mat4.create();
        this.matrixT = mat4.create();
@@ -28,17 +42,23 @@ class CircularAnimation extends Animation
        mat4.rotate(this.matrixR,this.matrixR,this.angle,vec3.fromValues(0,1,0) );
    }
 
+   /**
+    * Update angle
+    */
    updateAngle(){
      this.angle += this.rotate_angle*this.deltatime/this.time;
    }
 
+   /**
+    * Update position
+    */
    calculatePosition(){
-     console.log("before position : " + this.pos);
-       console.log("\nradius : " + this.radius + "\nangle : " + this.angle + "\n");
      this.pos = vec3.fromValues(this.radius * Math.cos(this.angle),0,-this.radius * Math.sin(this.angle));
-     console.log("calculated position : " + this.pos);
    }
 
+   /**
+    * Update transformation matrixR and matrixT
+    */
    updateMatrix(){
      console.log("inside update. ended: " + this.ended);
      if(!this.ended || this.flag){
@@ -56,6 +76,9 @@ class CircularAnimation extends Animation
      }
    }
 
+   /**
+    * Returns the transformation matrix
+    */
    getMatrix(){
      var M = mat4.create();
      mat4.translate(M,M, this.center);
@@ -64,6 +87,9 @@ class CircularAnimation extends Animation
      return M;
    }
 
+   /**
+    * Check if the animation has ended
+    */
    checkFinal(){
      if(this.progress > this.time && !this.ended){
        this.flag=true;
@@ -73,6 +99,9 @@ class CircularAnimation extends Animation
      }
    }
 
+   /**
+    * Update animation
+    */
    update(time){
      console.log("updated");
 
