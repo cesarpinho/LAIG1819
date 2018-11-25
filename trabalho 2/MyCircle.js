@@ -2,13 +2,11 @@
  * MyCircle Class
  */
 
-
 class MyCircle extends CGFobject
 {
 	constructor(scene, slices)
     {
         super(scene);
-
         this.slices = slices;
 
         this.initBuffers();
