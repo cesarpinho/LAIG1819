@@ -35,6 +35,8 @@ class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
 
+        this.angle = 0;
+
         this.setUpdatePeriod(20);
     }
 
@@ -114,6 +116,9 @@ class XMLscene extends CGFscene {
         this.sceneInited = true;
 
         this.initKeys();
+
+        this.distance = this.distance2points([this.camera.position[0], 0, this.camera.position[2]], [this.camera.target[0], 0, this.camera.target[2]]);
+
     }
 
     /**
@@ -122,11 +127,11 @@ class XMLscene extends CGFscene {
     checkKeys()
 	{
 
-        //      reset keys
+    //      reset keys
 
-        for(var i = 0 ; i < this.keysPressed.length ; i++){
-            this.keysPressed[i] = 0;
-        }
+    for(var i = 0 ; i < this.keysPressed.length ; i++){
+        this.keysPressed[i] = 0;
+    }
 
 		var text="Keys pressed: ";
 		var keysPressed=false;
@@ -169,23 +174,54 @@ class XMLscene extends CGFscene {
 			keysPressed=true;
         }
 
-        if (this.gui.isKeyPressed("KeyC")){
-            console.log("d");
-            this.keysPressed[6] = 1
-            this.movecamera = !this.movecamera;
-			text+=" C ";
-			keysPressed=true;
+    if (this.gui.isKeyPressed("KeyR")){
+            this.keysPressed[7] = 1
+  		text+=" R ";
+  		keysPressed=true;
+        }
+
+    if (this.gui.isKeyPressed("KeyF")){
+            this.keysPressed[8] = 1
+      text+=" F ";
+      keysPressed=true;
+        }
+
+    if (this.gui.isKeyPressed("KeyL")){
+            this.keysPressed[9] = 1
+      text+=" L ";
+      keysPressed=true;
+        }
+
+    if (this.gui.isKeyPressed("KeyC")){
+        console.log("d");
+        this.keysPressed[6] = 1
+        this.movecamera = !this.movecamera;
+      	text+=" C ";
+      	keysPressed=true;
+		}
+
+    if (this.gui.isKeyPressed("KeyE")){
+      this.keysPressed[10] = 1
+      text+=" E ";
+      keysPressed=true;
+        }
+
+    if (this.gui.isKeyPressed("KeyQ")){
+        this.keysPressed[11] = 1
+      	text+=" Q ";
+      	keysPressed=true;
 		}
 
 		if (keysPressed)
 		console.log(text);
+
 	}
 
     update(currTime) {
   		if(this.oldTime == null){
   			this.oldTime = currTime;
         }
-          
+
       	var delta = currTime-this.oldTime;
       	var time = delta/1000;             // this.time in seconds
       	this.oldTime = currTime;
@@ -194,16 +230,16 @@ class XMLscene extends CGFscene {
         this.graph.checkAnimationsend();
 
         // Verify the keys pressed
-        //this.checkKeys();
+        this.checkKeys();
 
         if(this.sceneInited)
             if(this.movecamera)
             this.updateCamera();
-        
+
         if(this.vehicleId != null) {
             this.vehicleId[0].update(time);
             /* for(var i=0; i < this.vehicleId.length ; i++) {
-                
+
             } */
         }
 	};
@@ -284,19 +320,51 @@ class XMLscene extends CGFscene {
         this.keysPressed[4] = 0;       // W
         this.keysPressed[5] = 0;       // S
         this.keysPressed[6] = 0;       // C
+        this.keysPressed[7] = 0;       // R
+        this.keysPressed[8] = 0;       // F
+        this.keysPressed[9] = 0;       // L
+        this.keysPressed[10] = 0;      // E
+        this.keysPressed[11] = 0;      // Q
 
     }
+
+    /**
+    *   Function that updates de moving camera
+    *
+    *           Instructions:
+    *
+    *       C -> enable/disable moving camera
+    *
+    *       D and A -> change where the camera is facing (target), RIGHT or LEFT
+    *       O and L -> change where the camera is facing (target), UP or DOWN
+    *       E and Q -> Pan the camera RIGHT or LEFT
+    *       R and F -> move camera, UP or DOWN
+    *       W and S -> Moves camera forward, FRONT or BACK
+    *
+    */
 
     updateCamera(){
 
         if(this.keysPressed[4])
-        this.cameraTranslate(0);
+          this.cameraTranslate(0);
         if(this.keysPressed[5])
-        this.cameraTranslate(1);
+          this.cameraTranslate(1);
+        if(this.keysPressed[7])
+          this.cameraTranslate(2);
+        if(this.keysPressed[8])
+          this.cameraTranslate(3);
         if(this.keysPressed[3])
-        this.cameraRotate(0);
+          this.cameraRotate(0);
         if(this.keysPressed[2])
-        this.cameraRotate(1);
+          this.cameraRotate(1);
+        if(this.keysPressed[1])
+          this.cameraRotate(2);
+        if(this.keysPressed[9])
+          this.cameraRotate(3);
+        if(this.keysPressed[10])
+          this.cameraPan(1);
+        if(this.keysPressed[11])
+          this.cameraPan(-1);
         /*
         this.camera.rotate(vec3.fromValues(1,0,0),-0.01);
         if(this.keysPressed[5])
@@ -306,15 +374,30 @@ class XMLscene extends CGFscene {
 
     }
 
+
+    cameraPan(d){
+        var speed = 1;
+        this.camera.pan(vec3.fromValues(d*speed,0,0));
+    }
+
     cameraTranslate(t){
+        var speed = 4
         switch(t){
             case 0: //  translate FRONT
-                this.camera.zoom(1);
-                this.movetarget(1);
+                this.camera.zoom(speed);
+                this.movetarget(speed);
                 break;
             case 1: //  translate BACK
-                this.camera.zoom(-1);
-                this.movetarget(-1);
+                this.camera.zoom(-speed);
+                this.movetarget(-speed);
+                break;
+            case 2:
+                this.camera.setTarget(vec3.fromValues(this.camera.target[0],this.camera.target[1]+speed,this.camera.target[2]));
+                this.camera.setPosition(vec3.fromValues(this.camera.position[0],this.camera.position[1]+speed,this.camera.position[2]));
+                break;
+            case 3:
+                this.camera.setTarget(vec3.fromValues(this.camera.target[0],this.camera.target[1]-speed,this.camera.target[2]));
+                this.camera.setPosition(vec3.fromValues(this.camera.position[0],this.camera.position[1]-speed,this.camera.position[2]));
                 break;
             default:
             break;
@@ -322,6 +405,7 @@ class XMLscene extends CGFscene {
     }
 
     cameraRotate(r){
+            var speed = 4;
         switch(r){
             case 0: //  rotate RIGHT
             this.angle+=0.05;
@@ -331,14 +415,20 @@ class XMLscene extends CGFscene {
             this.angle-=0.05;
             this.camera.setTarget(vec3.fromValues(this.distance*Math.cos(this.angle + 225*Math.PI/180) + this.camera.position[0], this.camera.target[1], this.distance*Math.sin(this.angle + 225*Math.PI/180) + this.camera.position[2]));
                 break;
+            case 2:  /// 1 -> up / -1 -> down
+                this.camera.setTarget(vec3.fromValues(this.camera.target[0], this.camera.target[1]+speed, this.camera.target[2]));
+                break;
+            case 3:
+                this.camera.setTarget(vec3.fromValues(this.camera.target[0], this.camera.target[1]-speed, this.camera.target[2]));
+                break;
             default:
             break;
         }
     }
 
+
     movetarget(d){
         var dir = this.camera.calculateDirection();
-        console.log(this.camera.target[0]);
         console.log(dir[0]);
         console.log(dir[1]);
         console.log(dir[2]);
@@ -347,6 +437,8 @@ class XMLscene extends CGFscene {
         console.log("z: " + this.camera.target[2]);
         this.camera.setTarget(vec3.fromValues(this.camera.target[0] + dir[0] * d, this.camera.target[1] + dir[1] * d, this.camera.target[2] + dir[2] * d));
         console.log(dir);
+        console.log("position: " + this.camera.position[0] + " " + this.camera.position[1]+ " " + this.camera.position[2] + "\n");
+        console.log("target: " + this.camera.target[0] + " " + this.camera.target[1]+ " " + this.camera.target[2] + "\n");
     }
 
     distance2points(a,b){
