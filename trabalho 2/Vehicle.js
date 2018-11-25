@@ -7,6 +7,10 @@ class Vehicle extends CGFobject {
         super(scene);
 
         this.scene = scene;
+        this.propeller_angle = 0;
+        this.lastTime;
+        this.speed = 500; 
+
         this.surfaceRight  = new Patch(scene, 4, 4, 30, 30, [
             [0, 0, 0],
             [0, -0.5, 0.2],
@@ -86,7 +90,9 @@ class Vehicle extends CGFobject {
         
         // Big propeller display
         this.scene.pushMatrix();
-            this.scene.translate(0,1.5,0);
+            this.scene.translate(0,1.5,1.4);
+            this.scene.rotate(this.propeller_angle, 0 ,1,0);
+            this.scene.translate(0,0,-1.4);
             this.scene.pushMatrix();
                 this.scene.translate(0,0,1.4);
                 this.scene.rotate(-90 * DEGREE_TO_RAD,1,0,0);
@@ -101,13 +107,16 @@ class Vehicle extends CGFobject {
         // Small Propeller
         this.scene.pushMatrix();
             this.scene.translate(0.1,1.35,5.9);
+            this.scene.rotate(this.propeller_angle, 1 ,0,0);
             this.scene.scale(0.4, 0.3, 0.3);
             this.scene.rotate(90 * DEGREE_TO_RAD,0,1,0);
             this.black_material.apply();
             this.propeller_bearing.display();
         this.scene.popMatrix();
         this.scene.pushMatrix();
-            this.scene.translate(0.25,1.39,5.45);
+            this.scene.translate(0.25,1.39,5.85);
+            this.scene.rotate(this.propeller_angle, 1 ,0,0);
+            this.scene.translate(0,0.08,-0.45);
             this.scene.scale(0.1,0.4,0.15);
             this.scene.rotate(-90 * DEGREE_TO_RAD,0,0,1);
             this.black_material.apply();
@@ -176,5 +185,13 @@ class Vehicle extends CGFobject {
             this.tail_wing1.display();
             this.tail_wing2.display();
         this.scene.popMatrix();
+    }
+
+    update(time) {
+        if(this.propeller_angle > (360*DEGREE_TO_RAD))
+            this.propeller_angle -= (360*DEGREE_TO_RAD);
+            
+        this.propeller_angle += (this.speed * time) * DEGREE_TO_RAD;
+    
     }
 }

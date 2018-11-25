@@ -181,34 +181,41 @@ class XMLscene extends CGFscene {
 		console.log(text);
 	}
 
-    update(currTime)
-	{
-  		if(this.oldTime==null){
-  			this.oldTime=currTime;
-  		}
-      	this.delta=currTime-this.oldTime;
-      	this.time = this.delta/1000;             // this.time in seconds
-      	this.oldTime=currTime;
+    update(currTime) {
+  		if(this.oldTime == null){
+  			this.oldTime = currTime;
+        }
+          
+      	var delta = currTime-this.oldTime;
+      	var time = delta/1000;             // this.time in seconds
+      	this.oldTime = currTime;
 
-     this.updateAnimations();
-     this.graph.checkAnimationsend();
+        this.updateAnimations(time);
+        this.graph.checkAnimationsend();
 
-		// Verify the keys pressed
-		this.checkKeys();
+        // Verify the keys pressed
+        //this.checkKeys();
 
-    if(this.sceneInited)
-    if(this.movecamera)
-      this.updateCamera();
+        if(this.sceneInited)
+            if(this.movecamera)
+            this.updateCamera();
+        
+        if(this.vehicleId != null) {
+            this.vehicleId[0].update(time);
+            /* for(var i=0; i < this.vehicleId.length ; i++) {
+                
+            } */
+        }
 	};
 
   /**
    * Updates all animations
    */
-   updateAnimations(){
+   updateAnimations(time){
        for (var key in this.graph.animations) {
            if (this.graph.animations.hasOwnProperty(key)) {
              if(this.graph.animations[key].started)
-              this.graph.animations[key].update(this.time);
+              this.graph.animations[key].update(time);
            }
        }
    }

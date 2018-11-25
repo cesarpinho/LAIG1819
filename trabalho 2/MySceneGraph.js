@@ -1155,6 +1155,11 @@ class MySceneGraph {
             }
             else if (primitiveType == 'vehicle') {
                 var vehicle = new Vehicle(this.scene);
+                
+                if (this.scene.vehicleId == null)
+                    this.scene.vehicleId = [];
+
+                this.scene.vehicleId.push(vehicle);
 
                 this.primitives[primitiveId] = vehicle;
             }

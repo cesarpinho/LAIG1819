@@ -3,7 +3,7 @@
 
     <views default="Default" >
         <perspective id="Default" near="0.1" far="500" angle="45">
-            <from x="40" y="40" z="40" />
+            <from x="100" y="100" z="100" />
             <to x="0" y="-2" z="0" />
         </perspective>
         <perspective id="Table" near="0.1" far="600" angle="40">
@@ -131,16 +131,16 @@
     </transformations>
 
     <animations>
-        <linear id="test_animation1" span="1">
-          <controlpoint xx="0" yy="0" zz="5"/>
-          <controlpoint xx="5" yy="0" zz="0"/>
+        <linear id="unstick" span="10">
+          <controlpoint xx="0" yy="0" zz="0"/>
+          <controlpoint xx="5" yy="20" zz="-8"/>
         </linear>
+        <circular id="rote" span="5" center="15 0 20" radius="2" startang="45" rotang="315"/>
+        <circular id="test_circ_anim2" span="2" center="0 0 5" radius="10" startang="0" rotang="-90"/>
         <linear id="test_animation2" span="1">
             <controlpoint xx="0" yy="0" zz="15"/>
             <controlpoint xx="0" yy="0" zz="0"/>
         </linear>
-        <circular id="test_circ_anim" span="1" center="5 0 5" radius="5" startang="90" rotang="-90"/>
-        <circular id="test_circ_anim2" span="2" center="0 0 5" radius="10" startang="0" rotang="-90"/>
     </animations>
 
     <primitives>
@@ -232,9 +232,10 @@
                 <rotate axis="y" angle="-90" />
                 <translate x="0" y="8" z="-2" />
             </transformation>
-            <!-- <animations>
-                <animationsref id="" />
-            </animations> -->
+            <animations>
+                <animationref id="unstick" />
+                <animationref id="rote" />
+            </animations>
             <materials>
                 <material id="blue" />
             </materials>
