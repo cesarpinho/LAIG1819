@@ -184,9 +184,7 @@
       if(!this.end)
       this.updateAngle();
 
-
       //    CHECK END
-
       this.calculatePercentages();
       this.calculatedxyz();
 
