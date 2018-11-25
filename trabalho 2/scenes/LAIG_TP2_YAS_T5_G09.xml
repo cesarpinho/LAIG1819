@@ -135,11 +135,24 @@
           <controlpoint xx="0" yy="0" zz="0"/>
           <controlpoint xx="0" yy="20" zz="7"/>
         </linear>
-        <circular id="rote" span="3" center="-15 20 7" radius="15" startang="0" rotang="-90"/>
-        <circular id="anim" span="4" center="0 0 5" radius="10" startang="0" rotang="-90"/>
-        <linear id="anim_1" span="4">
-            <controlpoint xx="-15" yy="20" zz="22"/>
-            <controlpoint xx="-50" yy="20" zz="22"/>
+        <linear id="vehicle_linear_2" span="5">
+          <controlpoint xx="-30" yy="20" zz="7"/>
+          <controlpoint xx="-30" yy="20" zz="-40"/>
+        </linear>
+        <circular id="rote" span="5" center="-15 20 7" radius="15" startang="0" rotang="-180"/>
+        <circular id="rote_2" span="2" center="-26 20 -40" radius="4" startang="180" rotang="-90"/>
+        <linear id="vehicle_linear_3" span="4">
+            <controlpoint xx="-26" yy="20" zz="-44"/>
+            <controlpoint xx="15" yy="0" zz="-44"/>
+        </linear>
+        <circular id="rote_3" span="3" center="15 0 -39" radius="5" startang="90" rotang="-90"/>
+        <linear id="vehicle_linear_4" span="2">
+            <controlpoint xx="20" yy="0" zz="-39"/>
+            <controlpoint xx="20" yy="0" zz="-20"/>
+        </linear>
+        <linear id="vehicle_linear_5" span="3">
+            <controlpoint xx="20" yy="0" zz="-20"/>
+            <controlpoint xx="20" yy="10" zz="-10"/>
         </linear>
     </animations>
 
@@ -229,13 +242,17 @@
 
         <component id="vehicle">
             <transformation>
-                <rotate axis="y" angle="-90" />
                 <translate x="0" y="8" z="-2" />
             </transformation>
             <animations>
                 <animationref id="unstick" />
                 <animationref id="rote" />
-                <animationref id="anim_1" />
+                <animationref id="vehicle_linear_2" />
+                <animationref id="rote_2" />
+                <animationref id="vehicle_linear_3" />
+                <animationref id="rote_3" />
+                <animationref id="vehicle_linear_4" />
+                <animationref id="vehicle_linear_5" />
             </animations>
             <materials>
                 <material id="blue" />
