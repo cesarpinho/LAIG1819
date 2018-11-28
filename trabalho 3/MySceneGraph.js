@@ -1669,7 +1669,7 @@ class MySceneGraph {
     displayScene() {
         this.stack = [];
 
-        var b = new Board(this.scene, 19,19);
+        var b = new Board(this.scene, 8, 8);
         b.display();
         //this.processNode(this.idRoot, mat4.create(), 'default', null, null, null, false);
     }

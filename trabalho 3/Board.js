@@ -34,7 +34,7 @@ class Board extends CGFobject {
             x += 1;
         }
 
-        if( (this.columns%2) == 0 )
+        if((this.columns % 2) == 0)
             this.color = !this.color;
     }
 
@@ -45,5 +45,20 @@ class Board extends CGFobject {
             this.displayLine(z);
             z += 1;
         }
+
+        this.scene.pushMatrix();
+            this.scene.translate(-3, 0, this.lines/2 + 3);
+            this.scene.scale(2, 1, 6);
+            this.scene.rotate(-90 * DEGREE_TO_RAD, 1,0,0);
+            this.black_material.apply();
+            this.square.display();
+        this.scene.popMatrix();
+        this.scene.pushMatrix();
+            this.scene.translate(this.columns + 1, 0, this.lines/2 + 3);
+            this.scene.scale(2, 1, 6);
+            this.scene.rotate(-90 * DEGREE_TO_RAD, 1,0,0);
+            this.white_material.apply();
+            this.square.display();
+        this.scene.popMatrix();
     }
 }
