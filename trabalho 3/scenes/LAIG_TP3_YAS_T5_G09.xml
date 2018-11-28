@@ -6,9 +6,13 @@
  		<from x="30" y="15" z="30" />
  		<to x="0" y="-2" z="0" />
     </perspective>
-    <perspective id="Table" near="0.1" far="600" angle="40">
- 		<from x="25" y="10" z="12" />
- 		<to x="9" y="2" z="11" />
+    <perspective id="Player1" near="0.1" far="600" angle="40">
+        <from x="4" y="20" z="5" />
+        <to x="4" y="0" z="4" />
+    </perspective>
+    <perspective id="Player2" near="0.1" far="600" angle="40">
+        <from x="4" y="20" z="3" />
+        <to x="4" y="0" z="4" />
     </perspective>
     <ortho id="Ortho" near="0.4" far="200" left="-15" right="15" top="12" bottom="-6" >
         <from x="30" y="5" z="25" />
@@ -31,7 +35,7 @@
 
     <spot id="Spot Light" enabled="0" angle="0.0" exponent="0.0">
         <location x="10.2" y="11.9" z="10" w="1.0" />
-        <target x="5.0" y="0.0" z="5.0" />        
+        <target x="5.0" y="0.0" z="5.0" />
         <ambient r="0" g="0" b="0" a="1.0" />
         <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
         <specular r="1.0" g="1.0" b="1.0" a="1.0" />
@@ -44,7 +48,7 @@
       <specular r="1.0" g="1.0" b="1.0" a="1.0" />
     </omni>
  </lights>
- 
+
  <textures>
     <texture id="ground" file="scenes/images/ground.jpg" />
     <texture id="mosaic_wall" file="scenes/images/mosaic-wall.jpg" />
@@ -53,7 +57,7 @@
     <texture id="apple" file="scenes/images/apple.jpg" />
     <texture id="cmtv" file="scenes/images/tv.jpg"/>
  </textures>
- 
+
  <materials>
     <material id="white" shininess = "30" >
       <emission r="0" g="0" b="0" a="1.0" />
@@ -61,7 +65,7 @@
       <diffuse r="1" g="1" b="1" a="1.0" />
       <specular r="1" g="1" b="1" a="1.0" />
     </material>
-    
+
     <material id="red" shininess = "10" >
       <emission r="0" g="0" b="0" a="1.0" />
       <ambient r="0" g="0" b="0" a="1.0" />
@@ -109,21 +113,21 @@
     <transformation id="floor_tr">
         <scale x="20" y="1" z="20" />
         <rotate axis="x" angle="-90" />
-        <rotate axis="z" angle="-90" />       
+        <rotate axis="z" angle="-90" />
     </transformation>
     <transformation id="left_wall_tr">
         <scale x="1" y="15" z="20" />
-        <translate x="0" y="0" z="1" /> 
-        <rotate axis="y" angle="90" />       
+        <translate x="0" y="0" z="1" />
+        <rotate axis="y" angle="90" />
     </transformation>
     <transformation id="right_wall_tr">
-        <scale x="20" y="15" z="1" />      
+        <scale x="20" y="15" z="1" />
     </transformation>
     <transformation id="wall_tr">
         <rotate axis="y" angle="-90" />
     </transformation>
     <transformation id="cupboard_body_tr">
-        <scale x="20" y="5" z="4" />      
+        <scale x="20" y="5" z="4" />
     </transformation>
  </transformations>
 
@@ -182,7 +186,7 @@
         </children>
     </component>
     <component id="face_back">
-        <transformation>  
+        <transformation>
             <translate x="0" y="1" z="0" />
             <rotate axis="x" angle="180" />
         </transformation>
@@ -196,7 +200,7 @@
     </component>
 
     <component id="face_pair_front">
-        <transformation>  
+        <transformation>
         </transformation>
         <materials>
             <material id="inherit" />
@@ -209,8 +213,8 @@
     </component>
     <component id="face_pair_top">
         <transformation>
-            <rotate axis="y" angle="-90" /> 
-            <rotate axis="x" angle="-90" /> 
+            <rotate axis="y" angle="-90" />
+            <rotate axis="x" angle="-90" />
         </transformation>
         <materials>
             <material id="inherit" />
@@ -224,7 +228,7 @@
     <component id="face_pair_sides">
         <transformation>
             <translate x="1" y="0" z="0" />
-            <rotate axis="y" angle="-90" /> 
+            <rotate axis="y" angle="-90" />
         </transformation>
         <materials>
             <material id="inherit" />
@@ -265,7 +269,7 @@
     </component>
 
     <component id="floor">
-        <transformation>  
+        <transformation>
             <transformationref id="floor_tr" />
         </transformation>
         <materials>
@@ -279,7 +283,7 @@
         </children>
     </component>
     <component id="left_wall">
-        <transformation>  
+        <transformation>
             <transformationref id="left_wall_tr" />
         </transformation>
         <materials>
@@ -291,7 +295,7 @@
         </children>
     </component>
     <component id="right_wall">
-        <transformation>  
+        <transformation>
             <transformationref id="right_wall_tr" />
         </transformation>
         <materials>
@@ -453,7 +457,7 @@
         <transformation>
             <translate x="4.1" y="5" z="4.1" />
             <scale x="1.06" y="1" z="1" />
-            <rotate axis="y" angle="90" /> 
+            <rotate axis="y" angle="90" />
         </transformation>
         <materials>
             <material id="white" />
@@ -609,7 +613,7 @@
         </children>
     </component>
     <component id="lamp_bot">
-        <transformation>          
+        <transformation>
             <rotate axis="x" angle="-90" />
         </transformation>
         <materials>
@@ -825,7 +829,7 @@
 
     <component id="cup_border">
         <transformation>
-            <translate x="13" y="5" z="12.5" />            
+            <translate x="13" y="5" z="12.5" />
             <scale x="1" y="1" z="0.5" />
             <rotate axis="x" angle="90" />
         </transformation>
@@ -839,7 +843,7 @@
     </component>
     <component id="cup">
         <transformation>
-            <translate x="13" y="4.8" z="12.5" />            
+            <translate x="13" y="4.8" z="12.5" />
             <scale x="1" y="0.5" z="0.5" />
             <rotate axis="x" angle="90" />
         </transformation>
@@ -854,7 +858,7 @@
 
     <component id="fruit1">
         <transformation>
-            <translate x="12.7" y="5.1" z="12.2" /> 
+            <translate x="12.7" y="5.1" z="12.2" />
             <scale x="0.7" y="0.7" z="0.7" />
         </transformation>
         <materials>
@@ -867,7 +871,7 @@
     </component>
     <component id="fruit2">
         <transformation>
-            <translate x="13.4" y="5.1" z="12.2" />            
+            <translate x="13.4" y="5.1" z="12.2" />
             <scale x="0.7" y="0.7" z="0.7" />
         </transformation>
         <materials>
@@ -880,7 +884,7 @@
     </component>
     <component id="fruit3">
         <transformation>
-            <translate x="12.7" y="5.1" z="12.9" />            
+            <translate x="12.7" y="5.1" z="12.9" />
             <scale x="0.7" y="0.7" z="0.7" />
         </transformation>
         <materials>
@@ -893,7 +897,7 @@
     </component>
     <component id="fruit4">
         <transformation>
-            <translate x="13.4" y="5.1" z="12.9" />            
+            <translate x="13.4" y="5.1" z="12.9" />
             <scale x="0.7" y="0.7" z="0.7" />
         </transformation>
         <materials>
@@ -906,7 +910,7 @@
     </component>
     <component id="fruit5">
         <transformation>
-            <translate x="13" y="5.5" z="12.5" />            
+            <translate x="13" y="5.5" z="12.5" />
             <scale x="0.7" y="0.7" z="0.7" />
         </transformation>
         <materials>
@@ -943,7 +947,7 @@
         <texture id="none" />
         <children>
             <componentref id="cup" />
-            <componentref id="cup_border" />         
+            <componentref id="cup_border" />
             <componentref id="fruits" />
         </children>
     </component>
@@ -991,7 +995,7 @@
         <transformation>
         </transformation>
         <materials>
-            <material id="beige" /> 
+            <material id="beige" />
             <material id="grey" />
             <material id="red" />
         </materials>
@@ -1015,7 +1019,7 @@
         <children>
             <componentref id="cube" />
         </children>
-    </component> 
+    </component>
     <component id="television_border_top">
         <transformation>
             <translate x="0.7" y="2.7" z="0" />
@@ -1028,7 +1032,7 @@
         <children>
             <componentref id="cube" />
         </children>
-    </component> 
+    </component>
     <component id="television_border_right">
         <transformation>
             <translate x="0.7" y="0.3" z="0" />

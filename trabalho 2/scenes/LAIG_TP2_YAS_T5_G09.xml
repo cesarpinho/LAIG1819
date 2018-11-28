@@ -6,9 +6,13 @@
             <from x="60" y="60" z="60" />
             <to x="0" y="-2" z="0" />
         </perspective>
-        <perspective id="Heliport" near="0.1" far="600" angle="40">
-            <from x="30" y="30" z="30" />
-            <to x="10" y="10" z="30" />
+        <perspective id="Player1" near="0.1" far="600" angle="40">
+            <from x="5" y="10" z="15" />
+            <to x="5" y="0" z="5" />
+        </perspective>
+        <perspective id="Player2" near="0.1" far="600" angle="40">
+            <from x="5" y="10" z="-5" />
+            <to x="5" y="0" z="5" />
         </perspective>
         <ortho id="Ortho" near="0.4" far="500" left="-25" right="25" top="25" bottom="-6" >
             <from x="100" y="50" z="100" />
