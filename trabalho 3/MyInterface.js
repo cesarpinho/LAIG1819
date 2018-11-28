@@ -25,15 +25,18 @@ class MyInterface extends CGFinterface {
         this.initKeys();
         this.initMouse();
 
+        this.pecaselected=null;
+        this.selected=false;
+
         return true;
     }
 
     /**
      * initMouse
-     */
+     *//*
     initMouse() {
         this.processMouse=function(){};
-    }
+    }*/
 
     processMouseDown(event) {       /// Player 1 (172,140) (510,140) (172,480) (510,480)  Aproximado
       console.log("mouse down: " + event.x + " " + event.y);
@@ -49,6 +52,17 @@ class MyInterface extends CGFinterface {
       console.log(c);
       var d = (Math.floor((event.y-140)/c));
       console.log(d);
+
+      if(!this.selected){
+      this.pecaselected = [b,d];
+      this.selected = true;
+      console.log(this.pecaselected);
+    }
+      else{
+        this.scene.graph.board.movePeca(this.pecaselected[0],this.pecaselected[1],b,d);
+        this.selected = false;
+      }
+
     };
 
     /**

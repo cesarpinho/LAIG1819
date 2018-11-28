@@ -37,6 +37,7 @@ class MySceneGraph {
 
         // File reading
         this.reader = new CGFXMLreader();
+        this.board = new Board(this.scene, 8,8);
 
         /*
          * Read the contents of the xml file, and refer to this class for loading and error handlers.
@@ -1668,9 +1669,7 @@ class MySceneGraph {
      */
     displayScene() {
         this.stack = [];
-
-        var b = new Board(this.scene, 8,8);
-        b.display();
+        this.board.display();
         //this.processNode(this.idRoot, mat4.create(), 'default', null, null, null, false);
     }
 
