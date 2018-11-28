@@ -124,16 +124,14 @@ class XMLscene extends CGFscene {
     /**
      * Keys handler called on display function
      */
-    checkKeys()
-	{
+    checkKeys() {
+        //      reset keys
+        if(!this.sceneInited)
+        return;
 
-    //      reset keys
-    if(!this.sceneInited)
-      return;
-
-    for(var i = 0 ; i < this.keysPressed.length ; i++){
-        this.keysPressed[i] = 0;
-    }
+        for(var i = 0 ; i < this.keysPressed.length ; i++){
+            this.keysPressed[i] = 0;
+        }
 
 		var text="Keys pressed: ";
 		var keysPressed=false;
@@ -176,46 +174,45 @@ class XMLscene extends CGFscene {
 			keysPressed=true;
         }
 
-    if (this.gui.isKeyPressed("KeyR")){
+        if (this.gui.isKeyPressed("KeyR")){
             this.keysPressed[7] = 1
-  		text+=" R ";
-  		keysPressed=true;
+            text+=" R ";
+            keysPressed=true;
         }
 
-    if (this.gui.isKeyPressed("KeyF")){
+        if (this.gui.isKeyPressed("KeyF")){
             this.keysPressed[8] = 1
-      text+=" F ";
-      keysPressed=true;
+            text+=" F ";
+            keysPressed=true;
         }
 
-    if (this.gui.isKeyPressed("KeyL")){
+        if (this.gui.isKeyPressed("KeyL")){
             this.keysPressed[9] = 1
-      text+=" L ";
-      keysPressed=true;
+            text+=" L ";
+            keysPressed=true;
         }
 
-    if (this.gui.isKeyPressed("KeyC")){
-        this.keysPressed[6] = 1
-        this.movecamera = !this.movecamera;
-      	text+=" C ";
-      	keysPressed=true;
-		}
-
-    if (this.gui.isKeyPressed("KeyE")){
-      this.keysPressed[10] = 1
-      text+=" E ";
-      keysPressed=true;
+        if (this.gui.isKeyPressed("KeyC")){
+            this.keysPressed[6] = 1
+            this.movecamera = !this.movecamera;
+            text+=" C ";
+            keysPressed=true;
         }
 
-    if (this.gui.isKeyPressed("KeyQ")){
-        this.keysPressed[11] = 1
-      	text+=" Q ";
-      	keysPressed=true;
-		}
+        if (this.gui.isKeyPressed("KeyE")){
+            this.keysPressed[10] = 1
+            text+=" E ";
+            keysPressed=true;
+        }
 
-		if (keysPressed)
-		console.log(text);
+        if (this.gui.isKeyPressed("KeyQ")){
+            this.keysPressed[11] = 1
+            text+=" Q ";
+            keysPressed=true;
+        }
 
+        if (keysPressed)
+        console.log(text);
 	}
 
     update(currTime) {
@@ -240,19 +237,19 @@ class XMLscene extends CGFscene {
             this.vehicleId[0].update(time);
 	};
 
-  /**
-   * Updates all animations
-   */
-   updateAnimations(time){
-   this.graph.checkAnimationsend();
-       for (var key in this.graph.animations) {
-           if (this.graph.animations.hasOwnProperty(key)) {
-             if(this.graph.animations[key].started){
-              this.graph.animations[key].update(time);
+    /**
+     * Updates all animations
+     */
+    updateAnimations(time){
+        this.graph.checkAnimationsend();
+        for (var key in this.graph.animations) {
+            if (this.graph.animations.hasOwnProperty(key)) {
+                if(this.graph.animations[key].started){
+                    this.graph.animations[key].update(time);
+                }
             }
-           }
-       }
-   }
+        }
+    }
 
     /**
      * Displays the scene.
@@ -328,9 +325,7 @@ class XMLscene extends CGFscene {
 
     /**
     *   Function that updates de moving camera
-    *
-    *           Instructions:
-    *
+    *       Instructions:
     *       C -> enable/disable moving camera
     *
     *       D and A -> change where the camera is facing (target), RIGHT or LEFT
@@ -338,9 +333,7 @@ class XMLscene extends CGFscene {
     *       E and Q -> Pan the camera RIGHT or LEFT
     *       R and F -> move camera, UP or DOWN
     *       W and S -> Moves camera forward, FRONT or BACK
-    *
     */
-
     updateCamera(){
 
         if(this.keysPressed[4])
@@ -364,7 +357,6 @@ class XMLscene extends CGFscene {
         if(this.keysPressed[11])
           this.cameraPan(-1);
     }
-
 
     cameraPan(d){
         var speed = 0.5;

@@ -1691,7 +1691,6 @@ class MySceneGraph {
 
             var mat = component.materialsref[component.materialN];
             var tex = component.textureref;
-            var anim = component.currAnimation;
             var s = component.length_s;
             var t = component.length_t;
 
@@ -1714,7 +1713,8 @@ class MySceneGraph {
                 tgMatrix, this.transformations[component.transfMatrix]);
 
             if(component.animationsref!=null){
-              mat4.multiply(transformation,transformation,this.animations[component.currAnimationID].getMatrix()); //é o "apply"
+              mat4.multiply(transformation,transformation,
+                this.animations[component.currAnimationID].getMatrix()); //é o "apply"
             }
 
             var child = component.childComponents;
