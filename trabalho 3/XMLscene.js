@@ -38,6 +38,7 @@ class XMLscene extends CGFscene {
         this.angle = 0;
 
         this.setUpdatePeriod(30);
+        this.setPickEnabled(true);
     }
 
     /**
@@ -118,9 +119,132 @@ class XMLscene extends CGFscene {
         this.distance = this.distance2points([this.camera.position[0], 0, this.camera.position[2]], [this.camera.target[0], 0, this.camera.target[2]]);
 
         this.sceneInited = true;
-
     }
 
+    update(currTime) {
+        if(this.oldTime == null){
+  			this.oldTime = currTime;
+        }
+        
+        var delta = currTime-this.oldTime;
+      	var time = delta/1000;             // time in seconds
+      	this.oldTime = currTime;
+          
+        this.updateAnimations(time);
+        
+        // Verify the keys pressed
+        this.checkKeys();
+        
+        if(this.sceneInited)
+            if(this.movecamera)
+                this.updateCamera();
+            
+        if(this.vehicleId != null)
+            this.vehicleId[0].update(time);
+    };
+        
+    /**
+     * Updates all animations
+     */
+    updateAnimations(time){
+        this.graph.checkAnimationsend();
+        for (var key in this.graph.animations) {
+            if (this.graph.animations.hasOwnProperty(key)) {
+                if(this.graph.animations[key].started){
+                    this.graph.animations[key].update(time);
+                }
+            }
+        }
+    }
+
+    logPicking() {
+        if (this.pickMode == false) {
+            if (this.pickResults != null && this.pickResults.length > 0) {
+                for (var i=0; i< this.pickResults.length; i++) {
+                    var obj = this.pickResults[i][0];
+                    if (obj)
+                    {
+                        var customId = this.pickResults[i][1];				
+                        console.log("Picked object: " + obj + ", with pick id " + customId);
+                    }
+                }
+                this.pickResults.splice(0,this.pickResults.length);
+            }		
+        }
+    }
+
+    /**
+     * Displays the scene.
+     */
+    display() {
+        // ---- BEGIN Background, camera and axis setup
+        
+        // Clear image and depth buffer everytime we update the scene
+        this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+        
+        // Initialize Model-View matrix as identity (no transformation
+        this.updateProjectionMatrix();
+        this.loadIdentity();
+        
+        // Apply transformations corresponding to the camera position relative to the origin
+        this.applyViewMatrix();
+        
+        this.pushMatrix();
+        
+        if (this.sceneInited) {
+            // Draw axis
+            this.axis.display();
+            
+            var i = 0;
+            for (var key in this.lightValues) {
+                if (this.lightValues.hasOwnProperty(key)) {
+                    if (this.lightValues[key]) {
+
+                        this.lights[i].setVisible(true);
+                        this.lights[i].enable();
+                    }
+                    else {
+                        this.lights[i].setVisible(false);
+                        this.lights[i].disable();
+                    }
+                    this.lights[i].update();
+                    i++;
+                }
+            }
+
+            this.camera = this.graph.views[this.View];
+            this.interface.setActiveCamera(this.camera);
+            
+            // Displays the scene (MySceneGraph function).
+            this.graph.displayScene();
+        }
+        else {
+            // Draw axis
+            this.axis.display();
+        }
+        
+        this.popMatrix();
+        // ---- END Background, camera and axis setup
+    }
+    
+    initKeys(){
+        this.keysPressed = [];
+        this.keysPressed[0] = 0;       // M
+        this.keysPressed[1] = 0;       // O
+        this.keysPressed[2] = 0;       // A
+        this.keysPressed[3] = 0;       // D
+        this.keysPressed[4] = 0;       // W
+        this.keysPressed[5] = 0;       // S
+        this.keysPressed[6] = 0;       // C
+        this.keysPressed[7] = 0;       // R
+        this.keysPressed[8] = 0;       // F
+        this.keysPressed[9] = 0;       // L
+        this.keysPressed[10] = 0;      // E
+        this.keysPressed[11] = 0;      // Q
+        
+    }
+    
     /**
      * Keys handler called on display function
      */
@@ -133,45 +257,45 @@ class XMLscene extends CGFscene {
             this.keysPressed[i] = 0;
         }
 
-		var text="Keys pressed: ";
-		var keysPressed=false;
+        var text="Keys pressed: ";
+        var keysPressed=false;
 
-		if (this.gui.isKeyPressed("KeyM")){
+        if (this.gui.isKeyPressed("KeyM")){
             this.keysPressed[0] = 1
             this.graph.incMaterialsN();
-			text+=" M ";
-			keysPressed=true;
-		}
+            text+=" M ";
+            keysPressed=true;
+        }
 
-		if (this.gui.isKeyPressed("KeyO")){
+        if (this.gui.isKeyPressed("KeyO")){
             this.keysPressed[1] = 1
             this.graph.tvon = !this.graph.tvon;
-			text+=" O ";
-			keysPressed=true;
-		}
+            text+=" O ";
+            keysPressed=true;
+        }
 
-		if (this.gui.isKeyPressed("KeyA")){
+        if (this.gui.isKeyPressed("KeyA")){
             this.keysPressed[2] = 1
-			text+=" A ";
-			keysPressed=true;
-		}
+            text+=" A ";
+            keysPressed=true;
+        }
 
-		if (this.gui.isKeyPressed("KeyD")){
+        if (this.gui.isKeyPressed("KeyD")){
             this.keysPressed[3] = 1
-			text+=" D ";
-			keysPressed=true;
-		}
+            text+=" D ";
+            keysPressed=true;
+        }
 
-		if (this.gui.isKeyPressed("KeyW")){
+        if (this.gui.isKeyPressed("KeyW")){
             this.keysPressed[4] = 1
-			text+=" W ";
-			keysPressed=true;
-		}
+            text+=" W ";
+            keysPressed=true;
+        }
 
-		if (this.gui.isKeyPressed("KeyS")){
+        if (this.gui.isKeyPressed("KeyS")){
             this.keysPressed[5] = 1
-			text+=" S ";
-			keysPressed=true;
+            text+=" S ";
+            keysPressed=true;
         }
 
         if (this.gui.isKeyPressed("KeyR")){
@@ -213,114 +337,6 @@ class XMLscene extends CGFscene {
 
         if (keysPressed)
         console.log(text);
-	}
-
-    update(currTime) {
-  		if(this.oldTime == null){
-  			this.oldTime = currTime;
-        }
-
-      	var delta = currTime-this.oldTime;
-      	var time = delta/1000;             // time in seconds
-      	this.oldTime = currTime;
-
-        this.updateAnimations(time);
-
-        // Verify the keys pressed
-        this.checkKeys();
-
-        if(this.sceneInited)
-            if(this.movecamera)
-            this.updateCamera();
-
-        if(this.vehicleId != null)
-            this.vehicleId[0].update(time);
-	};
-
-    /**
-     * Updates all animations
-     */
-    updateAnimations(time){
-        this.graph.checkAnimationsend();
-        for (var key in this.graph.animations) {
-            if (this.graph.animations.hasOwnProperty(key)) {
-                if(this.graph.animations[key].started){
-                    this.graph.animations[key].update(time);
-                }
-            }
-        }
-    }
-
-    /**
-     * Displays the scene.
-     */
-    display() {
-        // ---- BEGIN Background, camera and axis setup
-
-        // Clear image and depth buffer everytime we update the scene
-        this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
-        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-
-        // Initialize Model-View matrix as identity (no transformation
-        this.updateProjectionMatrix();
-        this.loadIdentity();
-
-        // Apply transformations corresponding to the camera position relative to the origin
-        this.applyViewMatrix();
-
-        this.pushMatrix();
-
-        if (this.sceneInited) {
-            // Draw axis
-            this.axis.display();
-
-            var i = 0;
-            for (var key in this.lightValues) {
-                if (this.lightValues.hasOwnProperty(key)) {
-                    if (this.lightValues[key]) {
-
-                        this.lights[i].setVisible(true);
-                        this.lights[i].enable();
-                    }
-                    else {
-                        this.lights[i].setVisible(false);
-                        this.lights[i].disable();
-                    }
-                    this.lights[i].update();
-                    i++;
-                }
-            }
-
-            this.camera = this.graph.views[this.View];
-            this.interface.setActiveCamera(this.camera);
-
-            // Displays the scene (MySceneGraph function).
-            this.graph.displayScene();
-        }
-        else {
-            // Draw axis
-            this.axis.display();
-        }
-
-        this.popMatrix();
-        // ---- END Background, camera and axis setup
-    }
-
-    initKeys(){
-        this.keysPressed = [];
-        this.keysPressed[0] = 0;       // M
-        this.keysPressed[1] = 0;       // O
-        this.keysPressed[2] = 0;       // A
-        this.keysPressed[3] = 0;       // D
-        this.keysPressed[4] = 0;       // W
-        this.keysPressed[5] = 0;       // S
-        this.keysPressed[6] = 0;       // C
-        this.keysPressed[7] = 0;       // R
-        this.keysPressed[8] = 0;       // F
-        this.keysPressed[9] = 0;       // L
-        this.keysPressed[10] = 0;      // E
-        this.keysPressed[11] = 0;      // Q
-
     }
 
     /**
@@ -409,19 +425,10 @@ class XMLscene extends CGFscene {
         }
     }
 
-
     movetarget(d){
         var dir = this.camera.calculateDirection();
-        console.log(dir[0]);
-        console.log(dir[1]);
-        console.log(dir[2]);
-        console.log("x: " + this.camera.target[0]);
-        console.log("y: " + this.camera.target[1]);
-        console.log("z: " + this.camera.target[2]);
+
         this.camera.setTarget(vec3.fromValues(this.camera.target[0] + dir[0] * d, this.camera.target[1] + dir[1] * d, this.camera.target[2] + dir[2] * d));
-        console.log(dir);
-        console.log("position: " + this.camera.position[0] + " " + this.camera.position[1]+ " " + this.camera.position[2] + "\n");
-        console.log("target: " + this.camera.target[0] + " " + this.camera.target[1]+ " " + this.camera.target[2] + "\n");
     }
 
     distance2points(a,b){

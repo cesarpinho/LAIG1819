@@ -23,10 +23,9 @@ class MyInterface extends CGFinterface {
         // add a group of controls (and open/expand by defult)
 
         this.initKeys();
-        this.initMouse();
 
         this.pecaselected=null;
-        this.selected=false;
+        this.selected = false;
 
         return true;
     }
@@ -38,32 +37,31 @@ class MyInterface extends CGFinterface {
         this.processMouse=function(){};
     }*/
 
-    processMouseDown(event) {       /// Player 1 (172,140) (510,140) (172,480) (510,480)  Aproximado
-      console.log("mouse down: " + event.x + " " + event.y);
+    /* processMouseDown(event) {       /// Player 1 (172,140) (510,140) (172,480) (510,480)  Aproximado
+        console.log("mouse down: " + event.x + " " + event.y);
 
-      ///   x
-      var a = (510-172)/8;    // 510-172 -> board visual width
-      console.log(a);
-      var b = (Math.floor((event.x-172)/a));
-      console.log(b);
+        ///   x
+        var a = (510-172)/8;    // 510-172 -> board visual width
+        console.log(a);
+        var b = (Math.floor((event.x-172)/a));
+        console.log(b);
 
-      /// y
-      var c = (480-140)/8;    // 480-140 -> board visual heigth
-      console.log(c);
-      var d = (Math.floor((event.y-140)/c));
-      console.log(d);
+        /// y
+        var c = (480-140)/8;    // 480-140 -> board visual heigth
+        console.log(c);
+        var d = (Math.floor((event.y-140)/c));
+        console.log(d);
 
-      if(!this.selected){
-      this.pecaselected = [b,d];
-      this.selected = true;
-      console.log(this.pecaselected);
-    }
-      else{
-        this.scene.graph.board.movePeca(this.pecaselected[0],this.pecaselected[1],b,d);
-        this.selected = false;
-      }
+        if(!this.selected){
+            this.pecaselected = [b,d];
+            this.selected = true;
+            console.log(this.pecaselected);
+        } else {
+            this.scene.graph.board.movePeca(this.pecaselected[0],this.pecaselected[1],b,d);
+            this.selected = false;
+        }
 
-    };
+    }; */
 
     /**
      * initKeys
