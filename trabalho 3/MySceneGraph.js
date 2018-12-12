@@ -37,7 +37,6 @@ class MySceneGraph {
 
         // File reading
         this.reader = new CGFXMLreader();
-        this.board = new Board(this.scene, 8,8);
 
         /*
          * Read the contents of the xml file, and refer to this class for loading and error handlers.
@@ -1490,6 +1489,8 @@ class MySceneGraph {
                 }
             }
         }
+
+        this.board = new Board(this.scene, 8,8);
     }
 
     /**

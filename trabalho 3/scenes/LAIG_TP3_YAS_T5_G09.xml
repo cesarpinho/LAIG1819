@@ -56,6 +56,21 @@
     <texture id="cupboards_stone" file="scenes/images/cupboards_stone.jpg" />
     <texture id="apple" file="scenes/images/apple.jpg" />
     <texture id="cmtv" file="scenes/images/tv.jpg"/>
+
+    <texture id="1" file="scenes/images/1.png" />
+    <texture id="2" file="scenes/images/2.png" />
+    <texture id="3" file="scenes/images/3.png" />
+    <texture id="4" file="scenes/images/4.png" />
+    <texture id="5" file="scenes/images/5.png" />
+    <texture id="6" file="scenes/images/6.png" />
+    <texture id="7" file="scenes/images/7.png" />
+    <texture id="8" file="scenes/images/8.png" />
+    <texture id="9" file="scenes/images/9.png" />
+    <texture id="10" file="scenes/images/10.png" />
+    <texture id="11" file="scenes/images/11.png" />
+    <texture id="12" file="scenes/images/12.png" />
+    <texture id="boardQuad" file="scenes/images/boardQuad.png" />
+
  </textures>
 
  <materials>
