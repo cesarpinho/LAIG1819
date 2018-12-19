@@ -13,6 +13,8 @@ class XMLscene extends CGFscene {
 
         this.interface = myinterface;
         this.lightValues = {};
+        makeRequest("board");
+        makeRequest("quit");
     }
 
     /**
@@ -119,6 +121,9 @@ class XMLscene extends CGFscene {
         this.distance = this.distance2points([this.camera.position[0], 0, this.camera.position[2]], [this.camera.target[0], 0, this.camera.target[2]]);
 
         this.sceneInited = true;
+
+        // Board Creation
+        this.board = new Board(this);
     }
 
     update(currTime) {
@@ -216,6 +221,8 @@ class XMLscene extends CGFscene {
             this.camera = this.graph.views[this.View];
             this.interface.setActiveCamera(this.camera);
             
+            this.board.display();
+
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();
         }
@@ -442,23 +449,22 @@ function getPrologRequest(requestString, onSuccess, onError, port)
     var request = new XMLHttpRequest();
     request.open('GET', 'http://localhost:'+requestPort+'/'+requestString, true);
 
-    request.onload = onSuccess || function(data){console.log("Request successful. Reply: " + data.target.response);};
+    request.onload = onSuccess || 
+    function(data) {
+        console.log("Request successful. Reply: " + data.target.response);
+        var responde = data.target.response;
+        // TODO: fazer parse da resposta
+    };
     request.onerror = onError || function(){console.log("Error waiting for response");};
 
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
     request.send();
 }
 
-function makeRequest()
+function makeRequest(request)
 {
-    // Get Parameter Values
-    var requestString = document.querySelector("#query_field").value;				
+    request = (request == undefined? false : request);				
     
     // Make Request
-    getPrologRequest(requestString, handleReply);
-}
-
-//Handle the Reply
-function handleReply(data){
-    document.querySelector("#query_result").innerHTML=data.target.response;
+    getPrologRequest(request);
 }

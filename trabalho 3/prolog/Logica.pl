@@ -6,14 +6,14 @@ play(_, _, _, _) :-
 play(Board, Player, human, Type) :-
     is_game_over(GameOver), GameOver == false,
     board_size(Board, Lines, Columns),
-/*    display_game(Board, Player, Lines, Columns), repeat,
-    choose_piece(Player, Board, Piece), */
+    display_game(Board, Player, Lines, Columns), repeat,
+    choose_piece(Player, Board, Piece),
     possible_plays(Player, Board, Piece, Lines, Columns, Plays),
     check_quant_plays(Player, Board, Piece, Plays),
     choose_move(Player, Board, human, Type, Lines, Plays, Move),
     make_move(Player, Board, Piece, Columns, Move, NewBoard),
     change_player(Player, NewPlayer),
-    /* play(NewBoard, NewPlayer, Type, human) */.
+    play(NewBoard, NewPlayer, Type, human).
 
 play(Board, Player, computer1, Type) :- 
     is_game_over(GameOver), GameOver == false,

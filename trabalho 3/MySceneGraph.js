@@ -1489,8 +1489,6 @@ class MySceneGraph {
                 }
             }
         }
-
-        this.board = new Board(this.scene, 8,8);
     }
 
     /**
@@ -1670,7 +1668,7 @@ class MySceneGraph {
      */
     displayScene() {
         this.stack = [];
-        this.board.display();
+
         //this.processNode(this.idRoot, mat4.create(), 'default', null, null, null, false);
     }
 

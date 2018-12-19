@@ -1,10 +1,10 @@
 class Board extends CGFobject {
-    constructor(scene, lines, columns) {
+    constructor(scene) {
         super(scene);
 
         this.scene = scene;
-        this.lines = lines;
-        this.columns = columns;
+        this.lines = 8;
+        this.columns = 8;
 
         this.pickObjs = [];
         this.square = new MyRectangle(scene,null,0,1,0,1);
