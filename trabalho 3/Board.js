@@ -17,14 +17,15 @@ class Board extends CGFobject {
         this.grey_material.setDiffuse(0.6,0.6,0.6,1);
         this.grey_material.setTexture(this.scene.graph.textures["boardQuad"]);
 
-
         this.matrixpecas = [];
+        this.capturedBy1 = [];
+        this.capturedBy2 = [];
 
         this.initPecas();
     }
 
     initPecas(){
-        var numPeca = [  [8,7,6,5,0,0,0,0],
+        var numPeca = [ [8,7,6,5,0,0,0,0],
                         [0,0,0,0,12,11,10,9],
                         [4,3,2,1,0,0,0,0],
                         [0,0,0,0,0,0,0,0],

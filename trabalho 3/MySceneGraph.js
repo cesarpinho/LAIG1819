@@ -1749,7 +1749,7 @@ class MySceneGraph {
     /**
      * Check animations end
      */
-    checkAnimationsend(){
+    checkAnimationsEnd(){
         for (var key in this.components) {
             if (this.components.hasOwnProperty(key)) {
               if(this.components[key].currAnimationID!=null){

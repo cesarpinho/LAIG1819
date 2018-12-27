@@ -99,26 +99,28 @@ class XMLscene extends CGFscene {
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
     onGraphLoaded() {
-        // Inicialize default view
-        this.View = this.graph.views.pop();
-        this.camera = this.graph.views[this.View];
-
         this.axis = new CGFaxis(this, this.graph.referenceLength);
 
-        this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
+        // Inicialize default view
+        this.view = this.graph.views.pop();
+        this.camera = this.graph.views[this.view];
 
+        this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
         this.setGlobalAmbientLight(this.graph.ambient[0], this.graph.ambient[1], this.graph.ambient[2], this.graph.ambient[3]);
 
         this.initLights();
 
         // Adds lights group.
         this.interface.addLightsGroup(this.graph.lights);
-
+        
+        // Adds views group.
         this.interface.addViewsGroup(this.graph.views);
 
         this.initKeys();
 
-        this.distance = this.distance2points([this.camera.position[0], 0, this.camera.position[2]], [this.camera.target[0], 0, this.camera.target[2]]);
+        this.distance = this.distance2points(
+            [this.camera.position[0], 0, this.camera.position[2]],
+            [this.camera.target[0], 0, this.camera.target[2]]);
 
         this.sceneInited = true;
 
@@ -152,7 +154,7 @@ class XMLscene extends CGFscene {
      * Updates all animations
      */
     updateAnimations(time){
-        this.graph.checkAnimationsend();
+        this.graph.checkAnimationsEnd();
         for (var key in this.graph.animations) {
             if (this.graph.animations.hasOwnProperty(key)) {
                 if(this.graph.animations[key].started){
@@ -218,7 +220,7 @@ class XMLscene extends CGFscene {
                 }
             }
 
-            this.camera = this.graph.views[this.View];
+            this.camera = this.graph.views[this.view];
             this.interface.setActiveCamera(this.camera);
             
             this.board.display();
@@ -258,7 +260,7 @@ class XMLscene extends CGFscene {
     checkKeys() {
         //      reset keys
         if(!this.sceneInited)
-        return;
+            return;
 
         for(var i = 0 ; i < this.keysPressed.length ; i++){
             this.keysPressed[i] = 0;
@@ -414,12 +416,18 @@ class XMLscene extends CGFscene {
             var speed = 4;
         switch(r){
             case 0: //  rotate RIGHT
-            this.angle+=0.05;
-            this.camera.setTarget(vec3.fromValues(this.distance*Math.cos(this.angle + 225*Math.PI/180) + this.camera.position[0], this.camera.target[1], this.distance*Math.sin(this.angle + 225*Math.PI/180) + this.camera.position[2]));
+                this.angle+=0.05;
+                this.camera.setTarget(vec3.fromValues(
+                    this.distance*Math.cos(this.angle + 225*Math.PI/180) + this.camera.position[0], 
+                    this.camera.target[1], 
+                    this.distance*Math.sin(this.angle + 225*Math.PI/180) + this.camera.position[2]));
                 break;
             case 1: //  rotate LEFT
-            this.angle-=0.05;
-            this.camera.setTarget(vec3.fromValues(this.distance*Math.cos(this.angle + 225*Math.PI/180) + this.camera.position[0], this.camera.target[1], this.distance*Math.sin(this.angle + 225*Math.PI/180) + this.camera.position[2]));
+                this.angle-=0.05;
+                this.camera.setTarget(vec3.fromValues(
+                    this.distance*Math.cos(this.angle + 225*Math.PI/180) + this.camera.position[0],
+                    this.camera.target[1], 
+                    this.distance*Math.sin(this.angle + 225*Math.PI/180) + this.camera.position[2]));
                 break;
             case 2:  /// 1 -> up / -1 -> down
                 this.camera.setTarget(vec3.fromValues(this.camera.target[0], this.camera.target[1]+speed, this.camera.target[2]));
@@ -435,7 +443,10 @@ class XMLscene extends CGFscene {
     movetarget(d){
         var dir = this.camera.calculateDirection();
 
-        this.camera.setTarget(vec3.fromValues(this.camera.target[0] + dir[0] * d, this.camera.target[1] + dir[1] * d, this.camera.target[2] + dir[2] * d));
+        this.camera.setTarget(vec3.fromValues(
+            this.camera.target[0] + dir[0] * d,
+            this.camera.target[1] + dir[1] * d,
+            this.camera.target[2] + dir[2] * d));
     }
 
     distance2points(a,b){

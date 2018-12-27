@@ -98,7 +98,7 @@ class MyInterface extends CGFinterface {
             }
         }
 
-		this.gui.add(this.scene,'View', this.scene.viewValues);
+		this.gui.add(this.scene,'view', this.scene.viewValues);
     }
 
     /**
