@@ -73,7 +73,7 @@ read_request(Stream, Request) :-
 	% Parse Request
 	atom_codes('GET /',Get),
 	append(Get,RL,LineCodes),
-	read_request_aux(RL,RL2),	
+	read_request_aux(RL,RL2),
 	
 	catch(read_from_codes(RL2, Request), error(syntax_error(_),_), fail), !.
 read_request(_,syntax_error).
@@ -103,6 +103,8 @@ print_header_line(_).
 
 % Require your Prolog Files here
 parse_input(board,Board):- board(Board).
+parse_input(possible_plays(Player, Board, Piece, Lines, Columns),Plays):-
+possible_plays(Player, Board, Piece, Lines, Columns, Plays).
 parse_input(handshake, handshake).
 parse_input(test(C,N), Res) :- test(C,Res,N).
 parse_input(quit, goodbye).

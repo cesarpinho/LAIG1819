@@ -14,7 +14,6 @@ class XMLscene extends CGFscene {
         this.interface = myinterface;
         this.lightValues = {};
         makeRequest("board");
-        makeRequest("quit");
     }
 
     /**
@@ -177,7 +176,7 @@ class XMLscene extends CGFscene {
                     {
                         var customId = this.pickResults[i][1];				
                         console.log("Picked object: " + obj + ", with pick id " + customId);
-                        
+
                         /// Handle Pick
                         this.board.handlePick(customId);
                     }
