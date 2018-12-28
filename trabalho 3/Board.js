@@ -106,15 +106,8 @@ class Board extends CGFobject {
         console.log(this.matrixpecas);
             console.log(this.picked);*/
 
-            ///                                     LOGICA AQUI (?)
 
             this.currPlayer='1';
-            /// TODO: check if game over
-            console.log("num peca: " + this.matrixpecas[x][y].num.toString());
-            var numPeca = this.matrixpecas[x][y].num.toString();
-
-            makeRequest("possible_plays("+ this.currPlayer + ","+ this.plogBoard +","+this.matrixpecas[x][y].num+", 8, 8)");
-            ///this.boardFormat();
 
 
 
@@ -126,6 +119,15 @@ class Board extends CGFobject {
                 this.pickedX = x;
                 this.pickedY = y;
                 console.log("PICKed!");
+
+
+            ///                                     LOGICA AQUI (?)
+                /// TODO: check if game over
+                console.log("num peca: " + this.matrixpecas[x][y].num.toString());
+                var numPeca = this.matrixpecas[x][y].num.toString();
+
+                makeRequest("possible_plays("+ this.currPlayer + ","+ this.plogBoard +","+this.matrixpecas[x][y].num+", 8, 8)");
+
             }
         } else{
             console.log("movepeca");
@@ -167,7 +169,7 @@ class Board extends CGFobject {
         ///console.log(this.pecaAnimation);
 
     }
-    
+
     update(time){
         if(this.pecaAnimation!=null)
         this.pecaAnimation.update(time);

@@ -123,8 +123,8 @@ class XMLscene extends CGFscene {
 
         this.sceneInited = true;
 
-        // Board Creation
-        this.board = new Board(this);
+        // Game Creation
+        this.game = new Game(this);
     }
 
     update(currTime) {
@@ -138,9 +138,9 @@ class XMLscene extends CGFscene {
           
         this.updateAnimations(time);
         
-        /// update board
-        if(this.board!=null)
-        this.board.update(time);
+        /// update game
+        if(this.game!=null)
+        this.game.update(time);
 
         // Verify the keys pressed
         this.checkKeys();
@@ -178,7 +178,7 @@ class XMLscene extends CGFscene {
                         console.log("Picked object: " + obj + ", with pick id " + customId);
 
                         /// Handle Pick
-                        this.board.handlePick(customId);
+                        this.game.handlePick(customId);
                     }
                 }
                 this.pickResults.splice(0,this.pickResults.length);
@@ -229,7 +229,8 @@ class XMLscene extends CGFscene {
             this.camera = this.graph.views[this.view];
             this.interface.setActiveCamera(this.camera);
             
-            this.board.display();
+            if(this.game!=null)
+            this.game.display();
 
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();
