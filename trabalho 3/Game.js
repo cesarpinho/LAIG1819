@@ -14,7 +14,16 @@ class Game {
     	this.board.handlePick(id);
     }
 
+    updateTimer(time){
+    	this.currTime+=time;
+    	console.log(this.currTime);
+    }
+
     update(time){
+    	/// CONTADOR
+    	this.updateTimer(time);			
+
+
     	this.board.update();
     }
 
