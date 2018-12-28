@@ -139,6 +139,10 @@ class XMLscene extends CGFscene {
           
         this.updateAnimations(time);
         
+        /// update board
+        if(this.board!=null)
+        this.board.update(time);
+
         // Verify the keys pressed
         this.checkKeys();
         
@@ -173,6 +177,9 @@ class XMLscene extends CGFscene {
                     {
                         var customId = this.pickResults[i][1];				
                         console.log("Picked object: " + obj + ", with pick id " + customId);
+                        
+                        /// Handle Pick
+                        this.board.handlePick(customId);
                     }
                 }
                 this.pickResults.splice(0,this.pickResults.length);

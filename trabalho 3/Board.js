@@ -6,6 +6,26 @@ class Board extends CGFobject {
         this.lines = 8;
         this.columns = 8;
 
+        this.picked=false;
+        this.pickedX;
+        this.pickedY;
+
+        this.animrun=false; /// animation running
+        this.animX;
+        this.animY;
+
+        ///                                     LOGICA
+
+        this.currPlayer="";
+        this.plogBoard="[ [1-8 ,1-7, 1-6 ,1-5, 0-0, 0-0, 0-0, 0-0],"+
+        "[0-0, 0-0, 0-0, 0-0,1-12,1-11,1-10, 1-9],"+
+        "[1-4, 1-3, 1-2, 1-1, 0-0, 0-0, 0-0, 0-0],"+
+        "[0-0, 0-0, 0-0, 0-0, 0-0, 0-0, 0-0, 0-0],"+
+        "[0-0, 0-0, 0-0, 0-0, 0-0, 0-0, 0-0, 0-0],"+
+        "[0-0, 0-0, 0-0, 0-0, 2-1, 2-2, 2-3, 2-4],"+
+        "[2-9,2-10,2-11,2-12, 0-0, 0-0, 0-0, 0-0],"+
+        "[0-0, 0-0, 0-0, 0-0, 2-5, 2-6, 2-7, 2-8]]";
+
         this.pickObjs = [];
         this.square = new MyRectangle(scene,null,0,1,0,1);
 
@@ -74,10 +94,83 @@ class Board extends CGFobject {
         }
     }
 
-    movePeca(x,y,x2,y2){                                  /// TODO falta mover as pecas na matriz
-        this.logCoords(x,y);
-        this.matrixpecas[x][y].setCoords(x2,y2);
+    handlePick(id){
+        console.log("\n\n\nHandlePick");
+        console.log("id: " + id);
+        var x = Math.floor((id-1)/8);
+        console.log("x: indside board id: " + x);
+        var y = (id-1) % 8;
+        console.log("y: indside board id: " + y);
+/*
+        console.log("Board: ");
         console.log(this.matrixpecas);
+            console.log(this.picked);*/
+
+            ///                                     LOGICA AQUI (?)
+
+            this.currPlayer='1';
+            /// TODO: check if game over
+            console.log("num peca: " + this.matrixpecas[x][y].num.toString());
+            var numPeca = this.matrixpecas[x][y].num.toString();
+
+            makeRequest("possible_plays("+ this.currPlayer + ","+ this.plogBoard +","+this.matrixpecas[x][y].num+", 8, 8)");
+            ///this.boardFormat();
+
+
+
+
+        if(!this.picked){           /// if it is not the same piece (maybe in plog)
+            /// Check if its a piece
+            if(this.matrixpecas[x][y] != null){
+                this.picked = true;
+                this.pickedX = x;
+                this.pickedY = y;
+                console.log("PICKed!");
+            }
+        } else{
+            console.log("movepeca");
+            /// if it's valid to move
+            this.movePeca(this.pickedX,this.pickedY,x,y);
+            this.picked=!this.picked;
+        }
+    }
+
+    boardFormat(){      /// retorna o board no formato usado na aplicação em prolog [1-2,1-8]
+        var st = this.matrixpecas.toString();
+        console.log(st);
+        console.log(this.matrixpecas);
+        return st;
+    }
+
+    movePeca(x,y,x2,y2){
+        this.startAnimation(x,y,x2,y2);
+
+        this.logCoords(x,y);
+        this.matrixpecas[x][y].setCoords(x2,y2);            /// set Peca coordinates
+        this.matrixpecas[x2][y2] = this.matrixpecas[x][y];  ///                         move it in
+        this.matrixpecas[x][y] = null;                      ///                         the matrix
+        ///console.log(this.matrixpecas);
+
+    }
+
+    startAnimation(x,y,x2,y2){
+
+        var points = [[x,0,y],[x2,0,y2]];
+        var span = 2;
+
+        this.animX = x;
+        this.animY = y;
+        this.pecaAnimation = new LinearAnimation(this.scene, points, span, "");
+
+        this.animrun = true;
+
+        ///console.log(this.pecaAnimation);
+
+    }
+    
+    update(time){
+        if(this.pecaAnimation!=null)
+        this.pecaAnimation.update(time);
     }
 
     logCoords(x,y){
@@ -100,8 +193,26 @@ class Board extends CGFobject {
                     this.pickObjs[id].display();
                 this.scene.popMatrix();
                 
-                if(this.matrixpecas[ii][jj] != null)
+                if(this.matrixpecas[ii][jj] != null){
+                    this.scene.pushMatrix();
+
+                    /// animations
+                    var matrix = mat4.create();
+
+                    ///console.log("animx : " + this.animx+ "animy : " + this.animy + "ii : " + ii +"jj : " + jj );
+                    if(this.pecaAnimation!=null)
+                        if(ii == this.animX && jj == this.animY){
+                            matrix = this.pecaAnimation.getMatrix();
+                            this.scene.multMatrix(matrix);
+                        }
+
+
+                        ///if(this.pecaAnimation!=null)
+                        ///console.log(matrix);
+
                     this.matrixpecas[ii][jj].display();
+                    this.scene.popMatrix();
+                }
             }
         }
 
