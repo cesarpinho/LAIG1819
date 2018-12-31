@@ -3,15 +3,11 @@
 
  <views default="Default" >
     <perspective id="Default" near="0.1" far="500" angle="45">
- 		<from x="30" y="15" z="30" />
- 		<to x="0" y="-2" z="0" />
+ 		<from x="15" y="20" z="4" />
+ 		<to x="4" y="0" z="4" />
     </perspective>
-    <perspective id="Player1" near="0.1" far="600" angle="40">
-        <from x="4" y="20" z="5" />
-        <to x="4" y="0" z="4" />
-    </perspective>
-    <perspective id="Player2" near="0.1" far="600" angle="40">
-        <from x="4" y="20" z="3" />
+    <perspective id="Players" near="0.1" far="600" angle="40">
+        <from x="4" y="20" z="10" />
         <to x="4" y="0" z="4" />
     </perspective>
     <ortho id="Ortho" near="0.4" far="200" left="-15" right="15" top="12" bottom="-6" >

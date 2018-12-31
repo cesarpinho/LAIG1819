@@ -13,6 +13,7 @@ class XMLscene extends CGFscene {
 
         this.interface = myinterface;
         this.lightValues = {};
+        makeRequest("board");
     }
 
     /**
@@ -124,6 +125,8 @@ class XMLscene extends CGFscene {
 
         // Game Creation
         this.game = new Game(this);
+
+        console.log(this.graph.views);
     }
 
     update(currTime) {
@@ -146,7 +149,8 @@ class XMLscene extends CGFscene {
         
         if(this.sceneInited)
             if(this.movecamera)
-                this.updateCamera();
+                this.updateMovingCamera();
+        this.cameraAnimation.update(time);
             
         if(this.vehicleId != null)
             this.vehicleId[0].update(time);
@@ -354,6 +358,10 @@ class XMLscene extends CGFscene {
         console.log(text);
     }
 
+    changeCamera(){
+        this.changingcamera=!true;
+    }
+
     /**
     *   Function that updates de moving camera
     *       Instructions:
@@ -365,7 +373,7 @@ class XMLscene extends CGFscene {
     *       R and F -> move camera, UP or DOWN
     *       W and S -> Moves camera forward, FRONT or BACK
     */
-    updateCamera(){
+    updateMovingCamera(){
 
         if(this.keysPressed[4])
           this.cameraTranslate(0);
@@ -458,27 +466,30 @@ class XMLscene extends CGFscene {
     distance2points(a,b){
         return Math.sqrt(Math.pow((a[0]-b[0]),2) + Math.pow((a[1]-b[1]),2) + Math.pow((a[2]-b[2]),2));
     }
+}
 
-    responseParser(data) {
+function getPrologRequest(requestString, onSuccess, onError, port)
+{
+    var requestPort = port || 8081
+    var request = new XMLHttpRequest();
+    request.open('GET', 'http://localhost:'+requestPort+'/'+requestString, true);
+
+    request.onload = onSuccess || 
+    function(data) {
         console.log("Request successful. Reply: " + data.target.response);
-        //this.game.board.responseParser(data);
-        this.response = data.target.response;
-    }
+        var responde = data.target.response;
+        // TODO: fazer parse da resposta
+    };
+    request.onerror = onError || function(){console.log("Error waiting for response");};
 
-    makeRequest(requestString, onSuccess, onError, port) {
-        var requestPort = port || 8081;
-        var request = new XMLHttpRequest();
-        var scene = this;
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    request.send();
+}
 
-        request.open('GET', 'http://localhost:'+requestPort+'/'+requestString, true);
-
-        request.onload = onSuccess || function(data) {
-            console.log("Request successful. Reply: " + data.target.response);
-            scene.response = data.target.response;
-        };
-        request.onerror = onError || function(){console.log("Error waiting for response");};
-
-        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-        request.send();
-    }
+function makeRequest(request)
+{
+    request = (request == undefined? false : request);				
+    
+    // Make Request
+    getPrologRequest(request);
 }

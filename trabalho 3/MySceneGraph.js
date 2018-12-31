@@ -343,6 +343,8 @@ class MySceneGraph {
                     var view = new CGFcameraOrtho(left, right, bottom, top, near, far, position, direction, up);
                     break;
             }
+            if(viewId=="Players")
+                this.scene.cameraAnimation = new CameraAnimation(this.scene,view);
             this.views[viewId] = view;
         }
 
