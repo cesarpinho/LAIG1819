@@ -13,7 +13,6 @@ class XMLscene extends CGFscene {
 
         this.interface = myinterface;
         this.lightValues = {};
-        makeRequest("board");
     }
 
     /**
@@ -465,6 +464,29 @@ class XMLscene extends CGFscene {
 
     distance2points(a,b){
         return Math.sqrt(Math.pow((a[0]-b[0]),2) + Math.pow((a[1]-b[1]),2) + Math.pow((a[2]-b[2]),2));
+    }
+
+    responseParser(data) {
+        console.log("Request successful. Reply: " + data.target.response);
+        //this.game.board.responseParser(data);
+        this.response = data.target.response;
+    }
+
+    makeRequest(requestString, onSuccess, onError, port) {
+        var requestPort = port || 8081;
+        var request = new XMLHttpRequest();
+        var scene = this;
+
+        request.open('GET', 'http://localhost:'+requestPort+'/'+requestString, true);
+
+        request.onload = onSuccess || function(data) {
+            console.log("Request successful. Reply: " + data.target.response);
+            scene.response = data.target.response;
+        };
+        request.onerror = onError || function(){console.log("Error waiting for response");};
+
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        request.send();
     }
 }
 

@@ -7,30 +7,23 @@ class Board extends CGFobject {
         this.lines = 8;
         this.columns = 8;
 
-        this.picked=false;
+        this.picked = false;
         this.pickedX;
         this.pickedY;
+        this.moves = [];
 
-        this.animrun=false; /// animation running
+        this.animrun = false; /// animation running
         this.animX;
         this.animY;
 
         ///                                     LOGICA
 
-        this.currPlayer="";
-        this.plogBoard="[ [1-8 ,1-7, 1-6 ,1-5, 0-0, 0-0, 0-0, 0-0],"+
-        "[0-0, 0-0, 0-0, 0-0,1-12,1-11,1-10, 1-9],"+
-        "[1-4, 1-3, 1-2, 1-1, 0-0, 0-0, 0-0, 0-0],"+
-        "[0-0, 0-0, 0-0, 0-0, 0-0, 0-0, 0-0, 0-0],"+
-        "[0-0, 0-0, 0-0, 0-0, 0-0, 0-0, 0-0, 0-0],"+
-        "[0-0, 0-0, 0-0, 0-0, 2-1, 2-2, 2-3, 2-4],"+
-        "[2-9,2-10,2-11,2-12, 0-0, 0-0, 0-0, 0-0],"+
-        "[0-0, 0-0, 0-0, 0-0, 2-5, 2-6, 2-7, 2-8]]";
+        this.currPlayer = "";
 
         this.pickObjs = [];
         this.square = new MyRectangle(scene,null,0,1,0,1);
 
-        for(var i = 0; i < 8*8 ; i++) {
+        for(var i = 0; i < this.lines*this.columns ; i++) {
             this.pickObjs.push(new MyRectangle(scene,null,0,1,0,1));
         }
 
@@ -102,16 +95,8 @@ class Board extends CGFobject {
         console.log("x: indside board id: " + x);
         var y = (id-1) % 8;
         console.log("y: indside board id: " + y);
-/*
-        console.log("Board: ");
-        console.log(this.matrixpecas);
-            console.log(this.picked);*/
 
-
-            this.currPlayer='1';
-
-
-
+        this.currPlayer='1';
 
         if(!this.picked){           /// if it is not the same piece (maybe in plog)
             /// Check if its a piece
@@ -122,40 +107,61 @@ class Board extends CGFobject {
                 console.log("PICKed!");
 
 
-            ///                                     LOGICA AQUI (?)
+            ///  LOGICA AQUI (?)
                 /// TODO: check if game over
                 console.log("num peca: " + this.matrixpecas[x][y].num.toString());
                 var numPeca = this.matrixpecas[x][y].num.toString();
 
-                makeRequest("possible_plays("+ this.currPlayer + ","+ this.plogBoard +","+this.matrixpecas[x][y].num+", 8, 8)");
-
+                this.scene.makeRequest("possible_plays("+ this.currPlayer + ","+ this.boardToPlog() +","+this.matrixpecas[x][y].num+",8,8)");
             }
-        } else{
+        } else {
             console.log("movepeca");
             /// if it's valid to move
             this.movePeca(this.pickedX,this.pickedY,x,y);
-            this.picked=!this.picked;
+            this.picked =! this.picked;
 
             /// Move camera to other player
             this.game.changePlayer();
         }
     }
 
-    /*boardFormat(){      /// retorna o board no formato usado na aplicação em prolog [1-2,1-8]
-        var st = this.matrixpecas.toString();
-        console.log(st);
-        console.log(this.matrixpecas);
-        return st;
-    }*/
+    /// retorna o board no formato usado na aplicação em prolog [1-2,1-8]
+    boardToPlog(){      
+        var plogBoard = "[";
+
+        for(var i = 0 ; i < this.lines ; i++) {
+            plogBoard += "[";
+
+            for(var j = 0 ; j < this.columns ; j++) {
+                if(this.matrixpecas[j][i] == null)
+                    plogBoard += "0-0";
+                else 
+                    plogBoard += this.matrixpecas[j][i].player + "-" + this.matrixpecas[j][i].num;
+                
+                plogBoard += ",";
+            }
+            plogBoard = plogBoard.slice(0,-1);
+            plogBoard += "],";
+        }
+        
+        plogBoard = plogBoard.slice(0,-1);
+        plogBoard += "]";
+        
+        return plogBoard;
+    }
+
+    plogToBoard(){
+
+    }
 
     movePeca(x,y,x2,y2){
+        if ( x!=x2 && y!= y2)
         this.startAnimation(x,y,x2,y2);
 
         this.logCoords(x,y);
         this.matrixpecas[x][y].setCoords(x2,y2);            /// set Peca coordinates
         this.matrixpecas[x2][y2] = this.matrixpecas[x][y];  ///                         move it in
         this.matrixpecas[x][y] = null;                      ///                         the matrix
-        ///console.log(this.matrixpecas);
 
     }
 
