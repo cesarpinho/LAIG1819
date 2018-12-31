@@ -67,6 +67,18 @@
     <texture id="12" file="scenes/images/12.png" />
     <texture id="boardQuad" file="scenes/images/boardQuad.png" />
 
+    <texture id="clock_1" file="scenes/images/clock_1.png" />
+    <texture id="clock_2" file="scenes/images/clock_2.png" />
+    <texture id="clock_3" file="scenes/images/clock_3.png" />
+    <texture id="clock_4" file="scenes/images/clock_4.png" />
+    <texture id="clock_5" file="scenes/images/clock_5.png" />
+    <texture id="clock_6" file="scenes/images/clock_6.png" />
+    <texture id="clock_7" file="scenes/images/clock_7.png" />
+    <texture id="clock_8" file="scenes/images/clock_8.png" />
+    <texture id="clock_9" file="scenes/images/clock_9.png" />
+    <texture id="clock_0" file="scenes/images/clock_0.png" />
+    <texture id="clock_pts" file="scenes/images/clock_pts.png" />
+
  </textures>
 
  <materials>
@@ -311,7 +323,17 @@
         </materials>
         <texture id="inherit"/>
         <children>
+            <componentref id="marcador_screen_base"/><!--       aqui sao os espaços para por os  numeros do relogio e marcador d pontuaçao
             <componentref id="marcador_screen_base"/>
+            <componentref id="marcador_screen_base"/>
+            <componentref id="marcador_screen_base"/>
+            <componentref id="marcador_screen_base"/>
+            <componentref id="marcador_screen_base"/>
+            <componentref id="marcador_screen_base"/>
+            <componentref id="marcador_screen_base"/>
+            <componentref id="marcador_screen_base"/>
+            <componentref id="marcador_screen_base"/>
+            <componentref id="marcador_screen_base"/>-->
         </children>
     </component>
     <component id="marcador">
