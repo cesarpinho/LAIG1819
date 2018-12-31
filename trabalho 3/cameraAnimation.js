@@ -24,17 +24,25 @@ class CameraAnimation{
       this.running = true;
     }
 
+    stopAnimation(){
+      this.running=false;
+      if(this.camera.position[2]<4) /// its player 2
+        this.camera.setPosition(vec3.fromValues(4,20,-2));
+      else this.camera.setPosition(vec3.fromValues(4,20,10));
+
+    }
+
     funcao(){
-      return 4-Math.pow((this.x-2),2);
+      return 4-Math.pow((this.x-2),2); 
     }
 
     update(time){
-      this.x+=0.05;
+      this.x+=4/(3/time);
       this.timer+=time;
       console.log("x :" +this.x);
       console.log(this.timer);
       if(this.running && this.timer < this.span){
-        this.camera.orbit(vec3.fromValues(0,1,0),this.funcao()/72);
-      } else this.running!=this.running;
+        this.camera.orbit(vec3.fromValues(0,1,0),this.funcao()/73);
+      } else this.stopAnimation();
     }
   }
