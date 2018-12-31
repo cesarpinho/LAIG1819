@@ -42,7 +42,7 @@ class CameraAnimation{
       console.log("x :" +this.x);
       console.log(this.timer);
       if(this.running && this.timer < this.span){
-        this.camera.orbit(vec3.fromValues(0,1,0),this.funcao()/73);
+        this.camera.orbit(vec3.fromValues(0,1,0),this.funcao()/74.5);
       } else this.stopAnimation();
     }
   }

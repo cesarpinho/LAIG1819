@@ -39,6 +39,7 @@ class XMLscene extends CGFscene {
 
         this.setUpdatePeriod(30);
         this.setPickEnabled(true);
+
     }
 
     /**
@@ -229,6 +230,7 @@ class XMLscene extends CGFscene {
             }
 
             this.camera = this.graph.views[this.view];
+            if(this.view == "Default")
             this.interface.setActiveCamera(this.camera);
             
             if(this.game!=null)

@@ -12,7 +12,7 @@ class Game {
         this.playerType2;
         this.player=0;          /// Current player 0/1
 
-        console.log(this.board.boardToPlog()); 
+        console.log(this.board.boardToPlog());
     }
 
     handlePick(id){
