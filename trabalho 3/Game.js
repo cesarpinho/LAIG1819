@@ -30,14 +30,13 @@ class Game {
 
     update(time){
     	/// CONTADOR
-    	this.updateTimer(time);			
-
+    	this.updateTimer(time);
 
     	this.board.update();
     }
 
     display(){
-    	this.board.display();
+    	///this.board.display();
     }
 
 }

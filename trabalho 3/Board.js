@@ -95,6 +95,7 @@ class Board extends CGFobject {
         console.log("x: indside board id: " + x);
         var y = (id-1) % 8;
         console.log("y: indside board id: " + y);
+        console.log(this.matrixpecas);
 
         this.currPlayer='1';
 
@@ -196,6 +197,7 @@ class Board extends CGFobject {
         for(var ii = 0; ii < this.matrixpecas.length ; ii++) {
             for(var jj = 0; jj < this.matrixpecas[ii].length ; jj++) {
                 var id = ii * 8 + jj;
+                
                 
                 this.scene.pushMatrix();
                     this.scene.translate(ii,0,jj + 1);

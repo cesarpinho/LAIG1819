@@ -181,9 +181,155 @@
     <primitive id="torus">
         <torus  inner= "0.2" outer="2" slices="25" loops="40" />
     </primitive>
+
+    <primitive id="board">
+        <board/>
+    </primitive>
  </primitives>
 
  <components>
+
+    <component id="board">
+        <transformation>
+            <translate x="13.8" y="4.3" z="11.3" />
+            <scale x="0.3" y="0.3" z="0.3" />
+        </transformation>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="board"/>
+        </children>
+    </component>
+
+    <component id="marcador_body_top">
+        <transformation>
+            <translate x="0" y="1" z="0.3" />
+            <rotate axis="x" angle="-90"/>
+            <scale x="6" y="0.3" z="1" />
+        </transformation>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="unit_square"/>
+        </children>
+    </component>
+    <component id="marcador_body_base">
+        <transformation>
+            <rotate axis="x" angle="90" />
+            <scale x="6" y="1" z="1"/>
+            <!--<translate x="0" y="0" z="1" />-->
+        </transformation>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="unit_square"/>
+        </children>
+    </component>
+    <component id="marcador_body_front">
+        <transformation>
+            <translate x="0" y="0" z="1" />
+            <scale x="6" y="0.3" z="1" />
+        </transformation>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="unit_square"/>
+        </children>
+    </component>
+    <component id="marcador_body_back">
+        <transformation>
+            <translate x="0" y="1" z="0" />
+            <rotate axis="x" angle="180" />
+            <scale x="6" y="1" z="1"/>
+        </transformation>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="unit_square"/>
+        </children>
+    </component>
+    <component id="marcador_body_screenbase">
+        <transformation>
+            <translate x="0" y="0.3" z="1" />
+            <rotate axis="x" angle="-45" />
+            <scale x="6" y="1" z="1"/>
+        </transformation>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="unit_square"/>
+        </children>
+    </component>
+    <component id="marcador_body">
+        <transformation>
+            <!--<translate x="0" y="0" z="1" />-->
+        </transformation>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <componentref id="marcador_body_screenbase"/>
+            <componentref id="marcador_body_base"/>
+            <componentref id="marcador_body_top"/>
+            <componentref id="marcador_body_back"/>
+            <componentref id="marcador_body_front"/>
+        </children>
+    </component>
+    <component id="marcador_screen_base">
+        <transformation>
+            <translate x="0.5" y="0.4" z="0.95" />
+            <rotate axis="x" angle="-45" />
+            <scale x="4" y="0.8" z="1"/>
+        </transformation>
+        <materials>
+            <material id="black" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="unit_square"/>
+        </children>
+    </component> 
+    <component id="marcador_screen">
+        <transformation>
+            <!--<translate x="0" y="0" z="1" />-->
+        </transformation>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <componentref id="marcador_screen_base"/>
+        </children>
+    </component>
+    <component id="marcador">
+        <transformation>
+            <translate x="12" y="4.3" z="13.3" />
+            <rotate axis="y" angle="90" />
+            <scale x="0.3" y="0.3" z="0.3" />
+        </transformation>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <componentref id="marcador_screen"/>
+            <componentref id="marcador_body"/>
+        </children>
+    </component>
+
     <component id="face_front">
         <transformation>
             <translate x="0" y="0" z="1" />
@@ -1186,9 +1332,10 @@
             <componentref id="table" />
             <componentref id="lamp" />
             <componentref id="chairs" />
-            <componentref id="cup_fruits" />
             <componentref id="fridge" />
             <componentref id="television"/>
+            <componentref id="board"/>
+            <componentref id="marcador"/>
         </children>
     </component>
  </components>

@@ -123,8 +123,8 @@ class XMLscene extends CGFscene {
 
         this.sceneInited = true;
 
-        // Game Creation
-        this.game = new Game(this);
+        // Game cameraAnimation(esta no parse)
+        ///this.game = new Game(this);
 
         console.log(this.graph.views);
     }
@@ -150,6 +150,7 @@ class XMLscene extends CGFscene {
         if(this.sceneInited)
             if(this.movecamera)
                 this.updateMovingCamera();
+        if(this.cameraAnimation1!=null)
         this.cameraAnimation.update(time);
             
         if(this.vehicleId != null)
@@ -230,8 +231,7 @@ class XMLscene extends CGFscene {
             }
 
             this.camera = this.graph.views[this.view];
-            if(this.view == "Default")
-            this.interface.setActiveCamera(this.camera);
+            this.interface.setActiveCamera((this.view == "Default") ? this.camera : null);
             
             if(this.game!=null)
             this.game.display();

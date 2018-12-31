@@ -1231,6 +1231,12 @@ class MySceneGraph {
                 var water = new Water(this.scene, textureID, waveMapID, parts, heightScale, texScale);
 
                 this.primitives[primitiveId] = water;
+
+            } else if (primitiveType == 'board') {
+                primitiveId = 'board';
+                this.scene.game = new Game(this.scene);
+                console.log(this.scene.game.board);
+                this.primitives[primitiveId] = this.scene.game.board;
             }
         }
 
@@ -1671,7 +1677,7 @@ class MySceneGraph {
     displayScene() {
         this.stack = [];
 
-        //this.processNode(this.idRoot, mat4.create(), 'default', null, null, null, false);
+        this.processNode(this.idRoot, mat4.create(), 'default', null, null, null, false);
     }
 
     /**
