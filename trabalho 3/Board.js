@@ -1,3 +1,7 @@
+/**
+*     Board class
+*/
+
 class Board extends CGFobject {
     constructor(scene,game) {
         super(scene);
@@ -118,11 +122,16 @@ class Board extends CGFobject {
         } else {
             console.log("movepeca");
             /// if it's valid to move
-            this.movePeca(this.pickedX,this.pickedY,x,y);
-            this.picked =! this.picked;
+            if (!( this.pickedX==x && this.pickedY == y)){      /// verificar se é o mesmo player tambem
+                this.movePeca(this.pickedX,this.pickedY,x,y);
+                if(this.matrixpecas[x][y].player==1)
+                    this.game.result2++;
+                else this.game.result1++;
 
-            /// Move camera to other player
-            this.game.changePlayer();
+                /// Move camera to other player
+                this.game.changePlayer();
+            }
+            this.picked =! this.picked;
         }
     }
 
@@ -156,14 +165,11 @@ class Board extends CGFobject {
     }
 
     movePeca(x,y,x2,y2){
-        if ( x!=x2 && y!= y2)
-        this.startAnimation(x,y,x2,y2);
-
-        this.logCoords(x,y);
-        this.matrixpecas[x][y].setCoords(x2,y2);            /// set Peca coordinates
-        this.matrixpecas[x2][y2] = this.matrixpecas[x][y];  ///                         move it in
-        this.matrixpecas[x][y] = null;                      ///                         the matrix
-
+            this.startAnimation(x,y,x2,y2);
+            this.logCoords(x,y);
+            this.matrixpecas[x][y].setCoords(x2,y2);            /// set Peca coordinates
+            this.matrixpecas[x2][y2] = this.matrixpecas[x][y];  ///                         move it in
+            this.matrixpecas[x][y] = null;                      ///                         the matrix
     }
 
     startAnimation(x,y,x2,y2){
