@@ -34,8 +34,6 @@ class Game {
 
     update(time){
 
-        console.log("result 1 : " + this.result1);
-        console.log("result 2 : " + this.result2);
     	/// CONTADOR
     	this.updateTimer(time);
 

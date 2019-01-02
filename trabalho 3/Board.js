@@ -124,9 +124,10 @@ class Board extends CGFobject {
             /// if it's valid to move
             if (!( this.pickedX==x && this.pickedY == y)){      /// verificar se é o mesmo player tambem
                 this.movePeca(this.pickedX,this.pickedY,x,y);
-                if(this.matrixpecas[x][y].player==1)
-                    this.game.result2++;
-                else this.game.result1++;
+                if(this.matrixpecas[x][y]!=null)
+                    if(this.matrixpecas[x][y].player==1)
+                        this.game.result2++;
+                    else this.game.result1++;
 
                 /// Move camera to other player
                 this.game.changePlayer();
@@ -168,11 +169,13 @@ class Board extends CGFobject {
             this.startAnimation(x,y,x2,y2);
             this.logCoords(x,y);
             this.matrixpecas[x][y].setCoords(x2,y2);            /// set Peca coordinates
-            if(this.matrixpecas[x2][y2].player==2)
-                this.capturedBy1.push(this.matrixpecas[x2][y2]);
-            else this.capturedBy2.push(this.matrixpecas[x2][y2]);
+            if(this.matrixpecas[x2][y2]!=null)
+                if(this.matrixpecas[x2][y2].player==2)
+                    this.capturedBy1.push(this.matrixpecas[x2][y2]);
+                else this.capturedBy2.push(this.matrixpecas[x2][y2]);
 
-            this.matrixpecas[x2][y2].captured=true;
+            if(this.matrixpecas[x2][y2]!=null)
+                this.matrixpecas[x2][y2].captured=true;
 
             console.log(this.capturedBy1);
             this.matrixpecas[x2][y2] = this.matrixpecas[x][y];  ///                         move it in
