@@ -168,7 +168,17 @@ class Board extends CGFobject {
             this.startAnimation(x,y,x2,y2);
             this.logCoords(x,y);
             this.matrixpecas[x][y].setCoords(x2,y2);            /// set Peca coordinates
+            if(this.matrixpecas[x2][y2].player==2)
+                this.capturedBy1.push(this.matrixpecas[x2][y2]);
+            else this.capturedBy2.push(this.matrixpecas[x2][y2]);
+
+            this.matrixpecas[x2][y2].captured=true;
+
+            console.log(this.capturedBy1);
             this.matrixpecas[x2][y2] = this.matrixpecas[x][y];  ///                         move it in
+            console.log("pecas : ");
+            console.log(this.capturedBy1);
+            console.log(this.matrixpecas);
             this.matrixpecas[x][y] = null;                      ///                         the matrix
     }
 
@@ -253,5 +263,19 @@ class Board extends CGFobject {
             this.grey_material.apply();
             this.square.display();
         this.scene.popMatrix();
+
+        for(var i = 0; i < this.capturedBy1.length ; i++) {
+            this.scene.pushMatrix();
+                this.scene.translate(-2.5 + (i > 5 ? 1 : 0), 0, 1.5 + (i > 5 ? (i - 6) : i));
+                this.capturedBy1[i].display();
+            this.scene.popMatrix();
+        }
+
+        for(var i = 0; i < this.capturedBy2.length ; i++) {
+            this.scene.pushMatrix();
+                this.scene.translate(9.5 + (i > 5 ? 1 : 0), 0, 1.5 + (i > 5 ? (i - 6) : i));
+                this.capturedBy2[i].display();
+            this.scene.popMatrix();
+        }
     }
 }

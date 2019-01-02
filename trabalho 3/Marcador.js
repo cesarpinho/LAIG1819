@@ -64,8 +64,6 @@ class Marcador {
     	/// CONTADOR
         this.timer+=time;
 
-        console.log(this.timer);
-
         this.updateTextures();
 
     	//this.board.update();
