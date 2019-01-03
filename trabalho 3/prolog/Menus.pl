@@ -176,7 +176,8 @@ game_over(Player, Pieces) :-
     write('*******************************************************\n'),
     write('  PECAS CAPTURADAS :\n'),
     display_catched_pieces(Player,Pieces),
-    asserta(is_game_over(true)).
+    %asserta(is_game_over(true)).
+    asserta(is_game_over(Player)).
 
 game_over(1) :-
     write('\nJOGADOR '),

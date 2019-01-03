@@ -4,24 +4,24 @@ play(_, _, _, _) :-
     retractall(is_game_over(_)).
 
 play(Board, Player, human, Type) :-
-    is_game_over(GameOver), GameOver == false,
+            is_game_over(GameOver), GameOver == false,
     board_size(Board, Lines, Columns),
     display_game(Board, Player, Lines, Columns), repeat,
     choose_piece(Player, Board, Piece),
-    possible_plays(Player, Board, Piece, Lines, Columns, Plays),
+            possible_plays(Player, Board, Piece, Lines, Columns, Plays),
     check_quant_plays(Player, Board, Piece, Plays),
     choose_move(Player, Board, human, Type, Lines, Plays, Move),
-    make_move(Player, Board, Piece, Columns, Move, NewBoard),
+            make_move(Player, Board, Piece, Columns, Move, NewBoard),
     change_player(Player, NewPlayer),
     play(NewBoard, NewPlayer, Type, human).
 
 play(Board, Player, computer1, Type) :- 
-    is_game_over(GameOver), GameOver == false,
+            is_game_over(GameOver), GameOver == false,
     board_size(Board, Lines, Columns),
     display_game(Board, Player, Lines, Columns),
-    valid_moves(Board, Player, Lines, Columns, ListOfMoves),
-    choose_move(Board, Player, computer1, ListOfMoves, Move),
-    move(Player, Board, Lines, Columns, Move, NewBoard),
+            valid_moves(Board, Player, Lines, Columns, ListOfMoves),
+            choose_move(Board, Player, computer1, ListOfMoves, Move),
+            move(Player, Board, Lines, Columns, Move, NewBoard),
     wait_enter,
     change_player(Player, NewJ),
     play(NewBoard, NewJ, Type, computer1).

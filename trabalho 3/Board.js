@@ -9,14 +9,15 @@ class Board extends CGFobject {
         this.picked = false;
         this.pickedX;
         this.pickedY;
-        this.moves = [];
-
+        
         this.animrun = false; /// animation running
         this.animX;
         this.animY;
-
+        
         ///  LOGICA
         this.currPlayer = "";
+
+        this.moves = [];
 
         this.pickObjs = [];
         this.square = new MyRectangle(scene,null,0,1,0,1);
@@ -45,6 +46,8 @@ class Board extends CGFobject {
                         [0,0,0,0,1,2,3,4],
                         [9,10,11,12,0,0,0,0],
                         [0,0,0,0,5,6,7,8]];
+        
+        this.matrixpecas = [];
 
         for(var i = 0 ; i < this.lines ; i++){
             var line = [];
@@ -120,6 +123,7 @@ class Board extends CGFobject {
         }
         
     }
+
     /// retorna o board no formato usado na aplicação em prolog [1-2,1-8]
     boardToPlog(){      
         var plogBoard = "[";
@@ -146,18 +150,50 @@ class Board extends CGFobject {
     }
 
 
-    plogToBoard(){
+    plogToBoard(plogBoard){
 
+        plogBoard = plogBoard.slice(1,-1);
+        console.log(plogBoard);
+        
+        var line = "";
+
+        for(var i = 0 ; i < this.lines ; i++) {
+            line = plogBoard.slice(0,plogBoard.indexOf("]"));
+
+            for(var j = 0 ; j < this.columns ; j++) {
+                if(this.matrixpecas[j][i] == null)
+                    plogBoard += "0-0";
+                else 
+                    plogBoard += this.matrixpecas[j][i].player + "-" + this.matrixpecas[j][i].num;
+                
+                plogBoard += ",";
+            }
+            plogBoard = plogBoard.slice(0,-1);
+            plogBoard += "],";
+        }
+        
+    }
+
+    searchPeca(player,num) {
+
+        this.matrixpecas.forEach(element => {
+            if(element.player == player && element.num == num)
+                return element;            
+        });
+
+        return null;
     }
 
     movePeca(x,y,x2,y2){
-        if ( x!=x2 && y!= y2)
-            this.startAnimation(x,y,x2,y2);
+        this.startAnimation(x,y,x2,y2);
 
         this.logCoords(x,y);
-        this.matrixpecas[x][y].setCoords(x2,y2);            /// set Peca coordinates
-        this.matrixpecas[x2][y2] = this.matrixpecas[x][y];  ///                         move it in
-        this.matrixpecas[x][y] = null;                      ///                         the matrix
+        
+        if(!(x == x2 && y == y2)){
+            this.matrixpecas[x][y].setCoords(x2,y2);            /// set Peca coordinates
+            this.matrixpecas[x2][y2] = this.matrixpecas[x][y];  ///                         move it in
+            this.matrixpecas[x][y] = null;                      ///                         the matrix
+        }
     }
 
     startAnimation(x,y,x2,y2){
@@ -176,7 +212,7 @@ class Board extends CGFobject {
 
     update(time){
         if(this.pecaAnimation!=null)
-        this.pecaAnimation.update(time);
+            this.pecaAnimation.update(time);
     }
 
     logCoords(x,y){

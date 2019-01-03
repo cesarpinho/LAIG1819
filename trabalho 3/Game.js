@@ -10,7 +10,6 @@ class Game {
 		this.playerType1;			/// tipo de jogo (H/H,H/M,M/M)
 		this.playerType2;
 
-		console.log(this.board.boardToPlog());
     }
 
     handlePick(id){
