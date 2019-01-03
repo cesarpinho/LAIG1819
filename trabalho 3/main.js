@@ -14,7 +14,7 @@ function getUrlVars() {
 serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'MyInterface.js', 'MyRectangle.js'
                 , 'MyTriangle.js', 'MyCylinder.js', 'MySphere.js','MyCircle.js', 'MyComponent.js'
                 , 'MyTorus.js', 'Plane.js', 'Patch.js', 'Cylinder2.js', 'Animation.js', 'LinearAnimation.js'
-                , 'CircularAnimation.js', 'Terrain.js', 'Water.js', 'Vehicle.js', 'Board.js', 'Peca.js','Game.js',
+                , 'CircularAnimation.js', 'Terrain.js', 'Water.js', 'Vehicle.js', 'Board.js', 'Peca.js','Game.js','cameraAnimation.js','Marcador.js',
 
 main=function()
 {

@@ -5,6 +5,7 @@ class Peca extends CGFobject {
         this.peca = new MyCylinder(scene, null, 0.4, 0.4, 1, 15, 15);
         this.num = numPeca;     /// 1 a 12
         this.player = player;   /// 1 ou 2
+        this.captured=false;
         this.x = x;
         this.y = y;
 
@@ -24,6 +25,7 @@ class Peca extends CGFobject {
 
     display() {
         this.scene.pushMatrix();
+        if(!this.captured)
             this.scene.translate(this.x + 0.5, 0 , this.y + 0.5);
             if(this.player == 1) {
                 this.black_material.setTexture(this.texture);

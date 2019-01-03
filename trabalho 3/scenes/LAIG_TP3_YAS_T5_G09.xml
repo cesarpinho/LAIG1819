@@ -3,15 +3,11 @@
 
  <views default="Default" >
     <perspective id="Default" near="0.1" far="500" angle="45">
- 		<from x="30" y="15" z="30" />
- 		<to x="0" y="-2" z="0" />
+ 		<from x="15" y="20" z="4" />
+ 		<to x="4" y="0" z="4" />
     </perspective>
-    <perspective id="Player1" near="0.1" far="600" angle="40">
-        <from x="4" y="20" z="5" />
-        <to x="4" y="0" z="4" />
-    </perspective>
-    <perspective id="Player2" near="0.1" far="600" angle="40">
-        <from x="4" y="20" z="3" />
+    <perspective id="Players" near="0.1" far="600" angle="40">
+        <from x="4" y="20" z="10" />
         <to x="4" y="0" z="4" />
     </perspective>
     <ortho id="Ortho" near="0.4" far="200" left="-15" right="15" top="12" bottom="-6" >
@@ -70,6 +66,19 @@
     <texture id="11" file="scenes/images/11.png" />
     <texture id="12" file="scenes/images/12.png" />
     <texture id="boardQuad" file="scenes/images/boardQuad.png" />
+
+    <texture id="clock_1" file="scenes/images/clock_1.png" />
+    <texture id="clock_2" file="scenes/images/clock_2.png" />
+    <texture id="clock_3" file="scenes/images/clock_3.png" />
+    <texture id="clock_4" file="scenes/images/clock_4.png" />
+    <texture id="clock_5" file="scenes/images/clock_5.png" />
+    <texture id="clock_6" file="scenes/images/clock_6.png" />
+    <texture id="clock_7" file="scenes/images/clock_7.png" />
+    <texture id="clock_8" file="scenes/images/clock_8.png" />
+    <texture id="clock_9" file="scenes/images/clock_9.png" />
+    <texture id="clock_0" file="scenes/images/clock_0.png" />
+    <texture id="clock_pts" file="scenes/images/clock_pts.png" />
+    <texture id="clock_traco" file="scenes/images/clock_traco.png" />
 
  </textures>
 
@@ -185,9 +194,327 @@
     <primitive id="torus">
         <torus  inner= "0.2" outer="2" slices="25" loops="40" />
     </primitive>
+
+    <primitive id="board">
+        <board/>
+    </primitive>
+
+    <primitive id="marcador">
+        <marcador/>
+    </primitive>
+
  </primitives>
 
  <components>
+
+    <component id="marcador">
+        <transformation>
+            <translate x="11.7" y="4.3" z="13.6" />
+            <scale x="0.3" y="0.3" z="0.3" />
+            <rotate axis="y" angle="90"/>
+        </transformation>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="marcador"/>
+        </children>
+    </component>
+
+    <component id="board">
+        <transformation>
+            <translate x="13.8" y="4.3" z="11.3" />
+            <scale x="0.3" y="0.3" z="0.3" />
+        </transformation>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="board"/>
+        </children>
+    </component>
+<!--
+    <component id="marcador_body_top">
+        <transformation>
+            <translate x="0" y="1" z="0.3" />
+            <rotate axis="x" angle="-90"/>
+            <scale x="6" y="0.3" z="1" />
+        </transformation>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="unit_square"/>
+        </children>
+    </component>
+    <component id="marcador_body_base">
+        <transformation>
+            <rotate axis="x" angle="90" />
+            <scale x="6" y="1" z="1"/>
+            <translate x="0" y="0" z="1" />
+        </transformation>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="unit_square"/>
+        </children>
+    </component>
+    <component id="marcador_body_front">
+        <transformation>
+            <translate x="0" y="0" z="1" />
+            <scale x="6" y="0.3" z="1" />
+        </transformation>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="unit_square"/>
+        </children>
+    </component>
+    <component id="marcador_body_back">
+        <transformation>
+            <translate x="0" y="1" z="0" />
+            <rotate axis="x" angle="180" />
+            <scale x="6" y="1" z="1"/>
+        </transformation>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="unit_square"/>
+        </children>
+    </component>
+    <component id="marcador_body_screenbase">
+        <transformation>
+            <translate x="0" y="0.3" z="1" />
+            <rotate axis="x" angle="-45" />
+            <scale x="6" y="1" z="1"/>
+        </transformation>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="unit_square"/>
+        </children>
+    </component>
+    <component id="marcador_body">
+        <transformation>
+            <translate x="0" y="0" z="1" />
+        </transformation>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <componentref id="marcador_body_screenbase"/>
+            <componentref id="marcador_body_base"/>
+            <componentref id="marcador_body_top"/>
+            <componentref id="marcador_body_back"/>
+            <componentref id="marcador_body_front"/>
+        </children>
+    </component>
+    <component id="marcador_screen_base">
+        <transformation>
+            <translate x="0.5" y="0.4" z="0.95" />
+            <rotate axis="x" angle="-45" />
+            <scale x="5" y="0.8" z="1"/>
+        </transformation>
+        <materials>
+            <material id="black" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="unit_square"/>
+        </children>
+    </component> 
+
+    <component id="marcador_screen_min1">
+        <transformation>
+            <translate x="0.5" y="0.4" z="0.96" />
+            <rotate axis="x" angle="-45" />
+            <scale x="0.6" y="0.6" z="1"/>
+        </transformation>
+        <materials>
+            <material id="white" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="unit_square"/>
+        </children>
+    </component>
+    <component id="marcador_screen_min2">
+        <transformation>
+            <translate x="1.1" y="0.4" z="0.96" />
+            <rotate axis="x" angle="-45" />
+            <scale x="0.6" y="0.6" z="1"/>
+        </transformation>
+        <materials>
+            <material id="white" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="unit_square"/>
+        </children>
+    </component> 
+    <component id="marcador_screen_pts">
+        <transformation>
+            <translate x="1.7" y="0.4" z="0.96" />
+            <rotate axis="x" angle="-45" />
+            <scale x="0.6" y="0.6" z="1"/>
+        </transformation>
+        <materials>
+            <material id="white" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="unit_square"/>
+        </children>
+    </component>
+    <component id="marcador_screen_sec1">
+        <transformation>
+            <translate x="2.3" y="0.4" z="0.96" />
+            <rotate axis="x" angle="-45" />
+            <scale x="0.6" y="0.6" z="1"/>
+        </transformation>
+        <materials>
+            <material id="white" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="unit_square"/>
+        </children>
+    </component> 
+    <component id="marcador_screen_sec2">
+        <transformation>
+            <translate x="2.9" y="0.4" z="0.96" />
+            <rotate axis="x" angle="-45" />
+            <scale x="0.6" y="0.6" z="1"/>
+        </transformation>
+        <materials>
+            <material id="white" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="unit_square"/>
+        </children>
+    </component>
+    <component id="marcador_screen_p1_1">
+        <transformation>
+            <translate x="0.5" y="0.4" z="0.95" />
+            <rotate axis="x" angle="-45" />
+            <scale x="5" y="0.8" z="1"/>
+        </transformation>
+        <materials>
+            <material id="white" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="unit_square"/>
+        </children>
+    </component> 
+    <component id="marcador_screen_p1_2">
+        <transformation>
+            <translate x="0.5" y="0.4" z="0.95" />
+            <rotate axis="x" angle="-45" />
+            <scale x="5" y="0.8" z="1"/>
+        </transformation>
+        <materials>
+            <material id="white" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="unit_square"/>
+        </children>
+    </component> 
+    <component id="marcador_screen_p2_1">
+        <transformation>
+            <translate x="0.5" y="0.4" z="0.95" />
+            <rotate axis="x" angle="-45" />
+            <scale x="5" y="0.8" z="1"/>
+        </transformation>
+        <materials>
+            <material id="white" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="unit_square"/>
+        </children>
+    </component> 
+    <component id="marcador_screen_p2_2">
+        <transformation>
+            <translate x="0.5" y="0.4" z="0.95" />
+            <rotate axis="x" angle="-45" />
+            <scale x="5" y="0.8" z="1"/>
+        </transformation>
+        <materials>
+            <material id="white" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="unit_square"/>
+        </children>
+    </component> 
+    <component id="marcador_screen_traco">
+        <transformation>
+            <translate x="0.5" y="0.4" z="0.95" />
+            <rotate axis="x" angle="-45" />
+            <scale x="5" y="0.8" z="1"/>
+        </transformation>
+        <materials>
+            <material id="white" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <primitiveref id="unit_square"/>
+        </children>
+    </component> 
+
+    <component id="marcador_screen">
+        <transformation>
+            <translate x="0" y="0" z="1" />
+        </transformation>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <componentref id="marcador_screen_base"/>
+            <componentref id="marcador_screen_min1"/>
+            <componentref id="marcador_screen_min2"/>
+            <componentref id="marcador_screen_pts"/>
+            <componentref id="marcador_screen_sec1"/>
+            <componentref id="marcador_screen_sec2"/>
+            <componentref id="marcador_screen_p1_1"/>
+            <componentref id="marcador_screen_p1_2"/>
+            <componentref id="marcador_screen_traco"/>
+            <componentref id="marcador_screen_p2_1"/>
+            <componentref id="marcador_screen_p2_2"/>
+        </children>
+    </component>
+    <component id="marcador">
+        <transformation>
+            <translate x="12" y="4.3" z="13.4" />
+            <rotate axis="y" angle="90" />
+            <scale x="0.3" y="0.3" z="0.3" />
+        </transformation>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="inherit"/>
+        <children>
+            <componentref id="marcador_screen"/>
+            <componentref id="marcador_body"/>
+        </children>
+    </component>-->
+
     <component id="face_front">
         <transformation>
             <translate x="0" y="0" z="1" />
@@ -1190,9 +1517,10 @@
             <componentref id="table" />
             <componentref id="lamp" />
             <componentref id="chairs" />
-            <componentref id="cup_fruits" />
             <componentref id="fridge" />
             <componentref id="television"/>
+            <componentref id="board"/>
+            <componentref id="marcador"/>
         </children>
     </component>
  </components>

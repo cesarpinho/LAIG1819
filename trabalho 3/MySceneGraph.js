@@ -343,6 +343,8 @@ class MySceneGraph {
                     var view = new CGFcameraOrtho(left, right, bottom, top, near, far, position, direction, up);
                     break;
             }
+            if(viewId=="Players")
+                this.scene.cameraAnimation = new CameraAnimation(this.scene,view);
             this.views[viewId] = view;
         }
 
@@ -1229,6 +1231,17 @@ class MySceneGraph {
                 var water = new Water(this.scene, textureID, waveMapID, parts, heightScale, texScale);
 
                 this.primitives[primitiveId] = water;
+
+            } else if (primitiveType == 'board') {
+                primitiveId = 'board';
+                this.scene.game = new Game(this.scene);
+                console.log(this.scene.game.board);
+                this.primitives[primitiveId] = this.scene.game.board; 
+
+            } else if (primitiveType == 'marcador') {
+                primitiveId = 'marcador';
+                this.primitives[primitiveId] = this.scene.game.marcador;
+                console.log(this.primitives);
             }
         }
 
@@ -1461,6 +1474,7 @@ class MySceneGraph {
 
                     if (grandgrandChildren[z].nodeName == 'primitiveref') {
                         // Check if IDs exist
+                        console.log(componentID);
                         if (this.primitives[childID] == null)
                             return "There is no primitive with this ID (conflict: ID = " + childID + ")";
                         else
@@ -1669,7 +1683,7 @@ class MySceneGraph {
     displayScene() {
         this.stack = [];
 
-        //this.processNode(this.idRoot, mat4.create(), 'default', null, null, null, false);
+        this.processNode(this.idRoot, mat4.create(), 'default', null, null, null, false);
     }
 
     /**

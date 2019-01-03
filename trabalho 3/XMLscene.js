@@ -39,6 +39,7 @@ class XMLscene extends CGFscene {
 
         this.setUpdatePeriod(30);
         this.setPickEnabled(true);
+
     }
 
     /**
@@ -122,8 +123,10 @@ class XMLscene extends CGFscene {
 
         this.sceneInited = true;
 
-        // Game Creation
-        this.game = new Game(this);
+        // Game cameraAnimation(esta no parse)
+        ///this.game = new Game(this);
+
+        console.log(this.graph.views);
     }
 
     update(currTime) {
@@ -146,7 +149,9 @@ class XMLscene extends CGFscene {
         
         if(this.sceneInited)
             if(this.movecamera)
-                this.updateCamera();
+                this.updateMovingCamera();
+        if(this.cameraAnimation1!=null)
+        this.cameraAnimation.update(time);
             
         if(this.vehicleId != null)
             this.vehicleId[0].update(time);
@@ -226,7 +231,7 @@ class XMLscene extends CGFscene {
             }
 
             this.camera = this.graph.views[this.view];
-            this.interface.setActiveCamera(this.camera);
+            this.interface.setActiveCamera((this.view == "Default") ? this.camera : null);
             
             if(this.game!=null)
             this.game.display();
@@ -354,6 +359,10 @@ class XMLscene extends CGFscene {
         console.log(text);
     }
 
+    changeCamera(){
+        this.changingcamera=!true;
+    }
+
     /**
     *   Function that updates de moving camera
     *       Instructions:
@@ -365,7 +374,7 @@ class XMLscene extends CGFscene {
     *       R and F -> move camera, UP or DOWN
     *       W and S -> Moves camera forward, FRONT or BACK
     */
-    updateCamera(){
+    updateMovingCamera(){
 
         if(this.keysPressed[4])
           this.cameraTranslate(0);

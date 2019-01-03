@@ -1,8 +1,13 @@
+/**
+*     Board class
+*/
+
 class Board extends CGFobject {
-    constructor(scene) {
+    constructor(scene,game) {
         super(scene);
 
         this.scene = scene;
+        this.game = game;
         this.lines = 8;
         this.columns = 8;
 
@@ -22,7 +27,7 @@ class Board extends CGFobject {
         this.pickObjs = [];
         this.square = new MyRectangle(scene,null,0,1,0,1);
 
-        for(var i = 0; i < (this.lines * this.columns) ; i++) {
+        for(var i = 0; i < this.lines*this.columns ; i++) {
             this.pickObjs.push(new MyRectangle(scene,null,0,1,0,1));
         }
 
@@ -90,12 +95,13 @@ class Board extends CGFobject {
     }
 
     handlePick(id){
-        var x = Math.floor((id-1)/8);
-        var y = (id-1) % 8;
         console.log("\n\n\nHandlePick");
         console.log("id: " + id);
+        var x = Math.floor((id-1)/8);
         console.log("x: indside board id: " + x);
+        var y = (id-1) % 8;
         console.log("y: indside board id: " + y);
+        console.log(this.matrixpecas);
 
         this.currPlayer='1';
 
@@ -108,7 +114,7 @@ class Board extends CGFobject {
                 console.log("PICKed!");
 
 
-            /// LOGICA AQUI (?)
+            ///  LOGICA AQUI (?)
                 /// TODO: check if game over
                 console.log("num peca: " + this.matrixpecas[x][y].num.toString());
                 var numPeca = this.matrixpecas[x][y].num.toString();
@@ -118,10 +124,18 @@ class Board extends CGFobject {
         } else {
             console.log("movepeca");
             /// if it's valid to move
-            this.movePeca(this.pickedX,this.pickedY,x,y);
-            this.picked = !this.picked;
+            if (!( this.pickedX==x && this.pickedY == y)){      /// verificar se é o mesmo player tambem
+                this.movePeca(this.pickedX,this.pickedY,x,y);
+                if(this.matrixpecas[x][y]!=null)
+                    if(this.matrixpecas[x][y].player==1)
+                        this.game.result2++;
+                    else this.game.result1++;
+
+                /// Move camera to other player
+                this.game.changePlayer();
+            }
+            this.picked =! this.picked;
         }
-        
     }
 
     /// retorna o board no formato usado na aplicação em prolog [1-2,1-8]
@@ -185,15 +199,23 @@ class Board extends CGFobject {
     }
 
     movePeca(x,y,x2,y2){
-        this.startAnimation(x,y,x2,y2);
-
-        this.logCoords(x,y);
-        
-        if(!(x == x2 && y == y2)){
+            this.startAnimation(x,y,x2,y2);
+            this.logCoords(x,y);
             this.matrixpecas[x][y].setCoords(x2,y2);            /// set Peca coordinates
+            if(this.matrixpecas[x2][y2]!=null)
+                if(this.matrixpecas[x2][y2].player==2)
+                    this.capturedBy1.push(this.matrixpecas[x2][y2]);
+                else this.capturedBy2.push(this.matrixpecas[x2][y2]);
+
+            if(this.matrixpecas[x2][y2]!=null)
+                this.matrixpecas[x2][y2].captured=true;
+
+            console.log(this.capturedBy1);
             this.matrixpecas[x2][y2] = this.matrixpecas[x][y];  ///                         move it in
+            console.log("pecas : ");
+            console.log(this.capturedBy1);
+            console.log(this.matrixpecas);
             this.matrixpecas[x][y] = null;                      ///                         the matrix
-        }
     }
 
     startAnimation(x,y,x2,y2){
@@ -208,6 +230,7 @@ class Board extends CGFobject {
         this.animrun = true;
 
         ///console.log(this.pecaAnimation);
+
     }
 
     update(time){
@@ -220,11 +243,13 @@ class Board extends CGFobject {
     }
 
     display() {
+
         this.scene.logPicking();
         
         for(var ii = 0; ii < this.matrixpecas.length ; ii++) {
             for(var jj = 0; jj < this.matrixpecas[ii].length ; jj++) {
                 var id = ii * 8 + jj;
+                
                 
                 this.scene.pushMatrix();
                     this.scene.translate(ii,0,jj + 1);
@@ -274,5 +299,19 @@ class Board extends CGFobject {
             this.grey_material.apply();
             this.square.display();
         this.scene.popMatrix();
+
+        for(var i = 0; i < this.capturedBy1.length ; i++) {
+            this.scene.pushMatrix();
+                this.scene.translate(-2.5 + (i > 5 ? 1 : 0), 0, 1.5 + (i > 5 ? (i - 6) : i));
+                this.capturedBy1[i].display();
+            this.scene.popMatrix();
+        }
+
+        for(var i = 0; i < this.capturedBy2.length ; i++) {
+            this.scene.pushMatrix();
+                this.scene.translate(9.5 + (i > 5 ? 1 : 0), 0, 1.5 + (i > 5 ? (i - 6) : i));
+                this.capturedBy2[i].display();
+            this.scene.popMatrix();
+        }
     }
 }
