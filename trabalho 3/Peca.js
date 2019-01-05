@@ -26,9 +26,19 @@ class Peca extends CGFobject {
     }
 
     display() {
+
+
+
         this.scene.pushMatrix();
-            if(!this.captured && !this.animationRun)
+            if(!this.captured){
+                if(!this.animationRun)
                 this.scene.translate(this.x + 0.5, 0 , this.y + 0.5);
+                else this.scene.translate(0.5, 0 ,0.5);
+            } else {
+                ///console.log("!CAPTURED" + this.scene.game.board.animrun + this.captured + this.animationRun);
+                if(this.scene.game.board.animrun)
+                    this.scene.translate(this.x + 0.5, 0 , this.y + 0.5);
+            }
             
             if(this.player == 1) {
                 this.black_material.setTexture(this.texture);

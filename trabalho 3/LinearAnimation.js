@@ -37,7 +37,7 @@ class LinearAnimation extends Animation {
     this.calculateVectors();
 
     this.updateAngle();
-    mat4.rotate(this.matrixR,mat4.create(),this.angle,vec3.fromValues(0,1,0) );
+    ///mat4.rotate(this.matrixR,mat4.create(),this.angle,vec3.fromValues(0,1,0) );
   }
 
   /**
@@ -136,7 +136,7 @@ class LinearAnimation extends Animation {
     var M = mat4.create();
 
     if(this.changed || this.firstit){
-      mat4.rotate(this.matrixR,mat4.create(),this.angle,vec3.fromValues(0,1,0) );
+      ///mat4.rotate(this.matrixR,mat4.create(),this.angle,vec3.fromValues(0,1,0) );
     }
     this.firstit=false;
 

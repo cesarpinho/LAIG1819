@@ -110,6 +110,7 @@ class Board extends CGFobject {
         var y = (id-1) % 8;
         console.log("y: " + y);
 
+        console.log(this.matrixpecas);
         console.log(this.matrixpecas[x][y]);
 
         if(!this.picked){           /// if it is not the same piece (maybe in plog)
@@ -121,7 +122,6 @@ class Board extends CGFobject {
                 console.log("PICKED!");
 
                 console.log("num peca: " + this.matrixpecas[x][y].num);
-                
                 this.scene.makeRequest(
                     "possible_plays("+ this.game.player +","+ this.boardToPlog() +","+ this.matrixpecas[x][y].num +",8,8)",
                     (data) => {
@@ -151,7 +151,7 @@ class Board extends CGFobject {
                     console.log("Request successful. Reply: " + data.target.response);
                     this.gameOver = (data.target.response == "1");
                     
-                    if(this.gameOver)
+                    if(this.gameOver)   /// TODO   em vez de quit restart game ?
                         this.scene.makeRequest("quit");
                 });
                 
@@ -162,6 +162,7 @@ class Board extends CGFobject {
             this.validMovesId = [];
             this.picked = !this.picked;
         }
+        console.log(this.matrixpecas);
     }
 
     restartGame(){
@@ -262,18 +263,20 @@ class Board extends CGFobject {
     }
 
     movePeca(x,y,x2,y2){
-        //this.startAnimation(x,y,x2,y2);
+        this.startAnimation(x,y,x2,y2);
         
         var destinyPlayer = 0;
         
         if(this.matrixpecas[x2][y2] != null) {
             if( (destinyPlayer = this.matrixpecas[x2][y2].player) == 2)
-                this.capturedBy1.push(this.matrixpecas[x2][y2]);
+                this.capturedBy1[this.matrixpecas[x2][y2].num-1] = this.matrixpecas[x2][y2];
             else
-                this.capturedBy2.push(this.matrixpecas[x2][y2]);
+                this.capturedBy2[this.matrixpecas[x2][y2].num-1] = this.matrixpecas[x2][y2];
 
             this.matrixpecas[x2][y2].captured = true;
         }
+
+        this.sortCaptured();
         
         var plogMove = y + "-" + x + "-" + y2 + "-" + x2 + "-" + destinyPlayer;
 
@@ -290,9 +293,52 @@ class Board extends CGFobject {
         );
     }
 
+    sortCaptured(){
+        var cap1 = [];
+        var cap2 = [];
+
+
+    }
+
+    genPoints(x,y,x2,y2){
+        var h = 3; /// altura maxima da animacao
+
+        var points = [];
+
+        if(Math.sqrt(Math.pow(x2-x,2) + Math.pow(y2-y,2)) == 1 || Math.sqrt(Math.pow(x2-x,2) + Math.pow(y2-y,2)) == Math.sqrt(2))
+            points = [[x,0,y],[x2,0,y2]];
+        else {
+
+        points = [
+
+        [x,0,y],
+
+        [(x*7+x2)/8, h-(Math.pow((4*Math.sqrt(2)/5),2)) ,(y*7+y2)/8],
+        [(3*x+x2)/4, h-(Math.pow((3*Math.sqrt(2)/5),2)) ,(3*y+y2)/4],
+        [(5*x+3*x2)/8, h-(Math.pow((2*Math.sqrt(2)/5),2)) ,(5*y+3*y2)/8],
+
+        [(x+x2)/2,h,(y+y2)/2],
+
+        [(3*x+5*x2)/8, h-(Math.pow((2*Math.sqrt(2)/5),2)) ,(3*y+5*y2)/8],
+        [(x+3*x2)/4, h-(Math.pow((3*Math.sqrt(2)/5),2)) ,(y+3*y2)/4],
+        [(x+7*x2)/8, h-(Math.pow((4*Math.sqrt(2)/5),2)) ,(y+7*y2)/8],
+
+        [x2,0,y2],
+
+        ]
+    }
+
+
+        return points;
+    }
+
     startAnimation(x,y,x2,y2){
-        var points = [[x,0,y],[x2,0,y2]];
-        var span = 2;
+
+        var points = this.genPoints(x,y,x2,y2);
+        ///var points = [[x,0,y],  [x,0,y],  [x,0,y],  [x,0,y],  [x,0,y],  [x,0,y],  [x2,0,y2]];
+        var span = 1;
+
+        console.log(points);
 
         this.animX = x;
         this.animY = y;
@@ -306,6 +352,13 @@ class Board extends CGFobject {
     }
 
     update(time){
+        if(this.pecaAnimation!=null)
+        if(this.pecaAnimation.end){
+            this.animrun=false;
+            console.log("anims : 2" + this.animX2 + this.animY2);
+            this.matrixpecas[this.animX][this.animY].animationRun = false;
+        }
+
         if(this.pecaAnimation!=null){
             this.pecaAnimation.update(time);
         }
@@ -317,10 +370,12 @@ class Board extends CGFobject {
 
     display() {
 
+        ///console.log(this.matrixpecas);
+
         if( this.gameOver )
             return;
         //this.scene.makeRequest("quit");
-        this.scene.logPicking();
+        ///this.scene.logPicking();
         
         for(var ii = 0; ii < this.matrixpecas.length ; ii++) {
             for(var jj = 0; jj < this.matrixpecas[ii].length ; jj++) {
@@ -348,7 +403,7 @@ class Board extends CGFobject {
                     var matrix = mat4.create();
 
                     ///console.log("animx : " + this.animx+ "animy : " + this.animy + "ii : " + ii +"jj : " + jj );
-                    if(this.pecaAnimation != null) 
+                    if(this.pecaAnimation != null && this.animrun)
                         if(ii == this.animX && jj == this.animY){
                             ///console.log(this.pecaAnimation.getMatrix());
                             matrix = this.pecaAnimation.getMatrix();
@@ -358,7 +413,7 @@ class Board extends CGFobject {
 
                         ///if(this.pecaAnimation!=null)
                         ///console.log(matrix);
-
+                        if(this.matrixpecas[ii][jj]!=null)
                     this.matrixpecas[ii][jj].display();
                     this.scene.popMatrix();
                 }
@@ -384,15 +439,19 @@ class Board extends CGFobject {
         this.scene.popMatrix();
 
         for(var i = 0; i < this.capturedBy1.length ; i++) {
+            console.log(this.capturedBy1.length);
             this.scene.pushMatrix();
                 this.scene.translate(-2.5 + (i > 5 ? 1 : 0), 0, 1.5 + (i > 5 ? (i - 6) : i));
+                if(this.capturedBy1[i]!=null)
                 this.capturedBy1[i].display();
             this.scene.popMatrix();
         }
 
         for(var i = 0; i < this.capturedBy2.length ; i++) {
+            console.log(this.capturedBy2.length);
             this.scene.pushMatrix();
                 this.scene.translate(9.5 + (i > 5 ? 1 : 0), 0, 1.5 + (i > 5 ? (i - 6) : i));
+                if(this.capturedBy2[i]!=null)
                 this.capturedBy2[i].display();
             this.scene.popMatrix();
         }
