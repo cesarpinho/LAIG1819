@@ -1690,7 +1690,6 @@ class MySceneGraph {
         this.stack = [];
 
         this.idRoot = this.scene.currentscene;
-        console.log(this.scene.currentscene);
 
         this.processNode(this.idRoot, mat4.create(), 'default', null, null, null, false);
     }

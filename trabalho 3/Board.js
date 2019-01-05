@@ -341,7 +341,7 @@ class Board extends CGFobject {
 
                 ///console.log("jj antes : " + jj);
                 
-                ///if(this.matrixpecas[ii][jj] != null){
+                if(this.matrixpecas[ii][jj] != null){
                     this.scene.pushMatrix();
 
                     /// animations
@@ -361,7 +361,7 @@ class Board extends CGFobject {
 
                     this.matrixpecas[ii][jj].display();
                     this.scene.popMatrix();
-                ///}
+                }
             }
         }
 
