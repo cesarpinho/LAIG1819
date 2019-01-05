@@ -142,7 +142,7 @@ class XMLscene extends CGFscene {
         
         /// update game
         if(this.game!=null)
-        this.game.update(time);
+            this.game.update(time);
 
         // Verify the keys pressed
         this.checkKeys();
@@ -234,7 +234,7 @@ class XMLscene extends CGFscene {
             this.interface.setActiveCamera((this.view == "Default") ? this.camera : null);
             
             if(this.game!=null)
-            this.game.display();
+                this.game.display();
 
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();
@@ -468,22 +468,14 @@ class XMLscene extends CGFscene {
         return Math.sqrt(Math.pow((a[0]-b[0]),2) + Math.pow((a[1]-b[1]),2) + Math.pow((a[2]-b[2]),2));
     }
 
-    responseParser(data) {
-        console.log("Request successful. Reply: " + data.target.response);
-        //this.game.board.responseParser(data);
-        this.response = data.target.response;
-    }
-
     makeRequest(requestString, onSuccess, onError, port) {
         var requestPort = port || 8081;
         var request = new XMLHttpRequest();
-        var scene = this;
 
         request.open('GET', 'http://localhost:'+requestPort+'/'+requestString, true);
 
         request.onload = onSuccess || function(data) {
             console.log("Request successful. Reply: " + data.target.response);
-            scene.response = data.target.response;
         };
         request.onerror = onError || function(){console.log("Error waiting for response");};
 

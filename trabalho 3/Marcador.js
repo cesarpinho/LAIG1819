@@ -5,7 +5,7 @@
 class Marcador {
     constructor(scene,game) {
         this.scene = scene;
-        this.game=game;
+        this.game = game;
 
         this.timer = 0;
 
@@ -62,7 +62,7 @@ class Marcador {
 
     update(time){
     	/// CONTADOR
-        this.timer+=time;
+        this.timer += time;
 
         this.updateTextures();
 

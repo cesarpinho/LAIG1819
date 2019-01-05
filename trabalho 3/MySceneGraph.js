@@ -1235,13 +1235,11 @@ class MySceneGraph {
             } else if (primitiveType == 'board') {
                 primitiveId = 'board';
                 this.scene.game = new Game(this.scene);
-                console.log(this.scene.game.board);
                 this.primitives[primitiveId] = this.scene.game.board; 
 
             } else if (primitiveType == 'marcador') {
                 primitiveId = 'marcador';
                 this.primitives[primitiveId] = this.scene.game.marcador;
-                console.log(this.primitives);
             }
         }
 
@@ -1474,7 +1472,6 @@ class MySceneGraph {
 
                     if (grandgrandChildren[z].nodeName == 'primitiveref') {
                         // Check if IDs exist
-                        console.log(componentID);
                         if (this.primitives[childID] == null)
                             return "There is no primitive with this ID (conflict: ID = " + childID + ")";
                         else

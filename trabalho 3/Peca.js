@@ -5,9 +5,11 @@ class Peca extends CGFobject {
         this.peca = new MyCylinder(scene, null, 0.4, 0.4, 1, 15, 15);
         this.num = numPeca;     /// 1 a 12
         this.player = player;   /// 1 ou 2
-        this.captured=false;
+        this.captured = false;
         this.x = x;
         this.y = y;
+
+        this.animationRun = false;
 
         this.texture = this.scene.graph.textures[numPeca.toString()];
 
@@ -19,14 +21,15 @@ class Peca extends CGFobject {
     }
     
     setCoords(x,y){
-      this.x = x;
-      this.y = y;
+        this.x = x;
+        this.y = y;
     }
 
     display() {
         this.scene.pushMatrix();
-        if(!this.captured)
-            this.scene.translate(this.x + 0.5, 0 , this.y + 0.5);
+            if(!this.captured && !this.animationRun)
+                this.scene.translate(this.x + 0.5, 0 , this.y + 0.5);
+            
             if(this.player == 1) {
                 this.black_material.setTexture(this.texture);
                 this.black_material.apply();

@@ -97,11 +97,11 @@ check_end_of_header(_).
 % print_header_line(LineCodes) :- catch((atom_codes(Line,LineCodes),write(Line),nl),_,fail), !.
 print_header_line(_).
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%                                       Commands                                                  %%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%                                       Commands                                            %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Require your Prolog Files here
+parse_input(init_game,true):- asserta(is_game_over(false)).
 parse_input(is_game_over,GameOver):- is_game_over(GameOver).
 
 parse_input(possible_plays(Player, Board, Piece, Lines, Columns),Plays):- possible_plays(Player, Board, Piece, Lines, Columns, Plays).
@@ -113,10 +113,6 @@ parse_input(machine_move(Board,Player,Lines,Columns,Difficulty),Move-NewBoard):-
 	choose_move(Board, Player, Difficulty, ListOfMoves, Move),
 	move(Player, Board, Lines, Columns, Move, NewBoard).
 
+parse_input(value(Board,Player),Value):- value(Board, Player, FirstSeqPiece-LastSeqPiece, Value).
+
 parse_input(quit, goodbye).
-
-/* parse_input(handshake, handshake).
-parse_input(test(C,N), Res) :- test(C,Res,N).
-
-test(_,[],N) :- N =< 0.
-test(A,[A|Bs],N) :- N1 is N-1, test(A,Bs,N1). */	

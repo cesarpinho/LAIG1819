@@ -3,8 +3,8 @@
 
  <views default="Default" >
     <perspective id="Default" near="0.1" far="500" angle="45">
- 		<from x="15" y="20" z="4" />
- 		<to x="4" y="0" z="4" />
+ 		<from x="15" y="15" z="13" />
+ 		<to x="12" y="0" z="10" />
     </perspective>
     <perspective id="Players" near="0.1" far="600" angle="40">
         <from x="4" y="20" z="10" />
@@ -216,7 +216,7 @@
         <materials>
             <material id="inherit" />
         </materials>
-        <texture id="inherit"/>
+        <texture id="none"/>
         <children>
             <primitiveref id="marcador"/>
         </children>
@@ -230,7 +230,7 @@
         <materials>
             <material id="inherit" />
         </materials>
-        <texture id="inherit"/>
+        <texture id="none"/>
         <children>
             <primitiveref id="board"/>
         </children>

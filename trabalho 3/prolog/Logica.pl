@@ -158,9 +158,9 @@ is_catch(_, _, _, _-_-_-_-0).
 is_catch(Player, Board, Columns, _-_-NewL-NewC-Play) :-
     Play =\= 0, Play =\= Player,
     piece_position(Board, Play-Piece, NewL, NewC, Columns),    
-    write(' * Peca '),
+/*     write(' * Peca '),
     write(Piece),
-    write(' capturada *\n'),
+    write(' capturada *\n'), */
     asserta(catch(Player-Piece)),
     check_vitory(Player).
 

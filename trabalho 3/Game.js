@@ -12,10 +12,9 @@ class Game {
     	this.playSequence = [];		/// guardar as jogadas para depois poder reproduzir (se calhar guardar os boards) e para o undo
     	this.result1 = 0;			/// resultado do jogo player 1
     	this.result2 = 0;			/// resultado do jogo player 2
-    	this.playerType1;			/// tipo de jogo (H/H,H/M,M/M)t
+    	this.playerType1;			/// tipo de jogo (H/H,H/M,M/M)
         this.playerType2;
-        this.player=0;          /// Current player 0/1
-
+        this.player = 1;          /// Current player 1/2
     }
 
     handlePick(id){
@@ -23,16 +22,24 @@ class Game {
     }
 
     changePlayer(){
-        this.player ^= 1;
+
+        switch(this.player) {
+            case 1: 
+                this.player ++;
+                break;
+            case 2:
+                this.player --;
+                break;
+        }
+     
         this.scene.cameraAnimation.startAnimation();
     }
 
     updateTimer(time){
-    	this.currTime+=time;
+    	this.currTime += time;
     }
 
     update(time){
-
     	/// CONTADOR
     	this.updateTimer(time);
 
@@ -41,7 +48,6 @@ class Game {
     }
 
     display(){
-    	///this.board.display();
     }
 
 }
