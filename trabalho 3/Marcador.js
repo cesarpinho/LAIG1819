@@ -7,7 +7,33 @@ class Marcador {
         this.scene = scene;
         this.game = game;
 
+        this.on=false;
+        this.gametypechosen=false;
+        this.gamedifficultychosen=false;
+
         this.timer = 0;
+
+        var nurbsSurface = new CGFnurbsSurface(3, 1, [  // U = 0
+                [ // V = 0..1;
+                    [-0.5,1,0,1],
+                    [0.5,1,0,1],
+                ],
+                // U = 1
+                [ // V = 0..1
+                    [-1,0.7,0,1],
+                    [1,0.7,0,1],
+                ],
+                [ // V = 0..1
+                    [-1,-0.7,0,1],
+                    [1,-0.7,0,1],
+                ],
+                [ // V = 0..1
+                    [-0.5,-1,0,1],
+                    [0.5,-1,0,1], 
+                ]
+            ]);
+
+        this.button = new CGFnurbsObject(scene, 20, 20, nurbsSurface);
 
         this.square = new MyRectangle(scene,null,0,1,0,1);
 
@@ -18,6 +44,29 @@ class Marcador {
 
         this.white_material = new CGFappearance(scene);
         this.white_material.setDiffuse(1,1,1,1);
+
+        this.tablet_grey_material = new CGFappearance(scene);
+        this.tablet_grey_material.setEmission(0,0,0,1);
+
+        this.tablet_off_material = new CGFappearance(scene);
+        this.tablet_off_material.setEmission(0.1,0.1,0.1,1);
+        this.tablet_off_material.setDiffuse(0.1,0.1,0.1,0.5);
+        this.tablet_off_material.setSpecular(0.1,0.1,0.1,0.5);
+
+        this.tablet_on_material = new CGFappearance(scene);
+        this.tablet_on_material.setDiffuse(0.4,0.4,0.4,0);
+        this.tablet_on_material.setSpecular(0,0,0,0);
+
+        this.tabletButtons = [];
+
+        /// create tablet buttons
+        for(var i = 0; i < 7 ; i++) {
+            this.tabletButtons.push(new CGFnurbsObject(scene, 20, 20, nurbsSurface));
+        }
+
+        ///this.pickObjs=[];
+
+        ///this.pickObjs.push(this.button);
 
     }
 
@@ -69,7 +118,198 @@ class Marcador {
     	//this.board.update();
     }
 
+    /// Handler dos picks no tablet
+    /**
+      * 100 - ON/OFF
+      * 101 - H/H
+      * 102 - H/M
+      * 103 - M/M
+      * 104 - EASY
+      * 105 - HARD
+      * 106 - START GAME
+      *
+      * 107 - RESTART GAME BUTTON
+      */
+
+    handlePick(id){
+        console.log("picked with id : " + id);
+
+        switch(id){
+            case 100:
+                this.on=!this.on;
+                console.log(this.on);
+                break;
+            case 101:
+                this.gametypechosen=true;
+                this.game.playerType1 = 0;
+                this.game.playerType2 = 0;
+                break;
+            case 102:
+                this.gametypechosen=true;
+                this.game.playerType1 = 0;
+                this.game.playerType2 = 1;
+                break;
+            case 103:
+                this.gametypechosen=true;
+                this.game.playerType1 = 1;
+                this.game.playerType2 = 1;
+                break;
+            case 104:
+                this.gamedifficultychosen=true;
+                this.game.difficulty = 0;
+                break;
+            case 105:
+                this.gamedifficultychosen=true;
+                this.game.difficulty = 1;
+                break;
+            case 106:
+                if(this.gamedifficultychosen && this.gametypechosen){
+                    this.game.playing=true;
+                }
+                break;
+            case 107:
+                this.game.restartGame();
+                break;
+            default:
+                console.log("?????????????????????");
+                break;
+        }
+
+        ///console.log("this.on : " + this.on);
+
+    }
+
+    restartGame(){
+        this.timer=0;
+    }
+
     display(){
+
+        /// TABLET
+
+        ////    BUTTONS
+
+        /// ON/OFF BUTTON
+
+        this.scene.pushMatrix();
+            this.scene.registerForPick(100,this.button);
+            this.black_material.apply();
+            this.scene.translate(3.5,9.87,0.01);
+            this.scene.scale(0.08,0.08,0.09);
+            this.scene.scale(5,1,1);
+            this.button.display();
+            this.scene.clearPickRegistration();
+        this.scene.popMatrix();
+
+        ///console.log("thism.game.playing : " +this.game.playing);
+
+        if(this.on){
+
+            if(!this.game.playing){
+
+                this.black_material.apply();
+                for(var i = 0 ; i < 3 ; i++){   /// GAME TYPE BUTTONS
+                    this.scene.pushMatrix();
+                        this.scene.registerForPick(101 + i,this.tabletButtons[i]);
+                        this.scene.translate(1.5+Math.floor(i%3)*2,5-Math.floor(i/3),0.02);
+                        this.scene.scale(0.2,0.2,0.2);
+                        this.scene.scale(5,1,1);
+                        this.tabletButtons[i].display();
+                    this.scene.popMatrix();
+                }
+
+                this.scene.pushMatrix();   /// GAME DIFICULTY EASY
+                    this.scene.registerForPick(104,this.tabletButtons[3]);
+                    this.scene.translate(2.5,4,0.02);
+                    this.scene.scale(0.2,0.2,0.2);
+                    this.scene.scale(5,1,1);
+                    this.tabletButtons[3].display();
+                this.scene.popMatrix();
+
+                this.scene.pushMatrix();   /// GAME DIFICULTY HARD
+                    this.scene.registerForPick(105,this.tabletButtons[4]);
+                    this.scene.translate(4.5,4,0.02);
+                    this.scene.scale(0.2,0.2,0.2);
+                    this.scene.scale(5,1,1);
+                    this.tabletButtons[4].display();
+                this.scene.popMatrix();
+
+                this.scene.pushMatrix();    /// START BUTTON
+                    this.scene.registerForPick(106,this.tabletButtons[5]);
+                    this.scene.translate(3.5,7.5,0.02);
+                    this.scene.scale(0.4,0.4,0.4);
+                    this.scene.scale(5,1,1);
+                    this.tabletButtons[5].display();
+                this.scene.popMatrix();
+            } else {
+
+                /// IN-GAME MENU
+
+                this.scene.pushMatrix();    /// RESTART GAME BUTTON
+                    this.scene.registerForPick(107,this.tabletButtons[6]);
+                    this.scene.translate(1.5,2,0.02);
+                    this.scene.scale(0.15,0.3,0.3);
+                    this.scene.scale(5,1,1);
+                    this.tabletButtons[6].display();
+                this.scene.popMatrix();
+
+                this.scene.clearPickRegistration();
+
+            }
+        }
+
+        /// TABLET SCREEN
+
+        this.scene.pushMatrix();
+            this.on ? this.tablet_on_material.apply() : this.tablet_off_material.apply();
+            this.scene.translate(0.25,0.25,0.01);
+            this.scene.scale(6.5,9.5,1);
+            this.square.display();
+        this.scene.popMatrix();
+
+        /// TABLET BODY
+
+        this.tablet_grey_material.apply();
+        this.scene.pushMatrix();    /// top
+            this.scene.translate(0,10,0);
+            this.scene.rotate(-Math.PI/2,1,0,0);
+            this.scene.scale(7,0.2,1);
+            this.square.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();    /// bot
+            this.scene.translate(0,0,-0.2);
+            this.scene.rotate(Math.PI/2,1,0,0);
+            this.scene.scale(7,0.2,1);
+            this.square.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();    /// right
+            this.scene.translate(7,0,0);
+            this.scene.rotate(Math.PI/2,0,1,0);
+            this.scene.scale(0.2,10,1);
+            this.square.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();    /// left
+            this.scene.translate(0,0,-0.2);
+            this.scene.rotate(-Math.PI/2,0,1,0);
+            this.scene.scale(0.2,10,1);
+            this.square.display();
+        this.scene.popMatrix();
+        this.scene.pushMatrix();    /// back
+            this.scene.translate(7,0,-0.2);
+            this.scene.rotate(Math.PI,0,1,0);
+            this.scene.scale(7,10,1);
+            this.square.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();   /// front
+            this.scene.scale(7,10,1);
+            this.square.display();
+        this.scene.popMatrix();
+
+        /// MARCADOR
 
         /// BODY
 

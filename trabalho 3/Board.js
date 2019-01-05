@@ -164,7 +164,13 @@ class Board extends CGFobject {
         }
     }
 
-    /// retorna o board no formato usado na aplicação em prolog [ [1-2,1-8,...], ...]
+    restartGame(){
+        this.initPecas();
+        this.capturedBy1=[];
+        this.capturedBy2=[];
+    }
+
+    /// retorna o board no formato usado na aplicação em prolog [1-2,1-8]
     boardToPlog(){      
         var plogBoard = "[";
 
@@ -293,14 +299,16 @@ class Board extends CGFobject {
         this.animX2 = x2;
         this.animY2 = y2;
         this.pecaAnimation = new LinearAnimation(this.scene, points, span, "");
-        
+        console.log("animations points : " + x +" - " + y + "/" + x2 + " - " + y2);
+
         this.animrun = true;
         this.matrixpecas[x][y].animationRun = true;
     }
 
     update(time){
-        if(this.pecaAnimation != null)
+        if(this.pecaAnimation!=null){
             this.pecaAnimation.update(time);
+        }
     }
 
     logCoords(x,y){
@@ -330,8 +338,10 @@ class Board extends CGFobject {
                     this.scene.registerForPick(id + 1, this.pickObjs[id]);
                     this.pickObjs[id].display();
                 this.scene.popMatrix();
+
+                ///console.log("jj antes : " + jj);
                 
-                if(this.matrixpecas[ii][jj] != null){
+                ///if(this.matrixpecas[ii][jj] != null){
                     this.scene.pushMatrix();
 
                     /// animations
@@ -340,13 +350,18 @@ class Board extends CGFobject {
                     ///console.log("animx : " + this.animx+ "animy : " + this.animy + "ii : " + ii +"jj : " + jj );
                     if(this.pecaAnimation != null) 
                         if(ii == this.animX && jj == this.animY){
+                            ///console.log(this.pecaAnimation.getMatrix());
                             matrix = this.pecaAnimation.getMatrix();
                             this.scene.multMatrix(matrix);
                         }
-                    
+
+
+                        ///if(this.pecaAnimation!=null)
+                        ///console.log(matrix);
+
                     this.matrixpecas[ii][jj].display();
                     this.scene.popMatrix();
-                }
+                ///}
             }
         }
 

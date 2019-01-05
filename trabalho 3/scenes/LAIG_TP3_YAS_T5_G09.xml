@@ -1,5 +1,5 @@
 <yas>
- <scene root="kitchen" axis_length="5.0" />
+ <scene root="main" axis_length="5.0" />
 
  <views default="Default" >
     <perspective id="Default" near="0.1" far="500" angle="45">
@@ -209,9 +209,9 @@
 
     <component id="marcador">
         <transformation>
-            <translate x="11.7" y="4.3" z="13.6" />
+            <!--<translate x="11.7" y="4.3" z="13.6" />
             <scale x="0.3" y="0.3" z="0.3" />
-            <rotate axis="y" angle="90"/>
+            <rotate axis="y" angle="90"/>-->
         </transformation>
         <materials>
             <material id="inherit" />
@@ -1521,6 +1521,30 @@
             <componentref id="television"/>
             <componentref id="board"/>
             <componentref id="marcador"/>
+        </children>
+    </component>
+
+    <component id="other">
+        <transformation></transformation>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="none"/>
+        <children>
+            <componentref id="board"/>
+            <componentref id="marcador"/>
+        </children>
+    </component>
+
+    <component id="main">
+        <transformation></transformation>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="none"/>
+        <children>
+            <componentref id="kitchen" />
+            <componentref id="other" />
         </children>
     </component>
  </components>

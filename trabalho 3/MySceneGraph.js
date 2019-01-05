@@ -1254,6 +1254,8 @@ class MySceneGraph {
     parseComponents(componentsNode) {
         var children = componentsNode.children;
 
+        this.roots = [];
+
         this.components = [];
 
         var grandChildren = [];
@@ -1278,6 +1280,7 @@ class MySceneGraph {
                 return "ID must be unique for each component (conflict: ID = " + componentID + ")";
 
             grandChildren = children[i].children;
+
 
             nodeNames = [];
             for (var j = 0; j < grandChildren.length; j++) {
@@ -1462,6 +1465,7 @@ class MySceneGraph {
 
                 for (var z = 0; z < grandgrandChildren.length; z++) {
 
+
                     if (grandgrandChildren[z].nodeName != 'componentref' && grandgrandChildren[z].nodeName != 'primitiveref')
                         return "unknown tag <" + grandgrandChildren[z].nodeName + "> - Expected <primitiveref> or <componentref> tag";
 
@@ -1469,6 +1473,11 @@ class MySceneGraph {
                     var childID = this.reader.getString(grandgrandChildren[z], 'id');
                     if (childID == null)
                         return "no ID defined for childID";
+
+
+                    if(componentID == 'main'){
+                        this.roots[childID] = childID;
+                    }
 
                     if (grandgrandChildren[z].nodeName == 'primitiveref') {
                         // Check if IDs exist
@@ -1679,6 +1688,9 @@ class MySceneGraph {
      */
     displayScene() {
         this.stack = [];
+
+        this.idRoot = this.scene.currentscene;
+        console.log(this.scene.currentscene);
 
         this.processNode(this.idRoot, mat4.create(), 'default', null, null, null, false);
     }

@@ -98,7 +98,8 @@ class XMLscene extends CGFscene {
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
     onGraphLoaded() {
-        this.axis = new CGFaxis(this, this.graph.referenceLength);
+        this.currentscene = 'kitchen';
+        this.axis = new CGFaxis(this, this.graph.referenceLength)
 
         // Inicialize default view
         this.view = this.graph.views.pop();
@@ -114,6 +115,9 @@ class XMLscene extends CGFscene {
         
         // Adds views group.
         this.interface.addViewsGroup(this.graph.views);
+
+        // Adds scene change.
+        this.interface.addSceneChange(this.graph.roots);
 
         this.initKeys();
 
@@ -155,6 +159,8 @@ class XMLscene extends CGFscene {
             
         if(this.vehicleId != null)
             this.vehicleId[0].update(time);
+
+        this.logPicking();
     };
         
     /**
@@ -182,7 +188,7 @@ class XMLscene extends CGFscene {
                         console.log("Picked object: " + obj + ", with pick id " + customId);
 
                         /// Handle Pick
-                        this.game.handlePick(customId);
+                            this.game.handlePick(customId);
                     }
                 }
                 this.pickResults.splice(0,this.pickResults.length);

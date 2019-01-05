@@ -24,44 +24,9 @@ class MyInterface extends CGFinterface {
 
         this.initKeys();
 
-        this.pecaselected=null;
-        this.selected = false;
 
         return true;
     }
-
-    /**
-     * initMouse
-     *//*
-    initMouse() {
-        this.processMouse=function(){};
-    }*/
-
-    /* processMouseDown(event) {       /// Player 1 (172,140) (510,140) (172,480) (510,480)  Aproximado
-        console.log("mouse down: " + event.x + " " + event.y);
-
-        ///   x
-        var a = (510-172)/8;    // 510-172 -> board visual width
-        console.log(a);
-        var b = (Math.floor((event.x-172)/a));
-        console.log(b);
-
-        /// y
-        var c = (480-140)/8;    // 480-140 -> board visual heigth
-        console.log(c);
-        var d = (Math.floor((event.y-140)/c));
-        console.log(d);
-
-        if(!this.selected){
-            this.pecaselected = [b,d];
-            this.selected = true;
-            console.log(this.pecaselected);
-        } else {
-            this.scene.graph.board.movePeca(this.pecaselected[0],this.pecaselected[1],b,d);
-            this.selected = false;
-        }
-
-    }; */
 
     /**
      * initKeys
@@ -84,6 +49,20 @@ class MyInterface extends CGFinterface {
         return this.activeKeys[keyCode] || false;
     }
 
+
+    /**
+     * 
+     */
+    addSceneChange(roots) {
+        this.scene.rootValues = [];
+
+        for (var key in roots) {
+            if (roots.hasOwnProperty(key)) {
+                this.scene.rootValues.push(key);
+            }
+        }
+        this.gui.add(this.scene,'currentscene', this.scene.rootValues).name('Change Scene');
+    }
 
     /**
      * Adds a list box containing the IDs of the views passed as parameter.
