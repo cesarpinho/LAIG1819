@@ -2,7 +2,7 @@ class Peca extends CGFobject {
     constructor(scene,numPeca,x,y,player) {
         super(scene);
 
-        this.peca = new MyCylinder(scene, null, 0.4, 0.4, 1, 15, 15);
+        this.peca = new MyCylinder(scene, null, 0.4, 0.4, 0.3, 15, 15);
         this.num = numPeca;     /// 1 a 12
         this.player = player;   /// 1 ou 2
         this.captured = false;
@@ -26,8 +26,6 @@ class Peca extends CGFobject {
     }
 
     display() {
-
-
 
         this.scene.pushMatrix();
             if(!this.captured){
