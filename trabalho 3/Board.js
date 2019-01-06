@@ -110,20 +110,19 @@ class Board extends CGFobject {
         var y = (id-1) % 8;
         console.log("y: " + y);
 
-        console.log(this.matrixpecas[x][y]);
-
         if(!this.picked){           /// if it is not the same piece (maybe in plog)
             /// Check if its a piece
-            if(this.matrixpecas[x][y] != null && this.matrixpecas[x][y].player == this.game.player) {
+            if( (this.matrixpecas[x][y] != null) && (this.game.playerType[this.game.player-1] == 0)
+                && (this.matrixpecas[x][y].player == this.game.player) ) 
+                {
                 this.picked = true;
                 this.pickedX = x;
                 this.pickedY = y;
                 console.log("PICKED!");
-
-                console.log("num peca: " + this.matrixpecas[x][y].num);
                 
                 this.scene.makeRequest(
-                    "possible_plays("+ this.game.player +","+ this.boardToPlog() +","+ this.matrixpecas[x][y].num +",8,8)",
+                    "possible_plays("+ this.game.player +","+ this.boardToPlog() +","+ 
+                    this.matrixpecas[x][y].num +","+ this.lines +","+ this.columns +")",
                     (data) => {
                         console.log("Request successful. Reply: " + data.target.response);
                         this.parseValidMoves(data.target.response);
@@ -132,7 +131,7 @@ class Board extends CGFobject {
             }
         } else {
             /// if it's valid to move
-            if ( this.validMovesId.includes(id - 1) ) {
+            if( this.validMovesId.includes(id - 1) ) {
                 console.log("movepeca");
                 this.movePeca(this.pickedX,this.pickedY,x,y);
                 
@@ -249,10 +248,10 @@ class Board extends CGFobject {
         moves = moves.split(",");
 
         for(var i = 0 ; i < moves.length ; i++) {
-            var move = moves[i].slice(4,-2);
+            var move = moves[i].split("-");
 
-            var x = parseInt(move.slice(move.indexOf("-")+1, move.length));
-            var y = parseInt(move);
+            var x = parseInt(move[3]);
+            var y = parseInt(move[2]);
             
             this.validMoves.push([x,y]);
             this.validMovesId.push(x * 8 + y);
@@ -276,6 +275,7 @@ class Board extends CGFobject {
         }
         
         var plogMove = y + "-" + x + "-" + y2 + "-" + x2 + "-" + destinyPlayer;
+        this.game.playSequence.push(plogMove);
 
         this.scene.makeRequest(
             "make_move("+ this.game.player +","+ this.boardToPlog() +","+ this.matrixpecas[x][y].num +",8,"+ plogMove +")",
@@ -286,6 +286,9 @@ class Board extends CGFobject {
                 this.animX2 = null;
                 this.animY2 = null;
                 this.plogToBoard(data.target.response);
+
+                if(this.game.playerType[this.game.player-1] == 1)
+                    this.makeMachineMove();
             }
         );
     }
@@ -303,6 +306,30 @@ class Board extends CGFobject {
 
         this.animrun = true;
         this.matrixpecas[x][y].animationRun = true;
+    }
+
+    makeMachineMove() {
+        console.log("MACHINE MOVE");
+        this.scene.makeRequest(
+            "machine_move("+ this.boardToPlog() +","+ this.game.player +","+ 
+            this.lines +","+ this.columns +","+ this.game.difficulty +")",
+            (data) => {
+                var response = data.target.response;
+                var move = response.slice(0,9);
+                this.game.playSequence.push(move);
+                console.log(" move: "+ move);
+
+                move = move.split("-");
+                move.forEach(element => { parseInt(element); });
+                
+                //        APlicar o startAnimation aqui ?
+                // this.startAnimation(move[1], move[0], move[3], move[2]);
+
+                this.plogToBoard(response.slice(10, response.length));
+
+                this.game.changePlayer();
+            }
+        );
     }
 
     update(time){

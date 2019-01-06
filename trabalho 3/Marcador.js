@@ -141,26 +141,23 @@ class Marcador {
                 break;
             case 101:
                 this.gametypechosen=true;
-                this.game.playerType1 = 0;
-                this.game.playerType2 = 0;
+                this.game.playerType = [0,0];
                 break;
             case 102:
                 this.gametypechosen=true;
-                this.game.playerType1 = 0;
-                this.game.playerType2 = 1;
+                this.game.playerType = [0,1];
                 break;
             case 103:
                 this.gametypechosen=true;
-                this.game.playerType1 = 1;
-                this.game.playerType2 = 1;
+                this.game.playerType = [1,1];
                 break;
             case 104:
                 this.gamedifficultychosen=true;
-                this.game.difficulty = 0;
+                this.game.difficulty = "computer1";
                 break;
             case 105:
                 this.gamedifficultychosen=true;
-                this.game.difficulty = 1;
+                this.game.difficulty = "computer2";
                 break;
             case 106:
                 if(this.gamedifficultychosen && this.gametypechosen){
