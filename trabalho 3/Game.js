@@ -10,16 +10,15 @@ class Game {
     	this.board = new Board(scene,this);
         this.marcador = new Marcador(scene,this);
     	this.difficulty = "computer1";            /// 'computer1'-easy 'computer2'-hard
-    	this.playSequence = [];		/// guardar as jogadas para depois poder reproduzir (se calhar guardar os boards) e para o undo
+    	this.playSequence = [];		/// guardar as jogadas a depois poder reproduzir (se calhar guardar os boards) e para o undo
     	this.result1 = 0;			/// resultado do jogo player 1
     	this.result2 = 0;			/// resultado do jogo player 2
-    	this.playerType = [0,1];		/// 0-H 1-M
+    	this.playerType = [0,0];		/// 0-H 1-M
         this.player = 1;            /// Current player 1/2
     }
 
     handlePick(id){
-        console.log("IDDDDDDDDDDDD : " + id );
-        if(id < 100)
+        if(id < 100 && this.playing)
     	    this.board.handlePick(id);
         else 
             this.marcador.handlePick(id);
@@ -27,6 +26,10 @@ class Game {
 
     restartGame(){
         console.log("RESTART GAME");
+
+        if(this.player == 2)
+            this.changePlayer();
+
         this.result1=0;
         this.result2=0;
         this.board.restartGame();
@@ -34,7 +37,6 @@ class Game {
     }
 
     changePlayer(){
-
         switch(this.player) {
             case 1: 
                 this.player ++;
@@ -44,9 +46,7 @@ class Game {
                 break;
         }
 
-       /*  if(this.playerType[this.player-1] == 1)
-            this.board.makeMachineMove(); */
-     
+        if(this.playerType[1] == 0)
         this.scene.cameraAnimation.startAnimation();
     }
 
@@ -55,14 +55,15 @@ class Game {
     }
 
     update(time){
-
         if(this.playing) {
             /// CONTADOR
-    	    this.updateTimer(time);         // o contador é preciso aqui?? não está no marcador ?????
+    	    ///this.updateTimer(time);         // o contador é preciso aqui?? não está no marcador ?????
 
     	    this.board.update(time);
             this.marcador.update(time);
         }
+
+        this.marcador.update2(time);
     }
 
     display(){

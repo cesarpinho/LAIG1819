@@ -154,7 +154,8 @@ class XMLscene extends CGFscene {
         if(this.sceneInited)
             if(this.movecamera)
                 this.updateMovingCamera();
-        if(this.cameraAnimation1!=null)
+
+        if(this.cameraAnimation!=null)
         this.cameraAnimation.update(time);
             
         if(this.vehicleId != null)

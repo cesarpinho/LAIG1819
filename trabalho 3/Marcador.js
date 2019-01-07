@@ -54,16 +54,19 @@ class Marcador {
         this.tablet_off_material.setSpecular(0.1,0.1,0.1,0.5);
 
         this.tablet_on_material = new CGFappearance(scene);
-        this.tablet_on_material.setDiffuse(0.4,0.4,0.4,0);
+        this.tablet_on_material.setDiffuse(0.2,0.2,0.2,0);
         this.tablet_on_material.setSpecular(0,0,0,0);
 
         this.tabletButtons = [];
-
+        
         /// create tablet buttons
         for(var i = 0; i < 7 ; i++) {
-            this.tabletButtons.push(new CGFnurbsObject(scene, 20, 20, nurbsSurface));
+            ///this.tabletButtons.push(this.square);
+            this.tabletButtons.push(new CGFnurbsObject(this.scene, 20, 20, nurbsSurface));
         }
 
+
+        this.initButtons();
         ///this.pickObjs=[];
 
         ///this.pickObjs.push(this.button);
@@ -72,11 +75,15 @@ class Marcador {
 
     initNumbers(){
         this.min1Tex = new CGFappearance(this.scene);
+        this.min1Tex.setTexture(this.scene.graph.textures["clock_0"]);
         this.min2Tex = new CGFappearance(this.scene);
+        this.min2Tex.setTexture(this.scene.graph.textures["clock_0"]);
         this.minPts = new CGFappearance(this.scene);
         this.minPts.setTexture(this.scene.graph.textures["clock_pts"]);
         this.sec1Tex = new CGFappearance(this.scene);
+        this.sec1Tex.setTexture(this.scene.graph.textures["clock_0"]);
         this.sec2Tex = new CGFappearance(this.scene);
+        this.sec2Tex.setTexture(this.scene.graph.textures["clock_0"]);
         this.player1_1 = new CGFappearance(this.scene);
         this.player1_1.setTexture(this.scene.graph.textures["clock_0"]);
         this.player1_2 = new CGFappearance(this.scene);
@@ -87,6 +94,34 @@ class Marcador {
         this.player2_1.setTexture(this.scene.graph.textures["clock_0"]);
         this.player2_2 = new CGFappearance(this.scene);
         this.player2_2.setTexture(this.scene.graph.textures["clock_0"]);
+    }
+
+    initButtons(){
+
+        this.startbutton_tex = new CGFappearance(this.scene);
+        this.startbutton_tex.setTexture(this.scene.graph.textures["startgame_button"]);
+
+        this.HvsH_button_tex = new CGFappearance(this.scene);
+        this.HvsH_button_tex.setTexture(this.scene.graph.textures["HvsH_button"]);
+
+        this.HvsM_button_tex = new CGFappearance(this.scene);
+        this.HvsM_button_tex.setTexture(this.scene.graph.textures["HvsM_button"]);
+
+        this.MvsM_button_tex = new CGFappearance(this.scene);
+        this.MvsM_button_tex.setTexture(this.scene.graph.textures["MvsM_button"]);
+
+        this.easy_button_tex = new CGFappearance(this.scene);
+        this.easy_button_tex.setTexture(this.scene.graph.textures["easy_button"]);
+
+        this.hard_button_tex = new CGFappearance(this.scene);
+        this.hard_button_tex.setTexture(this.scene.graph.textures["hard_button"]);
+
+        this.restart_button_tex = new CGFappearance(this.scene);
+        this.restart_button_tex.setTexture(this.scene.graph.textures["restart_button"]);
+
+        this.undo_button_tex = new CGFappearance(this.scene);
+        this.undo_button_tex.setTexture(this.scene.graph.textures["undo_button"]);
+
     }
 
     updateTextures(){
@@ -116,6 +151,16 @@ class Marcador {
         this.updateTextures();
 
     	//this.board.update();
+    }
+
+    update2(time){
+
+        /// START BUTTON
+
+        if((this.gamedifficultychosen && this.gametypechosen) || (this.gametypechosen && this.game.playerType[1] == 0))
+        this.startbutton_tex.setTexture(this.scene.graph.textures["startgame_button_brilho"]);
+            else    this.startbutton_tex.setTexture(this.scene.graph.textures["startgame_button"]);
+
     }
 
     /// Handler dos picks no tablet
@@ -160,12 +205,15 @@ class Marcador {
                 this.game.difficulty = "computer2";
                 break;
             case 106:
-                if(this.gamedifficultychosen && this.gametypechosen){
+                if((this.gamedifficultychosen && this.gametypechosen) || (this.gametypechosen && this.game.playerType[1] == 0)){
                     this.game.playing=true;
                 }
                 break;
             case 107:
                 this.game.restartGame();
+                break;
+            case 108:
+                this.game.board.undo();
                 break;
             default:
                 console.log("?????????????????????");
@@ -181,6 +229,11 @@ class Marcador {
     }
 
     display(){
+
+        this.scene.pushMatrix();
+
+        this.scene.translate(1.2,0.7,3);
+        this.scene.scale(0.7,0.7,0.7);
 
         /// TABLET
 
@@ -204,50 +257,82 @@ class Marcador {
 
             if(!this.game.playing){
 
-                this.black_material.apply();
-                for(var i = 0 ; i < 3 ; i++){   /// GAME TYPE BUTTONS
-                    this.scene.pushMatrix();
-                        this.scene.registerForPick(101 + i,this.tabletButtons[i]);
-                        this.scene.translate(1.5+Math.floor(i%3)*2,5-Math.floor(i/3),0.02);
-                        this.scene.scale(0.2,0.2,0.2);
-                        this.scene.scale(5,1,1);
-                        this.tabletButtons[i].display();
-                    this.scene.popMatrix();
-                }
+                    /// GAME TYPE BUTTONS
 
+                this.scene.pushMatrix();
+                    this.HvsH_button_tex.apply();
+                    this.scene.registerForPick(101,this.tabletButtons[0]);
+                    this.scene.translate(3.5,6,0.02);
+                    this.scene.scale(0.4,0.4,0.4);
+                    this.scene.scale(5,1,1);
+                    this.tabletButtons[i].display();
+                this.scene.popMatrix();
+                this.scene.pushMatrix();
+                    this.HvsM_button_tex.apply();
+                    this.scene.registerForPick(102,this.tabletButtons[1]);
+                    this.scene.translate(3.5,5,0.02);
+                    this.scene.scale(0.4,0.4,0.4);
+                    this.scene.scale(5,1,1);
+                    this.tabletButtons[i].display();
+                this.scene.popMatrix();
+                this.scene.pushMatrix();
+                    this.MvsM_button_tex.apply();
+                    this.scene.registerForPick(103,this.tabletButtons[2]);
+                    this.scene.translate(3.5,4,0.02);
+                    this.scene.scale(0.4,0.4,0.4);
+                    this.scene.scale(5,1,1);
+                    this.tabletButtons[i].display();
+                this.scene.popMatrix();
+
+                if(this.game.playerType[1] != 0){
                 this.scene.pushMatrix();   /// GAME DIFICULTY EASY
                     this.scene.registerForPick(104,this.tabletButtons[3]);
-                    this.scene.translate(2.5,4,0.02);
-                    this.scene.scale(0.2,0.2,0.2);
+                    this.scene.translate(2,2.5,0.02);
+                    this.scene.scale(0.3,0.3,0.3);
                     this.scene.scale(5,1,1);
+                    this.easy_button_tex.apply();
                     this.tabletButtons[3].display();
                 this.scene.popMatrix();
 
                 this.scene.pushMatrix();   /// GAME DIFICULTY HARD
                     this.scene.registerForPick(105,this.tabletButtons[4]);
-                    this.scene.translate(4.5,4,0.02);
-                    this.scene.scale(0.2,0.2,0.2);
+                    this.scene.translate(5,2.5,0.02);
+                    this.scene.scale(0.3,0.3,0.3);
                     this.scene.scale(5,1,1);
+                    this.hard_button_tex.apply();
                     this.tabletButtons[4].display();
                 this.scene.popMatrix();
+                }
 
                 this.scene.pushMatrix();    /// START BUTTON
                     this.scene.registerForPick(106,this.tabletButtons[5]);
                     this.scene.translate(3.5,7.5,0.02);
-                    this.scene.scale(0.4,0.4,0.4);
+                    this.scene.scale(0.6,0.6,0.6);
                     this.scene.scale(5,1,1);
+                    this.startbutton_tex.apply();
                     this.tabletButtons[5].display();
                 this.scene.popMatrix();
+
             } else {
 
                 /// IN-GAME MENU
 
                 this.scene.pushMatrix();    /// RESTART GAME BUTTON
+                    this.restart_button_tex.apply();
                     this.scene.registerForPick(107,this.tabletButtons[6]);
-                    this.scene.translate(1.5,2,0.02);
-                    this.scene.scale(0.15,0.3,0.3);
+                    this.scene.translate(3.5,6,0.02);
+                    this.scene.scale(0.3,0.4,0.3);
                     this.scene.scale(5,1,1);
                     this.tabletButtons[6].display();
+                this.scene.popMatrix();
+
+                this.scene.pushMatrix();    /// UNDO GAME BUTTON
+                    this.undo_button_tex.apply();
+                    this.scene.registerForPick(108,this.tabletButtons[6]);
+                    this.scene.translate(1,2,0.02);
+                    this.scene.scale(0.3,0.7,0.3);
+                    this.scene.scale(5,1,1);
+                    this.square.display();
                 this.scene.popMatrix();
 
                 this.scene.clearPickRegistration();
@@ -258,7 +343,7 @@ class Marcador {
         /// TABLET SCREEN
 
         this.scene.pushMatrix();
-            this.on ? this.tablet_on_material.apply() : this.tablet_off_material.apply();
+            this.on ? this.tablet_off_material.apply() : this.tablet_on_material.apply();
             this.scene.translate(0.25,0.25,0.01);
             this.scene.scale(6.5,9.5,1);
             this.square.display();
@@ -486,6 +571,7 @@ class Marcador {
 
         */
 
+        this.scene.popMatrix();
     }
 
 }

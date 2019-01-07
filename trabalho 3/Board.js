@@ -23,6 +23,8 @@ class Board extends CGFobject {
         this.animX2;
         this.animY2;
 
+        this.firstmove=true;
+
         this.gameOver = false;
         
         ///  LOGICA
@@ -44,8 +46,11 @@ class Board extends CGFobject {
         this.green_material.setTexture(this.scene.graph.textures["boardQuad"]);
 
         this.matrixpecas = [];
+        this.matrixpecasprev = [];
         this.capturedBy1 = [];
         this.capturedBy2 = [];
+
+        this.canundo=false;
 
         this.initPecas();
     }
@@ -168,10 +173,11 @@ class Board extends CGFobject {
         this.initPecas();
         this.capturedBy1=[];
         this.capturedBy2=[];
+        this.pecaAnimation=null;
     }
 
     /// retorna o board no formato usado na aplicação em prolog [1-2,1-8]
-    boardToPlog(){      
+    boardToPlog(){
         var plogBoard = "[";
 
         for(var i = 0 ; i < this.lines ; i++) {
@@ -228,6 +234,7 @@ class Board extends CGFobject {
             plogBoard = plogBoard.slice(endLine+2,plogBoard.length);
         }
 
+        this.matrixpecasprev = this.matrixpecas;
         this.matrixpecas = matrix;
     }
 
@@ -262,7 +269,10 @@ class Board extends CGFobject {
     }
 
     movePeca(x,y,x2,y2){
+        this.canundo=true;
         this.startAnimation(x,y,x2,y2);
+        this.prevx = x;
+        this.prevy = y;
         
         var destinyPlayer = 0;
         
@@ -274,8 +284,6 @@ class Board extends CGFobject {
 
             this.matrixpecas[x2][y2].captured = true;
         }
-
-        this.sortCaptured();
         
         var plogMove = y + "-" + x + "-" + y2 + "-" + x2 + "-" + destinyPlayer;
         this.game.playSequence.push(plogMove);
@@ -283,7 +291,7 @@ class Board extends CGFobject {
         this.scene.makeRequest(
             "make_move("+ this.game.player +","+ this.boardToPlog() +","+ this.matrixpecas[x][y].num +",8,"+ plogMove +")",
             (data) => {
-                console.log("Request successful. Reply: " + data.target.response);
+                console.log("Request successful. (make move ) Reply: " + data.target.response);
                 this.animX = this.animX2;
                 this.animY = this.animY2;
                 this.animX2 = null;
@@ -296,11 +304,20 @@ class Board extends CGFobject {
         );
     }
 
-    sortCaptured(){
-        var cap1 = [];
-        var cap2 = [];
-
-
+    undo(){
+        if(this.canundo){
+            this.canundo=false;
+        console.log(this.animX + " " + this.animY + " " + this.animX2 + " " + this.animY2);
+        console.log(this.prevx);
+        console.log(this.prevy);
+        console.log(this.matrixpecas);
+        this.matrixpecas[this.animX][this.animY].x = this.prevx;
+        this.matrixpecas[this.animX][this.animY].y = this.prevy;
+        this.matrixpecas = this.matrixpecasprev;
+        this.game.playSequence.pop();
+        console.log(this.matrixpecas);
+        this.game.changePlayer();
+        }
     }
 
     genPoints(x,y,x2,y2){
@@ -337,7 +354,6 @@ class Board extends CGFobject {
         ///var points = [[x,0,y],  [x,0,y],  [x,0,y],  [x,0,y],  [x,0,y],  [x,0,y],  [x2,0,y2]];
         var span = 1;
 
-        console.log(points);
 
         this.animX = x;
         this.animY = y;
@@ -345,13 +361,19 @@ class Board extends CGFobject {
         this.animY2 = y2;
         this.pecaAnimation = new LinearAnimation(this.scene, points, span, "");
         console.log("animations points : " + x +" - " + y + "/" + x2 + " - " + y2);
+        console.log("this animx " + this.animX);
+        console.log(points);
 
         this.animrun = true;
+        console.log("X Y : " + x + " " + y);
+        console.log(this.matrixpecas);
         this.matrixpecas[x][y].animationRun = true;
     }
 
     makeMachineMove() {
-        console.log("MACHINE MOVE");
+        console.log("MACHINE MOVE" + this.game.difficulty);
+        this.machineresponded=false;
+
         this.scene.makeRequest(
             "machine_move("+ this.boardToPlog() +","+ this.game.player +","+ 
             this.lines +","+ this.columns +","+ this.game.difficulty +")",
@@ -359,10 +381,13 @@ class Board extends CGFobject {
                 var response = data.target.response;
                 var move = response.slice(0,9);
                 this.game.playSequence.push(move);
-                console.log(" move: "+ move);
 
                 move = move.split("-");
                 move.forEach(element => { parseInt(element); });
+                this.startAnimation(parseInt(move[1]),parseInt(move[0]),parseInt(move[3]),parseInt(move[2]));
+
+                this.machineresponded=true;
+
                 
                 //        APlicar o startAnimation aqui ?
                 // this.startAnimation(move[1], move[0], move[3], move[2]);
@@ -377,14 +402,15 @@ class Board extends CGFobject {
     update(time){
         if(this.pecaAnimation!=null)
         if(this.pecaAnimation.end){
+            this.pecaAnimation=null;
             this.animrun=false;
-            console.log("anims : 2" + this.animX2 + this.animY2);
             this.matrixpecas[this.animX][this.animY].animationRun = false;
         }
 
         if(this.pecaAnimation!=null){
             this.pecaAnimation.update(time);
         }
+
     }
 
     logCoords(x,y){
@@ -425,10 +451,8 @@ class Board extends CGFobject {
                     /// animations
                     var matrix = mat4.create();
 
-                    ///console.log("animx : " + this.animx+ "animy : " + this.animy + "ii : " + ii +"jj : " + jj );
                     if(this.pecaAnimation != null && this.animrun)
                         if(ii == this.animX && jj == this.animY){
-                            ///console.log(this.pecaAnimation.getMatrix());
                             matrix = this.pecaAnimation.getMatrix();
                             this.scene.multMatrix(matrix);
                         }
@@ -462,7 +486,6 @@ class Board extends CGFobject {
         this.scene.popMatrix();
 
         for(var i = 0; i < this.capturedBy1.length ; i++) {
-            console.log(this.capturedBy1.length);
             this.scene.pushMatrix();
                 this.scene.translate(-2.5 + (i > 5 ? 1 : 0), 0, 1.5 + (i > 5 ? (i - 6) : i));
                 if(this.capturedBy1[i]!=null)
@@ -471,7 +494,6 @@ class Board extends CGFobject {
         }
 
         for(var i = 0; i < this.capturedBy2.length ; i++) {
-            console.log(this.capturedBy2.length);
             this.scene.pushMatrix();
                 this.scene.translate(9.5 + (i > 5 ? 1 : 0), 0, 1.5 + (i > 5 ? (i - 6) : i));
                 if(this.capturedBy2[i]!=null)

@@ -173,8 +173,6 @@ class LinearAnimation extends Animation {
    */
   update(time){
 
-    //console.log("animation");
-
     this.deltatime=time;
     this.progresses[this.currentVector]+=time;
     this.checkVector();
